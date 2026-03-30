@@ -66,13 +66,24 @@
     border-bottom: 1px solid var(--border);
   }
   .header-name {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+  .header-name span {
     font-size: 0.78rem;
-    font-weight: 600;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text);
+  }
+  .header-tagline {
+    font-size: 0.6rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--muted);
+    font-weight: 500;
   }
-  .header-name span { color: var(--text); }
 
   /* ── Stage Toggle ── */
   .stage-toggle {
@@ -139,14 +150,6 @@
   .home-intro {
     padding: 3rem 0 2.5rem;
     border-bottom: 1px solid var(--border);
-  }
-  .home-intro-eyebrow {
-    font-size: 0.68rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--muted);
-    font-weight: 600;
-    margin-bottom: 0.75rem;
   }
   .home-intro-title {
     font-size: clamp(2.2rem, 5vw, 3.8rem);
@@ -366,6 +369,7 @@
     font-weight: 700;
     letter-spacing: -0.02em;
     line-height: 1.1;
+    color: var(--text);
   }
   .story-teaser {
     font-size: 0.85rem;
@@ -521,35 +525,40 @@
   .tab-panel { display: none; }
   .tab-panel.active { display: block; }
 
-  /* ── Principles: numbered editorial ── */
+  /* ── Principles: manifesto style ── */
   .principles-list { display: flex; flex-direction: column; }
   .principle-item {
     display: flex;
-    gap: 1.5rem;
-    padding: 1.6rem 0;
+    gap: 2rem;
+    padding: 2.2rem 0;
     border-bottom: 1px solid var(--border);
     align-items: flex-start;
   }
   .principle-item:last-child { border-bottom: none; }
   .principle-num {
-    font-size: 0.62rem;
+    font-size: 0.58rem;
     font-weight: 700;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.12em;
     width: 22px;
     flex-shrink: 0;
-    padding-top: 0.3rem;
-    opacity: 0.4;
+    padding-top: 0.65rem;
+    opacity: 0.3;
   }
-  .principle-text { font-size: 0.9rem; line-height: 1.6; }
+  .principle-text { font-size: 1rem; line-height: 1.6; flex: 1; }
   .principle-text strong {
     display: block;
-    font-size: 1.05rem;
+    font-size: clamp(1.25rem, 2.4vw, 1.65rem);
     font-weight: 700;
-    letter-spacing: -0.015em;
+    letter-spacing: -0.03em;
     color: var(--text);
-    margin-bottom: 0.2rem;
+    margin-bottom: 0.45rem;
+    line-height: 1.1;
   }
-  .principle-body { color: var(--muted); }
+  .principle-body {
+    color: var(--muted);
+    font-size: 0.86rem;
+    line-height: 1.7;
+  }
 
   /* ── Prose ── */
   .prose-body { max-width: 520px; }
@@ -607,6 +616,146 @@
   .comparison-col-header { font-size: 0.64rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.45rem; }
   .comparison-item { font-size: 0.76rem; color: var(--muted); padding: 0.24rem 0; border-bottom: 1px solid var(--border); line-height: 1.4; }
   .comparison-item:last-child { border-bottom: none; }
+
+  /* ── Background split cards ── */
+  .bg-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 420px;
+  }
+  .bg-split-card {
+    padding: 2.5rem;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+    transition: background 0.2s;
+  }
+  .bg-split-card:last-child { border-right: none; }
+  .bg-split-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--sc);
+    opacity: 0;
+    transition: opacity 0.25s;
+  }
+  .bg-split-card:hover::before { opacity: 0.05; }
+  .bg-split-card::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 3px;
+    background: var(--sc);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+  }
+  .bg-split-card:hover::after { transform: scaleX(1); }
+  .bg-split-top { position: relative; z-index: 1; }
+  .bg-split-bottom { position: relative; z-index: 1; }
+  .bg-split-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--sc);
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+  .bg-split-headline {
+    font-size: clamp(1.8rem, 3vw, 2.6rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    color: var(--text);
+    transition: color 0.2s;
+  }
+  .bg-split-card:hover .bg-split-headline { color: var(--sc); }
+  .bg-split-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 1.25rem;
+  }
+  .bg-split-tags span {
+    font-size: 0.65rem;
+    padding: 0.15rem 0.5rem;
+    border-radius: 20px;
+    border: 1px solid var(--border2);
+    color: var(--muted);
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .bg-split-card:hover .bg-split-tags span { color: var(--text); border-color: var(--sc); }
+  .bg-split-cta {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--muted);
+    transition: color 0.2s, transform 0.2s;
+    display: inline-block;
+  }
+  .bg-split-card:hover .bg-split-cta { color: var(--sc); transform: translateX(4px); }
+
+  @media (max-width: 640px) {
+    .bg-split { grid-template-columns: 1fr; }
+    .bg-split-card { border-right: none; min-height: 260px; }
+  }
+
+  /* ── The Human section ── */
+  .human-section {
+    display: grid;
+    grid-template-columns: 340px 1fr;
+    gap: 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .human-photo-wrap {
+    border-right: 1px solid var(--border);
+    overflow: hidden;
+  }
+  .human-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+    filter: grayscale(20%);
+    transition: filter 0.3s;
+  }
+  .human-photo:hover { filter: grayscale(0%); }
+  .human-text {
+    padding: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  .human-eyebrow {
+    font-size: 0.65rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+  }
+  .human-body { display: flex; flex-direction: column; gap: 0.85rem; }
+  .human-body p {
+    font-size: 0.9rem;
+    color: var(--muted);
+    line-height: 1.8;
+  }
+  .human-body p:first-child {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.5;
+  }
+
+  @media (max-width: 640px) {
+    .human-section { grid-template-columns: 1fr; }
+    .human-photo-wrap { height: 260px; border-right: none; border-bottom: 1px solid var(--border); }
+    .human-text { padding: 1.5rem 1.25rem; }
+  }
 
   /* ── Career timeline list ── */
   .career-list { display: flex; flex-direction: column; }
@@ -747,6 +896,84 @@
     .panel-body { padding: 1.5rem 1.25rem 3rem; }
     .coming-soon { padding: 2.5rem 1.25rem; }
   }
+
+  /* ── Title decode animation (driven by pretext) ── */
+  .home-intro-title { will-change: contents; }
+  .home-intro-title .decode-glyph { color: var(--muted); }
+
+  /* ── 3D Card tilt glow spotlight ── */
+  .card::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(circle at var(--glow-x,50%) var(--glow-y,50%), var(--card-accent,rgba(255,255,255,.2)) 0%, transparent 65%);
+    opacity: 0;
+    transition: opacity .3s;
+    pointer-events: none;
+    z-index: 1;
+    border-radius: inherit;
+  }
+  .card:hover::after { opacity: .11; }
+
+  /* ── Magnetic home rows need smooth transform transition ── */
+  .home-row { transition: padding-left .2s ease, transform .28s cubic-bezier(.23,1,.32,1); }
+
+  /* ── Nyan fly-across ── */
+  @keyframes nyanFly { from { left: -120px; } to { left: calc(100vw + 120px); } }
+  .nyan-fly-clone {
+    position: fixed; z-index: 10001; pointer-events: none;
+    top: calc(50% - 40px); left: -120px;
+    width: 80px; height: 80px; image-rendering: pixelated;
+    animation: nyanFly 1.8s linear forwards;
+  }
+  .nyan-rainbow {
+    position: fixed; z-index: 10000; pointer-events: none;
+    top: calc(50% - 5px); left: 0; right: 0; height: 10px;
+    background: linear-gradient(90deg,#ff0000,#ff7700,#ffff00,#00ff00,#0077ff,#8800ff);
+    opacity: 0; transition: opacity .12s;
+  }
+  .nyan-rainbow.show { opacity: .75; }
+
+  /* ── DEAL CLOSED overlay ── */
+  @keyframes dealPop { from { transform: scale(.35) rotate(-8deg); opacity: 0; } to { transform: scale(1) rotate(0); opacity: 1; } }
+  .deal-overlay {
+    position: fixed; inset: 0; z-index: 10002;
+    display: flex; align-items: center; justify-content: center;
+    pointer-events: none; background: rgba(0,0,0,.6);
+  }
+  .deal-text {
+    font-size: clamp(4rem,12vw,8rem); font-weight: 700;
+    letter-spacing: -.04em; line-height: .9; text-align: center;
+    background: linear-gradient(135deg,#FFD700 0%,#FF8C00 50%,#FFD700 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    animation: dealPop .45s cubic-bezier(.34,1.56,.64,1) both;
+  }
+  .confetti-dot { position: absolute; pointer-events: none; }
+  @keyframes confettiFall {
+    0%   { transform: translateY(-20px) rotate(0); opacity: 1; }
+    100% { transform: translateY(105vh) rotate(720deg); opacity: 0; }
+  }
+
+  /* ── PIPELINE FULL splash ── */
+  @keyframes pipeIn  { from { opacity:0; transform:translateX(-50%) translateY(-40px) scaleX(.8); } to { opacity:1; transform:translateX(-50%) translateY(0) scaleX(1); } }
+  @keyframes pipeOut { to   { opacity:0; transform:translateX(-50%) translateY(20px); } }
+  .pipeline-splash {
+    position: fixed; top: 18%; left: 50%; z-index: 10002; pointer-events: none;
+    font-size: clamp(2rem,6vw,5rem); font-weight: 700; letter-spacing: -.04em;
+    color: #1DB374; text-shadow: 0 0 60px #1DB37488, 0 0 20px #1DB37466;
+    animation: pipeIn .35s cubic-bezier(.34,1.56,.64,1) both, pipeOut .6s ease 1.4s both;
+  }
+
+  /* ── COLD CALL toast ── */
+  @keyframes toastIn  { from { opacity:0; transform:translateX(30px); } to { opacity:1; transform:translateX(0); } }
+  @keyframes toastOut { to   { opacity:0; transform:translateX(30px); } }
+  .cold-call-toast {
+    position: fixed; bottom: 2rem; right: 2rem; z-index: 10002; pointer-events: none;
+    background: var(--surface2); border: 1px solid var(--border2);
+    padding: .7rem 1.1rem; border-radius: 10px;
+    font-size: .82rem; font-weight: 600; color: var(--text);
+    box-shadow: 0 8px 32px rgba(0,0,0,.5);
+    animation: toastIn .25s ease both, toastOut .3s ease 2.2s both;
+  }
 </style>
 </head>
 <body>
@@ -755,7 +982,10 @@
 
 
 <header>
-  <div class="header-name"><span>Kevin Krom</span></div>
+  <div class="header-name">
+    <span>Kevin Krom</span>
+    <div class="header-tagline">GTM · Enterprise Sales</div>
+  </div>
   <img src="nyan.png" alt="Nyan Cat" class="nyan-header">
   <div class="stage-toggle" id="stage-toggle" style="display:none">
     <button class="stage-btn active" data-stage="early">Early</button>
@@ -875,6 +1105,102 @@ function initStoryCarousel(el) {
   }, true);
 }
 
+// ── Background sub-navigation ───────────────────────────────────────────────
+
+function renderBackgroundMenu() {
+  const cat = CATEGORIES.find(c => c.id === 'background');
+  const hero = `
+    <div class="cat-hero">
+      <div class="cat-hero-eyebrow">The Story</div>
+      <div class="cat-hero-title" style="color:${cat.accent}">${cat.name}</div>
+      <div class="cat-hero-desc">${cat.description}</div>
+    </div>`;
+
+  const area = document.getElementById('card-area');
+  area.innerHTML = hero + `
+    <div class="bg-split">
+      <div class="bg-split-card" id="bg-human" style="--sc:#F59E0B">
+        <div class="bg-split-top">
+          <div class="bg-split-label">The Human</div>
+          <div class="bg-split-headline">Dad. Husband.<br>Builder of things.</div>
+        </div>
+        <div class="bg-split-bottom">
+          <div class="bg-split-tags">
+            <span>Lindsy · Jax · Quin</span>
+            <span>Colorado</span>
+            <span>Mountains</span>
+            <span>3D Printers</span>
+          </div>
+          <div class="bg-split-cta">Read →</div>
+        </div>
+      </div>
+      <div class="bg-split-card" id="bg-career" style="--sc:#E8503A">
+        <div class="bg-split-top">
+          <div class="bg-split-label">The Career</div>
+          <div class="bg-split-headline">10 years.<br>7 companies.<br>No shortcuts.</div>
+        </div>
+        <div class="bg-split-bottom">
+          <div class="bg-split-tags">
+            <span>Stack Overflow</span>
+            <span>Twitter</span>
+            <span>CircleCI</span>
+            <span>Unstructured</span>
+          </div>
+          <div class="bg-split-cta">Read →</div>
+        </div>
+      </div>
+    </div>`;
+
+  document.getElementById('bg-human').addEventListener('click', renderHuman);
+  document.getElementById('bg-career').addEventListener('click', renderCareerList);
+}
+
+function renderHuman() {
+  document.getElementById('view-bar-current').textContent = 'The Human';
+  document.getElementById('back-btn').onclick = renderBackgroundMenu;
+  document.getElementById('card-area').innerHTML = `
+    <div class="human-section">
+      <div class="human-photo-wrap">
+        <img src="kevin.jpg" alt="Kevin Krom" class="human-photo">
+      </div>
+      <div class="human-text">
+        <div class="human-eyebrow">The Human</div>
+        <div class="human-body">
+          <p>Husband to Lindsy. Dad to Jax and Quin. That's the most important job I'll ever have.</p>
+          <p>City kid turned Colorado suburban cliché. I ski, bike, run, hike, camp. Mostly as an excuse to be outside with my boys while they grow up faster than I'd like.</p>
+          <p>I build things. Not always useful things. Hardware, software, 3D printers, AI. If it can be taken apart, improved, or misunderstood first and figured out later, I'm in. Some things don't get put back together.</p>
+          <p>I'm wired for curiosity and making. Great for startups. Problematic for everything else.</p>
+          <p>There's always more to do. More to chase. AI doesn't wait. Neither do kids.</p>
+          <p>I'm trying to get that tradeoff right. Some days I do. Some days I don't.</p>
+          <p>At the end of the day, the goal is simple. Be present. Be a good father. Build things people love, with people I trust.</p>
+        </div>
+      </div>
+    </div>`;
+}
+
+function renderCareerList() {
+  document.getElementById('view-bar-current').textContent = 'The Career';
+  document.getElementById('back-btn').onclick = renderBackgroundMenu;
+  const area = document.getElementById('card-area');
+  area.innerHTML = `
+    <div class="career-list">
+      ${BACKGROUND.map(item => `
+        <div class="career-row" data-id="${item.id}" style="--row-color:${item.accent}">
+          <div class="career-row-left">
+            <div class="career-company">${item.name}</div>
+            <div class="career-role-line">${item.role} · ${item.years} · ${item.location}${item.acv ? ' · ' + item.acv : ''}</div>
+            <ul class="career-bullets">
+              ${(item.bullets || []).map(b => `<li>${b}</li>`).join('')}
+            </ul>
+          </div>
+          <div class="career-arrow">→</div>
+        </div>`).join('')}
+    </div>`;
+  area.querySelectorAll('.career-row').forEach(row => {
+    row.addEventListener('click', () => openModal(row.dataset.id));
+  });
+}
+
 // ── Home ────────────────────────────────────────────────────────────────────
 
 function renderHome() {
@@ -886,9 +1212,8 @@ function renderHome() {
   area.innerHTML = `
     <div class="home-wrap">
       <div class="home-intro">
-        <div class="home-intro-eyebrow">Field Notes</div>
-        <div class="home-intro-title">Sales. Deals.<br>What actually works.</div>
-        <div class="home-intro-sub">How I think about building pipeline, running deals, and operating GTM teams — from the field, not a whiteboard.</div>
+        <div class="home-intro-title">10 years of GTM.<br>Documented.</div>
+        <div class="home-intro-sub">Philosophy, playbooks, war stories, and background — unfiltered. Hire me or don't, but at least you'll know who you're talking to.</div>
       </div>
       ${CATEGORIES.map((cat, i) => {
         const chips = cat.preview.slice(0, 4).map(p => `<span class="home-row-chip">${p}</span>`).join('');
@@ -909,6 +1234,9 @@ function renderHome() {
   area.querySelectorAll('.home-row').forEach(row => {
     row.addEventListener('click', () => enterCategory(row.dataset.id));
   });
+
+  // Trigger pretext-powered decode animation each time home renders
+  requestAnimationFrame(() => { window.animateHomeTitle?.(); });
 }
 
 // ── Category view ────────────────────────────────────────────────────────────
@@ -932,9 +1260,15 @@ function enterCategory(categoryId) {
     document.getElementById('stage-label-inline').textContent = '';
   }
 
+  const catEyebrows = {
+    philosophy: 'How I Think',
+    playbooks:  'How I Operate',
+    stories:    'War Stories',
+    background: 'The Story'
+  };
   const hero = `
     <div class="cat-hero">
-      <div class="cat-hero-eyebrow">Collection</div>
+      <div class="cat-hero-eyebrow">${catEyebrows[categoryId] || ''}</div>
       <div class="cat-hero-title" style="color:${cat.accent}">${cat.name}</div>
       <div class="cat-hero-desc">${cat.description}</div>
     </div>`;
@@ -955,32 +1289,17 @@ function enterCategory(categoryId) {
     initStoryCarousel(document.getElementById('story-carousel'));
 
   } else if (categoryId === 'background') {
-    area.innerHTML = hero + `
-      <div class="career-list">
-        ${BACKGROUND.map(item => `
-          <div class="career-row" data-id="${item.id}" style="--row-color:${item.accent}">
-            <div class="career-row-left">
-              <div class="career-company">${item.name}</div>
-              <div class="career-role-line">${item.role} · ${item.years} · ${item.location}${item.acv ? ' · ' + item.acv : ''}</div>
-              <ul class="career-bullets">
-                ${(item.bullets || []).map(b => `<li>${b}</li>`).join('')}
-              </ul>
-            </div>
-            <div class="career-arrow">→</div>
-          </div>`).join('')}
-      </div>`;
-    area.querySelectorAll('.career-row').forEach(row => {
-      row.addEventListener('click', () => openModal(row.dataset.id));
-    });
+    renderBackgroundMenu();
   }
 }
 
 // ── Card renderers ───────────────────────────────────────────────────────────
 
 function renderPhilosophyCard(item) {
+  const accent = CATEGORIES.find(c => c.id === 'philosophy').accent;
   return `
-    <div class="card" data-id="${item.id}" role="button" tabindex="0" style="--card-accent:${item.accent}">
-      <div class="card-name" style="color:${item.accent}">${item.name}</div>
+    <div class="card" data-id="${item.id}" role="button" tabindex="0" style="--card-accent:${accent}">
+      <div class="card-name">${item.name}</div>
       <div class="phil-preview">${item.preview}</div>
       <div class="card-cta"><span>Read →</span></div>
     </div>`;
@@ -989,9 +1308,9 @@ function renderPhilosophyCard(item) {
 function renderStoryCard(item) {
   const labelColor = item.label === 'Win' ? '#1DB374' : '#FF9B54';
   return `
-    <div class="card" data-id="${item.id}" role="button" tabindex="0" style="--card-accent:${item.accent || labelColor}">
+    <div class="card" data-id="${item.id}" role="button" tabindex="0" style="--card-accent:${labelColor}">
       <div class="story-label" style="color:${labelColor};border-color:${labelColor}44">${item.label}</div>
-      ${item.company ? `<div class="story-company" style="color:${item.accent}">${item.company}</div>` : ''}
+      ${item.company ? `<div class="story-company">${item.company}</div>` : ''}
       <div class="story-teaser">${item.teaser}</div>
       <div class="story-context">${item.context}</div>
       <div class="card-cta"><span>Read story →</span></div>
@@ -1231,10 +1550,347 @@ document.getElementById('modal-close').addEventListener('click', closeModal);
 document.getElementById('panel-scrim').addEventListener('click', closeModal);
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
+// ── 3D Card Tilt + Glow Spotlight ────────────────────────────────────────────
+{
+  const _area = document.getElementById('card-area');
+  let _tc = null;
+
+  _area.addEventListener('mousemove', e => {
+    const card = e.target.closest('.card');
+    if (card !== _tc) {
+      if (_tc) {
+        _tc.style.transition = 'transform .55s cubic-bezier(.23,1,.32,1), background .2s';
+        _tc.style.transform  = '';
+        _tc.style.zIndex     = '';
+      }
+      _tc = card;
+    }
+    if (!card) return;
+    const r = card.getBoundingClientRect();
+    const x = (e.clientX - r.left) / r.width  - 0.5;
+    const y = (e.clientY - r.top)  / r.height - 0.5;
+    card.style.transition = 'transform .08s ease-out, background .2s';
+    card.style.transform  = `perspective(700px) rotateY(${x*12}deg) rotateX(${-y*12}deg) scale3d(1.02,1.02,1.02)`;
+    card.style.zIndex     = '10';
+    card.style.setProperty('--glow-x', `${(x+.5)*100}%`);
+    card.style.setProperty('--glow-y', `${(y+.5)*100}%`);
+  });
+
+  _area.addEventListener('mouseleave', () => {
+    if (!_tc) return;
+    _tc.style.transition = 'transform .55s cubic-bezier(.23,1,.32,1), background .2s';
+    _tc.style.transform  = '';
+    _tc.style.zIndex     = '';
+    _tc = null;
+  });
+}
+
+// ── Scramble on card/row title hover ─────────────────────────────────────────
+const _sg = '!<>-_/[]=+*^?#@$%~|'.split('');
+
+function _scramble(el) {
+  if (el._sc) return;
+  el._sc = true;
+  const orig = el.textContent;
+  const N = orig.length;
+  const t0 = performance.now();
+  const dur = 480;
+  (function step(now) {
+    const p    = Math.min((now - t0) / dur, 1);
+    const ease = 1 - Math.pow(1 - p, 2.5);
+    const piv  = Math.floor(ease * N);
+    let html = '';
+    for (let i = 0; i < N; i++) {
+      if (i < piv) { html += orig[i]; continue; }
+      const d = i - piv;
+      html += d < 6
+        ? `<span style="opacity:${(0.45 - d*.07).toFixed(2)};color:var(--muted)">${_sg[Math.random()*_sg.length|0]}</span>`
+        : `<span style="opacity:0">${orig[i]}</span>`;
+    }
+    el.innerHTML = html;
+    if (p < 1) requestAnimationFrame(step);
+    else { el.textContent = orig; el._sc = false; }
+  })(t0);
+}
+
+new MutationObserver(() => {
+  document.querySelectorAll(
+    '.card-name:not([data-se]),.story-company:not([data-se]),.career-company:not([data-se]),.home-row-name:not([data-se])'
+  ).forEach(el => {
+    el.dataset.se = '1';
+    el.closest('.card,.home-row,.career-row')?.addEventListener('mouseenter', () => _scramble(el));
+  });
+}).observe(document.getElementById('card-area'), { childList: true, subtree: true });
+
+// ── View fade transitions ─────────────────────────────────────────────────────
+let _fading = false;
+
+function _withFade(fn) {
+  if (_fading) { fn(); return; }    // guard against nested fades
+  _fading = true;
+  const a = document.getElementById('card-area');
+  a.style.opacity    = '0';
+  a.style.transform  = 'translateY(8px)';
+  a.style.transition = 'opacity .14s ease, transform .14s ease';
+  setTimeout(() => {
+    fn();
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      a.style.opacity   = '1';
+      a.style.transform = 'translateY(0)';
+      setTimeout(() => {
+        a.style.transition = '';
+        a.style.opacity    = '';
+        a.style.transform  = '';
+        _fading = false;
+      }, 400);
+    }));
+  }, 140);
+}
+
+const _ecBase  = enterCategory;        enterCategory        = id => _withFade(() => _ecBase(id));
+const _rbmBase = renderBackgroundMenu; renderBackgroundMenu = ()  => _withFade(_rbmBase);
+const _rhBase2 = renderHuman;          renderHuman          = ()  => _withFade(_rhBase2);
+const _rclBase = renderCareerList;     renderCareerList      = ()  => _withFade(_rclBase);
+
+// ── Magnetic home rows ────────────────────────────────────────────────────────
+const _rhBase = renderHome;
+renderHome = function() {
+  _rhBase();
+  setTimeout(() => {
+    const wrap = document.querySelector('.home-wrap');
+    if (!wrap) return;
+    wrap.addEventListener('mousemove', e => {
+      document.querySelectorAll('.home-row').forEach(row => {
+        const r  = row.getBoundingClientRect();
+        const dy = e.clientY - (r.top + r.height / 2);
+        const dx = e.clientX - (r.left + r.width  / 2);
+        const dist = Math.hypot(dx, dy);
+        const pull = Math.max(0, (1 - dist / 180)) * 7;
+        row.style.transform = dist < 180 ? `translate(${dx/dist*pull}px,${dy/dist*pull}px)` : '';
+      });
+    });
+    wrap.addEventListener('mouseleave', () => {
+      document.querySelectorAll('.home-row').forEach(r => { r.style.transform = ''; });
+    });
+  }, 700);   // wait for fadeUp animations to finish before enabling magnetic
+};
+
+// ── Easter egg 🐱 Nyan click ──────────────────────────────────────────────────
+//   1st / 2nd click  →  nyan flies across screen
+//   every 3rd click  →  toggle rainbow cursor trail
+let _nc = 0, _rbMode = false, _rbc = 0;
+const _rbCols = ['#ff0000','#ff7700','#ffff00','#00ff00','#0077ff','#8800ff'];
+
+document.querySelector('.nyan-header').addEventListener('click', () => {
+  _nc++;
+  if (_nc % 3 === 0) {
+    _rbMode = !_rbMode;
+    document.body.style.cursor = _rbMode ? 'none' : '';
+    _rbMode
+      ? document.addEventListener('mousemove', _spawnRb)
+      : document.removeEventListener('mousemove', _spawnRb);
+  } else {
+    const rb  = document.createElement('div'); rb.className  = 'nyan-rainbow'; document.body.appendChild(rb);
+    requestAnimationFrame(() => rb.classList.add('show'));
+    const img = document.createElement('img'); img.src = 'nyan.png'; img.className = 'nyan-fly-clone';
+    document.body.appendChild(img);
+    img.addEventListener('animationend', () => { img.remove(); rb.remove(); });
+  }
+});
+
+function _spawnRb(e) {
+  const d = document.createElement('div');
+  d.style.cssText = `position:fixed;z-index:9990;pointer-events:none;border-radius:50%;width:10px;height:10px;background:${_rbCols[_rbc++ % _rbCols.length]};left:${e.clientX-5}px;top:${e.clientY-5}px;transition:opacity .4s,transform .4s`;
+  document.body.appendChild(d);
+  requestAnimationFrame(() => { d.style.opacity = '0'; d.style.transform = 'scale(0)'; });
+  setTimeout(() => d.remove(), 400);
+}
+
+// ── Easter egg 🎉 Konami code → DEAL CLOSED ───────────────────────────────────
+const _km = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+let _ki = 0;
+document.addEventListener('keydown', e => {
+  _ki = e.key === _km[_ki] ? _ki + 1 : (e.key === _km[0] ? 1 : 0);
+  if (_ki === _km.length) { _ki = 0; _dealClosed(); }
+});
+
+function _dealClosed() {
+  const ov = document.createElement('div'); ov.className = 'deal-overlay';
+  ov.innerHTML = '<div class="deal-text">DEAL<br>CLOSED</div>';
+  document.body.appendChild(ov);
+  const cols = ['#FFD700','#FF8C00','#E8503A','#7B72E9','#1DB374','#C77DFF','#ffffff'];
+  for (let i = 0; i < 90; i++) {
+    const c = document.createElement('div'); c.className = 'confetti-dot';
+    const delay = Math.random() * .5, dur = 1.5 + Math.random() * 1.5;
+    c.style.cssText = `left:${Math.random()*100}%;top:-12px;background:${cols[Math.random()*cols.length|0]};width:${6+Math.random()*8}px;height:${6+Math.random()*8}px;border-radius:${Math.random()>.5?'50%':'3px'};animation:confettiFall ${dur}s ${delay}s ease-in both`;
+    ov.appendChild(c);
+  }
+  setTimeout(() => {
+    ov.style.transition = 'opacity .5s';
+    ov.style.opacity    = '0';
+    setTimeout(() => ov.remove(), 500);
+  }, 2700);
+}
+
+// ── Easter egg 🚀 type "pipeline" anywhere ────────────────────────────────────
+let _pb = '';
+document.addEventListener('keypress', e => {
+  if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') return;
+  _pb = (_pb + e.key.toLowerCase()).slice(-8);
+  if (_pb === 'pipeline') { _pb = ''; _pipelineFull(); }
+});
+
+function _pipelineFull() {
+  const el = document.createElement('div'); el.className = 'pipeline-splash';
+  el.textContent = 'PIPELINE FULL 🚀'; document.body.appendChild(el);
+  setTimeout(() => el.remove(), 2200);
+}
+
+// ── Easter egg 📸 click Kevin's photo ────────────────────────────────────────
+document.addEventListener('click', e => {
+  const photo = e.target.closest('.human-photo');
+  if (!photo) return;
+  photo.style.transition = 'filter .12s';
+  photo.style.filter = 'grayscale(0%) brightness(1.2) saturate(1.6)';
+  const badge = document.createElement('div');
+  badge.style.cssText = 'position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);z-index:10;font-size:1.05rem;font-weight:700;color:#fff;text-align:center;text-shadow:0 2px 12px rgba(0,0,0,.9);transition:transform .3s cubic-bezier(.34,1.56,.64,1);pointer-events:none;white-space:nowrap;padding:.5rem 1.1rem;background:rgba(0,0,0,.72);border-radius:8px;backdrop-filter:blur(6px)';
+  badge.textContent = '👋 Not just a sales guy';
+  photo.parentElement.style.position = 'relative';
+  photo.parentElement.appendChild(badge);
+  requestAnimationFrame(() => { badge.style.transform = 'translate(-50%,-50%) scale(1)'; });
+  setTimeout(() => {
+    photo.style.filter = 'grayscale(20%)';
+    badge.style.transform = 'translate(-50%,-50%) scale(0)';
+    setTimeout(() => badge.remove(), 300);
+  }, 2000);
+});
+
+// ── Easter egg ☎ double-click background to cold call ─────────────────────────
+document.getElementById('card-area').addEventListener('dblclick', e => {
+  if (e.target.closest('.card,.home-row,.career-row,.bg-split-card,.human-section')) return;
+  const msgs = ['☎ COLD CALL INITIATED','📬 SEQUENCE ENROLLED','🔁 FOLLOW-UP #7 SENT','📊 FORECASTING: COMMIT'];
+  const el = document.createElement('div'); el.className = 'cold-call-toast';
+  el.textContent = msgs[Math.random() * msgs.length | 0];
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 2700);
+});
+
 // ── Boot ──────────────────────────────────────────────────────────────────────
 
 renderHome();
 
+</script>
+
+<!-- ── Pretext: decode animation for hero title ──────────────────────────────
+     pretext (github.com/chenglou/pretext) measures multiline text layout
+     without touching the DOM, so we can lock the container height before
+     the scramble animation starts — zero layout shift guaranteed.
+────────────────────────────────────────────────────────────────────────────-->
+<script type="module">
+import { prepare, layout } from 'https://esm.sh/@chenglou/pretext';
+
+const _L1    = 'Sales. Deals.';
+const _L2    = 'What actually works.';
+const _GLYPH = '!<>-_/[]=+*^?#@$%~|'.split('');
+const _rg    = () => _GLYPH[Math.random() * _GLYPH.length | 0];
+
+async function animateHomeTitle() {
+  const el = document.querySelector('.home-intro-title');
+  if (!el) return;
+
+  const computed = getComputedStyle(el);
+  const fs   = parseFloat(computed.fontSize);
+  const font = `${fs}px ${computed.fontFamily}`;  // e.g. "57px 'Space Grotesk', system-ui"
+  const lh   = fs * 1.05;                         // matches CSS line-height: 1.05
+  const cw   = el.parentElement.offsetWidth || 760;
+
+  // ── Measure final text dimensions without any DOM layout reflow ───────────
+  // pretext does the heavy lifting here: pure JS text metrics, no getBoundingClientRect
+  const { height: h1 } = layout(prepare(_L1, font), cw, lh);
+  const { height: h2 } = layout(prepare(_L2, font), cw, lh);
+
+  // Lock height before we clear innerHTML — nothing below shifts during decode
+  el.style.minHeight = Math.ceil(h1 + h2) + 'px';
+
+  // ── Decode animation ───────────────────────────────────────────────────────
+  const chars = (_L1 + '\n' + _L2).split('');
+  const N     = chars.length;
+  const t0    = performance.now();
+  const DUR   = 2800;  // ms
+
+  function step(now) {
+    const prog  = Math.min((now - t0) / DUR, 1);
+    const eased = 1 - Math.pow(1 - prog, 3);   // cubic ease-out: fast start
+    const pivot = Math.floor(eased * N);
+
+    let html = '';
+    for (let i = 0; i < N; i++) {
+      const c = chars[i];
+      if (c === '\n') { html += '<br>'; continue; }
+      if (i < pivot) {
+        // Revealed character
+        html += c;
+      } else {
+        const d = i - pivot;
+        if (d < 10) {
+          // Scramble "wave" — opacity fades with distance from reveal front
+          const op = (0.48 - d * 0.044).toFixed(2);
+          html += `<span class="decode-glyph" style="opacity:${op}">${_rg()}</span>`;
+        } else {
+          // Invisible placeholder keeps layout stable (this is the whole point)
+          html += `<span style="opacity:0">${c}</span>`;
+        }
+      }
+    }
+    el.innerHTML = html;
+
+    if (prog < 1) {
+      requestAnimationFrame(step);
+    } else {
+      el.innerHTML = `${_L1}<br>${_L2}`;
+      el.style.minHeight = '';
+      _hookGlitch(el);
+    }
+  }
+
+  requestAnimationFrame(step);
+}
+
+function _hookGlitch(el) {
+  const snap = el.innerHTML;
+  let tid;
+
+  el.addEventListener('mouseenter', () => {
+    let n = 0;
+    tid = setInterval(() => {
+      if (++n > 7) { clearInterval(tid); el.innerHTML = snap; return; }
+
+      const kill = new Set();
+      const total = _L1.length + _L2.length;
+      while (kill.size < 2 + (Math.random() * 3 | 0)) {
+        kill.add(Math.random() * total | 0);
+      }
+
+      let html = '', off = 0;
+      for (const ch of _L1) {
+        html += kill.has(off++) ? `<span class="decode-glyph" style="opacity:.6">${_rg()}</span>` : ch;
+      }
+      html += '<br>';
+      for (const ch of _L2) {
+        html += kill.has(off++) ? `<span class="decode-glyph" style="opacity:.6">${_rg()}</span>` : ch;
+      }
+      el.innerHTML = html;
+    }, 55);
+  });
+
+  el.addEventListener('mouseleave', () => { clearInterval(tid); el.innerHTML = snap; });
+}
+
+// Expose so renderHome() can re-trigger on back-navigation
+window.animateHomeTitle = animateHomeTitle;
+
+// Initial run — ES modules are deferred, so renderHome() has already executed
+animateHomeTitle();
 </script>
 </body>
 </html>

@@ -24,7 +24,7 @@ const CATEGORIES = [
     id: 'background',
     name: 'Background',
     accent: '#C77DFF',
-    description: 'Career history, what I\'ve built, and where I\'ve been.',
+    description: 'My story. The good, the bad, the ugly, and the lessons along the way.',
     preview: []
   }
 ];
