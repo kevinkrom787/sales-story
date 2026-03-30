@@ -1,0 +1,938 @@
+const CATEGORIES = [
+  {
+    id: 'philosophy',
+    name: 'Sales Philosophy',
+    accent: '#E8503A',
+    description: 'How I think about selling, building pipeline, and running GTM teams. Opinionated, experience-backed, and mostly learned the hard way.',
+    preview: ['How I Operate', 'On Pipeline', 'On Customer Success', 'On Hiring for Stage']
+  },
+  {
+    id: 'playbooks',
+    name: 'Playbooks',
+    accent: '#7B72E9',
+    description: 'Operational frameworks for the functions that make up a GTM org. Metrics, meetings, and what to watch out for at each stage.',
+    preview: ['Sales', 'Demand Generation', 'Outbound Sequences', 'Customer Success', 'Revenue Operations']
+  },
+  {
+    id: 'stories',
+    name: 'Customer Stories',
+    accent: '#1DB374',
+    description: 'Real deals. What worked, what didn\'t, and what I\'d do differently. Names and companies included.',
+    preview: ['The Apple POC', 'The Santander Deployment', 'The Snorkel POC', 'The Blackstone Close', 'The Fastly Loss', 'The Fannie Mae POC']
+  },
+  {
+    id: 'background',
+    name: 'Background',
+    accent: '#C77DFF',
+    description: 'Career history, what I\'ve built, and where I\'ve been.',
+    preview: []
+  }
+];
+
+// ── Philosophy ──────────────────────────────────────────────────────────────
+
+const PHILOSOPHY = [
+  {
+    id: 'on-selling',
+    type: 'philosophy',
+    name: 'How I Operate',
+    accent: '#E8503A',
+    purpose: 'The values and principles I bring to every GTM team I work with.',
+    preview: 'Bad deals start bad. Get clear early or walk. No playbook — figure it out or go home.',
+    tabs: [
+      { key: 'principles', label: 'Principles', type: 'principles', content: [
+        '<strong>Be the expert</strong> — Know the problem, product, outcomes, and implementation. If you can\'t connect them, nothing else matters.',
+        '<strong>Qualify hard</strong> — Bad deals start bad. Get clear early or walk.',
+        '<strong>Own the outcome</strong> — Your deal. Your problem. Drive it forward.',
+        '<strong>Find a way</strong> — No playbook. Figure it out or go home.',
+        '<strong>Do less, better</strong> — Focus. Build what works. Ignore the rest.',
+        '<strong>Move with urgency</strong> — Momentum wins. Slow kills.',
+        '<strong>Care (and be real)</strong> — Give a damn. Tell the truth. Don\'t optimize for being liked.',
+        '<strong>Work hard</strong> — No shortcuts. Sometimes you still lose.'
+      ]}
+    ]
+  },
+  {
+    id: 'on-pipeline',
+    type: 'philosophy',
+    name: 'On Building Pipeline',
+    accent: '#1DB374',
+    purpose: 'How I think about filling the top of funnel.',
+    preview: 'Outbound is not spray and pray. Have a point of view on why this company should care right now.',
+    tabs: [
+      { key: 'principles', label: 'Principles', type: 'principles', content: [
+        '<strong>Inbound: build the system first</strong> — Crack this early. Get to predictable meetings per week. Track conversion end to end.',
+        '<strong>Outbound: go all in on a small list</strong> — Target ~50 accounts. High effort, highly personalized. Exec to exec, top down and bottom up. Everything in between.',
+        '<strong>Create demand, don\'t wait for it</strong> — Outbound is not spray and pray. Have a point of view on why this company should care right now.',
+        '<strong>Optimize for reply, not pitch</strong> — First touch earns attention, not a sale.',
+        '<strong>Network (but don\'t depend on it)</strong> — Helpful, but doesn\'t scale. Same with VCs. Use it, don\'t rely on it.',
+        '<strong>Be careful with partners</strong> — Only works with real alignment and exec support on both sides. Otherwise it\'s a distraction.',
+        '<strong>In-person wins</strong> — Dinners, events, conferences. But have a plan. Random activity doesn\'t convert.',
+        '<strong>Work the edges</strong> — Engage people interacting with content. LinkedIn, webinars, exec outreach. Pull signal, don\'t ignore it.',
+        '<strong>Separate and measure</strong> — Inbound and outbound need different owners, metrics, and feedback loops.',
+        '<strong>Hire a killer</strong> — You can fake it early, but you need someone in the weeds owning growth. This is a fight.'
+      ]}
+    ]
+  },
+  {
+    id: 'on-cs',
+    type: 'philosophy',
+    name: 'On Customer Success',
+    accent: '#2A9FD6',
+    purpose: 'How I think about retention and expansion.',
+    preview: 'Usage is truth. If it drops, you have a problem. Don\'t wait for a QBR to find out.',
+    tabs: [
+      { key: 'principles', label: 'Principles', type: 'principles', content: [
+        '<strong>Put experts on the account</strong> — CS should be technical. FDEs or SAs who can actually help customers get value and own renewals. If they can\'t do the work, they won\'t earn trust.',
+        '<strong>Own the outcome</strong> — This isn\'t check-ins and reporting. You\'re responsible for the customer being successful, not just informed.',
+        '<strong>Watch usage like a hawk</strong> — Usage is truth. If it drops, you have a problem. Don\'t wait for a QBR to find out.',
+        '<strong>Set triggers, not meetings</strong> — Define what good and bad usage looks like. Act early when things drift. No surprises at renewal.',
+        '<strong>Avoid the swamp</strong> — Silence, low engagement, unclear ownership. This is where deals go to die. If things feel off, they are.',
+        '<strong>Build real adoption</strong> — Get to real usage in real workflows. Shelfware churns.',
+        '<strong>Expansion follows value</strong> — Don\'t ask for it. Earn it by making the first use case work, then pull the next one through.'
+      ]}
+    ]
+  },
+  {
+    id: 'on-hiring',
+    type: 'philosophy',
+    name: 'On Hiring for Stage',
+    accent: '#FF9B54',
+    purpose: 'Who you hire will make or break you.',
+    preview: 'If they don\'t raise the bar, it\'s the wrong hire. Built for scale ≠ built for zero to one.',
+    tabs: [
+      { key: 'principles', label: 'Principles', type: 'principles', content: [
+        '<strong>Hire people better than you</strong> — If they don\'t raise the bar, it\'s the wrong hire.',
+        '<strong>Avoid the big box hire</strong> — Built for scale ≠ built for zero to one.',
+        '<strong>Backchannel everything</strong> — Talk to people who\'ve actually worked with them.',
+        '<strong>Work ethic matters</strong> — This is hard. Effort is non-negotiable.',
+        '<strong>Look for builders</strong> — They figure things out. They don\'t wait for a playbook.',
+        '<strong>Test for curiosity</strong> — Don\'t ask, have them show you. What are they building? How are they using AI? Talk is cheap.',
+        '<strong>Hire for the trench</strong> — You\'ll be in it together when things break. Choose people you trust and want to go through it with.'
+      ]}
+    ]
+  }
+];
+
+// ── Stories ─────────────────────────────────────────────────────────────────
+
+const STORIES = [
+  {
+    id: 'apple',
+    type: 'story',
+    name: 'The Apple POC',
+    accent: '#FF9B54',
+    label: 'Hard Lesson',
+    company: 'Apple',
+    context: 'Enterprise AE · Unstructured · Apple GenAI Data Platform',
+    teaser: 'First call to in-VPC POC in 14 days. We had no business being there.',
+    tabs: [
+      { key: 'story', label: 'Story', type: 'prose', content: [
+        'Apple\'s GenAI data platform team. 2,000 data scientists and AI researchers. First call to signed NDA to in-VPC POC scoped with their VP in 14 days.',
+        'I was an enterprise AE selling a product I\'d never sold before, at a company that had never deployed in-VPC before. My CTO was skipping calls and blaming the customer. I ran the first technical scoping call alone — no engineering lead, no coverage, just me and an Apple VP asking questions I wasn\'t equipped to answer.',
+        'We got in. And then the POC fell apart. No auth. Never deployed in-VPC. Apple told us we were JV and to come back when we\'d done this before.',
+        'They weren\'t wrong. We didn\'t even measure our reliability rate. If you put 100 documents into our platform, you\'d get 7 JSON files on the other side. We spent three months fucking around and never got past auth. Nobody flagged it. Nobody owned it. We didn\'t have the data to know how bad it was.',
+        'It also surfaced something bigger. The CTO was the wrong person for the job. You cannot sit back and let your AE and a new SA YOLO the first in-VPC deployment alone without knowing your own product\'s weakpoints. That\'s not leadership — that\'s ego dressed up as delegation. This was an opportunity to get in the room, learn, and improve. He missed it. It eventually led to a leadership shakeup. The exec leading the sales org was also the wrong profile — a big-box guy built for established products with known deployment patterns, not for navigating a technically immature platform into Apple\'s infrastructure.',
+        'Sometimes the best thing you can do is turn a customer away. Apple was the wrong first in-VPC client. We learned that the hard way.'
+      ]},
+      { key: 'lesson', label: 'Lesson', type: 'principles', content: [
+        'Know where your product falls down before you put it in front of a name-brand enterprise. Auth. Interoperability. Reliability. Auditability. These are not surprises you discover mid-POC.',
+        'Measure everything. Reliability rate, time to deployment, first customer win criteria. If you don\'t have those numbers, you have no business selling enterprise deployments.',
+        'Set honest success criteria. Set failure criteria too. If you can\'t define what good looks like in advance, you have no way to defend the timeline when it slips.',
+        'Your CTO has to show up. No AE should run a first technical scoping call alone at a company this size. If your exec team won\'t get in the room, fix that before you go after Apple.',
+        'Make sure the people selling are the right profile for the stage you\'re actually at. The big-box playbook does not work here.'
+      ]}
+    ]
+  },
+  {
+    id: 'santander',
+    type: 'story',
+    name: 'The Santander Deployment',
+    accent: '#1DB374',
+    label: 'Win',
+    company: 'Santander',
+    context: 'Enterprise AE · Unstructured · Santander CTO, Head of AI Infra, exec team',
+    teaser: 'Turned a brutal detractor into Santander\'s global tool buyer. WhatsApp, Madrid, and a lot of earned trust.',
+    tabs: [
+      { key: 'story', label: 'Story', type: 'prose', content: [
+        'We walked into an in-person meeting in SF with Santander\'s CTO, Head of AI Infrastructure, and a room full of exec leads. They wanted us to deploy that day.',
+        'We said no.',
+        'We told them exactly how bad our deployments were. The room got tense. But we dug our heels in — because we\'d learned from Apple what happens when you don\'t. It worked. They respected it. You earn trust by being honest when it costs you something.',
+        'Then everything that could go wrong, did.',
+        'Our exec champion left mid-deployment. In came Fiorella — parachuted in, no context, and immediately furious about the timeline. We were also working across timezones with contractors who couldn\'t send emails. So I was DMing our data science champions on WhatsApp to get around the blockers, working with them behind the scenes to hit success criteria while the formal channels were on fire.',
+        'Meanwhile, my own execs were pushing hard to go around Fio and escalate back to the CTO. Skip the difficult person. Jump back to the friendly face.',
+        'I pushed back. Fio was the one making the technical decision. Going around her would have been fatal — she would have killed it the moment we weren\'t in the room. You don\'t circumvent your detractor. You bring them across the line.',
+        'It took 1.5 months. We deployed. We hit success criteria.',
+        'Fio is now inviting us to Madrid. She\'s the global tool buyer for all of Santander and wants to roll this out to every branch.'
+      ]},
+      { key: 'lesson', label: 'Lesson', type: 'principles', content: [
+        'Honesty about your limitations isn\'t a weakness in a sales call. It\'s the only thing that survives a deployment. We earned Santander\'s trust by saying no to same-day deployment. That trust is what got us through everything that followed.',
+        'When your champion leaves mid-deployment, you don\'t inherit their goodwill. You start over. Build the relationship with the new person from zero, even when it\'s frustrating.',
+        'Never go around a detractor to get back to a friendly exec. Find out who is actually making the technical call first. A detractor you bring across the line is your most powerful reference.',
+        'Be scrappy. If the formal channels are broken, find another way. WhatsApp, Slack, carrier pigeon — whatever it takes to keep the work moving. Championships are won in the gaps.',
+        'When your execs pressure you to escalate over someone difficult, push back. Ask who is making the technical decision. Then stay in that room.'
+      ]}
+    ]
+  },
+  {
+    id: 'snorkel',
+    type: 'story',
+    name: 'The Snorkel POC',
+    accent: '#7B72E9',
+    label: 'Win',
+    company: 'Snorkel AI',
+    context: 'Enterprise AE · Unstructured · Snorkel AI — horse-raced against the internal tool they built themselves',
+    teaser: 'Horse-raced against the internal tool they built themselves. We weren\'t supposed to win.',
+    tabs: [
+      { key: 'story', label: 'Story', type: 'prose', content: [
+        'Snorkel AI was not our ICP. They were a foundational AI lab — a team of researchers and engineers who thought about data infrastructure at a level most of our customers never would. Selling to them meant selling to people who could dismantle your product in real time and knew exactly what to look for.',
+        'I walked into the first call confident. I\'d just gotten back from a week in Mexico, the use case sounded straightforward, and I figured this was a standard competitive POC. I was wrong about almost all of it.',
+        'The call was Daniel, their PM on infrastructure and DaaS. Javier, Director of Engineering. Ashwini, a Staff AI Researcher — who, it turned out, had built the internal PDF parser we were being horse-raced against. And Smit, an engineer who proceeded to take our product apart with the kind of precision that only comes from someone who has built the thing you\'re selling.',
+        'Pitching against the person who built what you\'re replacing is its own special experience. Ashwini wasn\'t hostile — he was methodical. He knew exactly where the edges were because he\'d already mapped them himself. There was no hiding. You either had a better answer or you didn\'t.',
+        'Smit found the gaps. Real ones. He wasn\'t stress-testing our sales narrative — he was stress-testing the product, and the product had weaknesses we had to own in the room. The honest move was to not bullshit them, flag what we\'d need to solve, and figure it out. So that\'s what we did.',
+        'To meet their success criteria, we had to build something non-standard — a solution that didn\'t fit cleanly into our existing deployment patterns. It was a calculated risk. Not pretty. But it worked, it was defensible, and it got us to their bar.',
+        'We won the POC. We won the deal.',
+        'Most of that team has since gone on to Anthropic, Google DeepMind, and some of the best AI startups in the industry. That\'s the kind of room it was.'
+      ]},
+      { key: 'lesson', label: 'Lesson', type: 'principles', content: [
+        'Not every customer makes you better. This one did.',
+        'When you sell outside your ICP, you don\'t get the benefit of the doubt. There\'s no goodwill from past deployments, no familiar use case to anchor on, no ceiling on how hard they\'ll push. You either figure it out in real time or you lose.',
+        'Survive the technical ambush by staying honest. The worst thing you can do in a room full of brilliant engineers is oversell or deflect. They know. Own the gaps, show a path, and prove you can solve problems you haven\'t solved before.',
+        'Be careful with customers who are 100x more advanced than your average user. Winning here was real. But the operational cost of meeting their bar — the custom work, the pressure on engineering, the non-standard deployment — isn\'t free. Know what you\'re signing up for before you get in the room.',
+        'We had no business winning this one. We won it anyway.'
+      ]}
+    ]
+  },
+  {
+    id: 'blackstone',
+    type: 'story',
+    name: 'The Blackstone Close',
+    accent: '#E8503A',
+    label: 'Win',
+    company: 'Blackstone',
+    context: 'Account Executive · MonkeyLearn · HR Technology Division',
+    teaser: 'Up against Deloitte. A third of the price. Better tech. Nearly killed by legal.',
+    tabs: [
+      { key: 'story', label: 'Story', type: 'prose', content: [
+        'Blackstone\'s HR technology division didn\'t have a budget problem. They had a standards problem. When you\'re one of the largest private equity firms in the world, every vendor gets scrutinized — not just on what they can do, but on whether they belong in the room at all.',
+        'I was at MonkeyLearn. We were not a household name. They put us in a head-to-head evaluation against Deloitte and a handful of boutique AI consultancies — firms with established enterprise relationships, compliance infrastructure, and the kind of brand that makes a procurement team feel safe.',
+        'We had better technology and came in at a third of the price. The SVP of Technology knew it. The eval made it clear. We won on merit.',
+        'Then legal started.',
+        'Blackstone\'s standard position: a minimum $10 million limitation of liability clause. On a $100K deal. Their logic wasn\'t unreasonable — brand damage at that scale doesn\'t care what you paid for the software — but the gap between what we were charging and what they were asking us to backstop was legitimately existential for a company our size.',
+        'We couldn\'t match it. So we got creative. We went out and purchased additional insurance coverage specifically structured to cover their brand damage exposure. Not a typical move for a startup closing a $100K deal. We did it anyway, documented it, brought it back to legal, and closed.'
+      ]},
+      { key: 'lesson', label: 'Lesson', type: 'principles', content: [
+        'Enterprise buying processes are not designed for startups. The legal requirements, the liability floors, the procurement timelines — they\'re built around vendors who have been doing this for decades and have the balance sheets to match. When you\'re small and your tech is better, you don\'t get a pass on any of it.',
+        'Know exactly where the deal can die before you\'ve invested three months in it. Legal killed deals I\'ve seen go further than this one. It almost killed this one.',
+        'Refusing to treat the obstacle as a wall is what saved it. Their ask wasn\'t unreasonable — it was just mismatched to our size. Find a way to meet the spirit of it without pretending you\'re something you\'re not.',
+        'Deloitte lost on technology. We almost lost on paperwork. Know your exposure early, find the creative path, and don\'t let process beat product.'
+      ]}
+    ]
+  },
+  {
+    id: 'fastly',
+    type: 'story',
+    name: 'The Fastly Loss',
+    accent: '#2A9FD6',
+    label: 'Hard Lesson',
+    company: 'Fastly',
+    context: 'Account Executive · Metaplane · Competing against Monte Carlo, the category incumbent',
+    teaser: 'I had the intel, the champion, and the right read. I was validated. We still lost.',
+    tabs: [
+      { key: 'story', label: 'Story', type: 'prose', content: [
+        'Fastly was never going to be an easy deal. Monte Carlo was the incumbent — category leader, enterprise-grade controls, a CEO with a direct relationship inside the account. We were the startup with better UX and a fraction of the brand recognition. The bakeoff was real, but the deck was stacked.',
+        'My champion was exceptional. He gave me access I had no right to expect — their internal scorecard comparing us head-to-head with Monte Carlo, his read on the executive relationships, and eventually, the Monte Carlo invoice. He wasn\'t supposed to share that. He did because he believed in what we were building and wanted us to win.',
+        'The scorecard was neck and neck. It was coming down to price.',
+        'I brought the invoice back to my cofounder. His read: they were lying, the number was fabricated to anchor us lower, and we should double our price. He hadn\'t been in any of the conversations. He had no context on the champion, the relationship, the scorecard, or what I\'d observed across the entire cycle. But it was his call to make.',
+        'I told him he was wrong. Directly and not diplomatically. I burned political capital I didn\'t have to spend, in a season where I was already on thin ice personally. He held his position. I played the game the way he wanted. We priced it the way he wanted.',
+        'We lost the deal. Exactly the way I thought we would.',
+        'Being right didn\'t feel like anything. I\'d already spent whatever leverage I had trying to stop it, and it cost me more than the deal.'
+      ]},
+      { key: 'lesson', label: 'Lesson', type: 'prose', content: [
+        'There are three things I carry from this one.',
+        'First: trust your champion when they\'re giving you real intel and taking real risk to do it. My champion handed me everything I needed to win. The scorecard, the competitive invoice, the internal dynamics. That\'s not something you manufacture — that\'s someone who believes in you. Honor it by using it correctly.',
+        'Second: know when to fight your exec and, more importantly, how. I was right about the pricing call. I was wrong about how I handled being right. Calling someone a moron doesn\'t change their mind — it just makes you easier to dismiss when things go sideways. If you\'re going to push back on a decision made without context, bring the context. Make it hard to ignore. I made it personal instead.',
+        'Third: leadership making calls without context is one of the most expensive things that can happen in a deal. Not because they\'re bad people — but because the field and the conference room are different places, and a deal lives or dies on what you know from inside the room. When an exec overrides a rep\'s read without engaging the evidence, they\'re not managing the deal — they\'re managing their own comfort level.',
+        'I got fired not long after. I don\'t think this was the only reason. But I know it was one of them. I was right about Fastly. I was wrong about how I fought for it. Both things are true.'
+      ]}
+    ]
+  },
+  {
+    id: 'fannie-mae',
+    type: 'story',
+    name: 'The Fannie Mae POC',
+    accent: '#1DB374',
+    label: 'Hard Lesson',
+    company: 'Fannie Mae',
+    context: 'Enterprise AE · Unstructured · 50M pages/month, via Hexaware partner',
+    teaser: '50 million pages a month. Zero-shot demo. 90% accuracy. Partner misalignment.',
+    tabs: [
+      { key: 'story', label: 'Story', type: 'prose', content: [
+        'The use case was real and it was massive. Fannie Mae processes roughly 100,000 mortgage applications a month — each one up to 500 pages of financial documents, disclosures, and supporting material. That\'s 50 million pages a month that need to be parsed, extracted, and evaluated to approve or deny a loan. They wanted to automate it.',
+        'We came in through Hexaware, a global consulting partner with a $90 million contract already in place at Fannie Mae. They were our path into the room. On paper, it was a strong setup.',
+        'We zero-shotted the technical demo. No rehearsal with their data, no safety net — straight live parsing in front of a room full of Fannie Mae executives. They were blown away. I used our CEO deliberately and well: his background running country-level operations for the White House and his intelligence community experience landed exactly the way it needed to in a room full of government-adjacent enterprise buyers. We made Hexaware look plugged in and informed. Everyone left the room feeling good.',
+        'The in-VPC POC followed. We hit 90% accuracy on a document extraction problem that their existing tooling couldn\'t come close to solving. By any reasonable measure, we had earned the next step.',
+        'Then Hexaware went quiet.',
+        'The more I pulled on it, the clearer it became. Hexaware wasn\'t evaluating us as a technology to deploy — they were using us to signal to Fannie Mae that they had their finger on the pulse of frontier AI. They already had their contract. They didn\'t need us to win; they needed to be seen standing next to us. Once they\'d gotten what they came for, the motivation to push us through Fannie Mae\'s procurement process simply wasn\'t there.',
+        'A month after they backed out of the POC, Hexaware published a blog post announcing their own internal document processing product. We\'d given them a single-node deployment — not our full Kubernetes stack — so whatever they took, they didn\'t take everything. But the timing was hard to ignore.'
+      ]},
+      { key: 'lesson', label: 'Lesson', type: 'prose', content: [
+        'Three things.',
+        'First: know your partner\'s actual motivation before you build on their foundation. Hexaware was never trying to close a deal with us — they were managing their own relationship with Fannie Mae. Those are completely different goals, and ours were only useful to them up to a point. A partner with a $90 million anchor contract doesn\'t need your $300K deal to close. They need to look innovative. The moment the demo was done, so were they. Qualify your partners the same way you qualify your customers.',
+        'Second: use your CEO like a weapon, not a crutch. I was deliberate about when and how I brought him in. CIA and White House background in a room of government-adjacent enterprise buyers isn\'t a credential you lead with on every call — it\'s something you deploy at the moment it matters most. It worked. That\'s the lesson: know what your executive brings that you can\'t, and put them in the room at exactly the right time.',
+        'Third: zero-shot demos are one of the highest-leverage things you can do in enterprise sales — and one of the highest-risk. When they work, they create a moment of genuine belief that no slide deck can manufacture. Walking into a room full of Fannie Mae executives and parsing their documents live, unrehearsed, with no fallback — that\'s the kind of confidence that changes how a buyer sees you. We earned that room. We just couldn\'t finish the job through a partner who had already gotten what they needed.',
+        'The work was good. The execution was good. The partner was wrong. Sometimes that\'s all it is.'
+      ]}
+    ]
+  }
+];
+
+// ── Background ──────────────────────────────────────────────────────────────
+
+const BACKGROUND = [
+  {
+    id: 'stack-overflow',
+    type: 'background',
+    name: 'Stack Overflow',
+    role: 'Account Executive & Team Lead',
+    years: '2014–2017',
+    location: 'Denver',
+    acv: null,
+    accent: '#E8503A',
+    bullets: ['66% annual churn means you\'re rebuilding the entire book every 18 months. I learned what that does to a team — and what it forces you to get good at.', 'When the product can\'t carry the deal, stories do. Got good at selling outcomes that hadn\'t happened yet.', 'Culture kept me there longer than made sense. Great people can make you endure a broken business model. That\'s a feature and a trap.'],
+    preview: '66% annual churn means rebuilding the entire business every 18 months.',
+    lessons: [
+      'A 66% annual churn rate means you\'re rebuilding the entire business every 18 months. I learned what that actually costs — in energy, in morale, in what\'s left to sell with.',
+      'When the product can\'t carry the weight, stories do. I got good at selling outcomes that hadn\'t happened yet, which turned out to be one of the most transferable skills I\'d ever build.',
+      'Great culture can make people endure things they shouldn\'t have to. I stayed longer than made sense on paper because the people made it worth it.'
+    ],
+    closing: 'The ceiling on a high-churn business is real. But learning to sell without a tailwind taught me things that compound in every role after.',
+    tabs: [{ key: 'career', label: 'Story', type: 'career' }]
+  },
+  {
+    id: 'twitter',
+    type: 'background',
+    name: 'Twitter',
+    role: 'Data Sales',
+    years: '2018–2019',
+    location: 'Boulder',
+    acv: null,
+    accent: '#1DA1F2',
+    bullets: ['Learned the difference between selling something and collecting rent. When you\'re the only option, you stop earning the deal — and it shows.', 'Watched a monopoly contract in real time. Pricing power without product investment is a countdown.', 'First exposure to enterprise data sales. Learned how to navigate procurement, legal, and stakeholders before I knew what any of that meant.'],
+    preview: 'Selling from a monopoly position feels like flying — until the product stops earning the deal.',
+    lessons: [
+      'Selling from a monopoly position feels like flying — until you realize the product has stopped earning the deal and you\'re just applying pressure. That\'s the moment sales becomes extortion.',
+      'I watched a contracting market close doors that had always been open. Timing and macro matter more than talent in those moments.',
+      'Being inside a big acquisition can feel like a silo, but if you find the right pocket of people, it\'s also kind of a sandbox.',
+      'Selling raw data — API access, JSON feeds — is a storytelling problem. The product is invisible until you can demo the end-to-end workflow and the vision behind it.'
+    ],
+    closing: 'I learned the difference between selling something people need and collecting rent. I\'d rather sell hard for something earned.',
+    tabs: [{ key: 'career', label: 'Story', type: 'career' }]
+  },
+  {
+    id: 'circleci',
+    type: 'background',
+    name: 'CircleCI',
+    role: 'Success → Account Executive',
+    years: '2019–2020',
+    location: 'Denver',
+    acv: null,
+    accent: '#04AA51',
+    bullets: ['Saw what a real PLG motion looks like at its best: self-serve signups, usage-based triggers, tight ICP, and the right plays. A lean team operating like a machine.', 'Then watched what happens when a company chases an IPO and stops listening to customers. We churned our best accounts. Built a Ferrari without brakes.', 'The gap between those two versions of CircleCI is the most important GTM lesson I\'ve ever witnessed firsthand.'],
+    preview: 'A lean team with strong self-serve, usage triggers, and the right plays can operate like a machine.',
+    lessons: [
+      'A lean sales team with strong self-serve signups, usage-based triggers, a tight ICP, and the right plays can operate like a machine. I saw what that motion looks like at its best.',
+      'I also saw what happens when a team loses sight of customers in the chase for an IPO. We built a Ferrari without brakes. Churned our best customers. That\'s a hard thing to watch.',
+      'Usage-based pricing is honest — it rewards teams who actually deliver value and punishes those who don\'t.'
+    ],
+    closing: 'The best version of CircleCI taught me what a well-designed GTM motion looks like. The worst version taught me that customer trust is the first thing to go when ambition outpaces judgment.',
+    tabs: [{ key: 'career', label: 'Story', type: 'career' }]
+  },
+  {
+    id: 'monkeylearn',
+    type: 'background',
+    name: 'MonkeyLearn',
+    role: 'Account Executive',
+    years: '2020–2022',
+    location: 'Denver',
+    acv: '$30K–$100K ACV',
+    accent: '#FF9B54',
+    bullets: ['Had a CEO who\'d read one sales book and thought he was Jordan Belfort. Dominated every customer call, made it about himself, killed deals in real time. Learned to work around it without becoming it.', 'Hit quota anyway. That taught me something I use every day: you can\'t control the environment, only how you perform inside it.', 'Met a mentor here — a real operator who understood enterprise, knew how to build, and didn\'t need to be the loudest person in the room. Changed how I think about what good actually looks like.'],
+    preview: 'No air cover, a CEO who thought he was Jordan Belfort. I closed anyway.',
+    lessons: [
+      'I learned how to survive inside a real startup with no air cover — where the CEO has read one sales book, thinks he\'s Jordan Belfort, and dominates every customer call talking about himself until the deal dies.',
+      'I learned to work around bad leadership without becoming it. You close anyway. You find a way.',
+      'Met a mentor here who shaped how I think about the craft — a genuine operator in a sea of imitators.'
+    ],
+    closing: 'Hitting quota despite the dysfunction taught me something I use every day: you can\'t control the environment, only how you perform inside it.',
+    tabs: [{ key: 'career', label: 'Story', type: 'career' }]
+  },
+  {
+    id: 'calixa',
+    type: 'background',
+    name: 'Calixa',
+    role: 'Account Executive',
+    years: '2022–2023',
+    location: 'Remote',
+    acv: '$5K–$30K ACV',
+    accent: '#7B72E9',
+    bullets: ['Pre-revenue, product still finding itself, and a CEO who\'d get frustrated when I asked discovery questions because it broke his pitch rhythm. The hardest selling environment I\'ve been in.', 'Went from $0 to $100K in 3 months anyway — pure outbound. Jasper, Miro, ClickUp. 71% POC-to-close conversion.', 'Eventually earned real trust with Tommy. We went from clashing to building something genuine together. Company shut down July 2023. Still one of my proudest runs.', 'If a founder can\'t sell their own product, pay attention to that before you sign.'],
+    preview: '$0 to $100K in 3 months on pure outbound. 71% POC-to-close. Company shut down. Still proud.',
+    lessons: [
+      'Pre-revenue, product still finding itself, a CEO who\'d get angry when I asked discovery questions because it broke his pitch flow. The hardest selling environment I\'ve ever been in.',
+      'I overcame it. Went from $0 to $100K in 3 months on pure outbound. Jasper, Miro, ClickUp. Closed some of my favorite deals in my career — 71% POC-to-close conversion rate.',
+      'Eventually earned real trust with Tommy. We went from clashing early to building something genuine together. The company shut down in July 2023. Still proud of what we built.',
+      'Founder selling is everything in early-stage. If the CEO can\'t sell their own product, watch closely before you sign.'
+    ],
+    closing: 'This job had no right to work. It worked anyway. That means something.',
+    tabs: [{ key: 'career', label: 'Story', type: 'career' }]
+  },
+  {
+    id: 'metaplane',
+    type: 'background',
+    name: 'Metaplane',
+    role: 'GTM',
+    years: '2023–2024',
+    location: 'Denver',
+    acv: '$10K–$50K ACV',
+    accent: '#2A9FD6',
+    bullets: ['Great product. Brilliant team. 113% in Q1 on ramp, 173% in Q2. I was selling well.', 'I was also going through something hard personally and wasn\'t the best version of myself in the ways that mattered off the floor.', 'Got let go. Don\'t have full clarity on every reason. Made peace with my part in it.', 'The lesson I took: don\'t let adversity become background noise. Don\'t let people outwork you when it counts. I learned both the hard way.'],
+    preview: 'Amazing product. 173% to goal in Q2. I wasn\'t fully present in the ways that mattered.',
+    lessons: [
+      'Amazing product. Brilliant engineering team. I wanted to be great here.',
+      'I went through something genuinely hard in my personal life and wasn\'t the best version of myself. I kept selling — 173% to goal in Q2, 113% in Q1 during ramp — but I wasn\'t fully present in the ways that mattered off the floor.',
+      'I got let go. I don\'t have complete clarity on all the reasons, and I\'ve made peace with that. What I know is that I let adversity become background noise when it should have been a wake-up call.'
+    ],
+    closing: 'Don\'t let people outwork you when it matters most. Don\'t let the hardest moments in your personal life define your professional ones. I learned both the hard way.',
+    tabs: [{ key: 'career', label: 'Story', type: 'career' }]
+  },
+  {
+    id: 'unstructured',
+    type: 'background',
+    name: 'Unstructured',
+    role: 'Enterprise GTM',
+    years: '2024–Present',
+    location: 'Remote',
+    acv: '$100K POCs → multi-million dollar deals',
+    accent: '#C77DFF',
+    bullets: ['First time with real executive trust to build and sell my own way. First true enterprise motion — in-VPC deployments, dedicated instances, private links, Fortune 500 security requirements.', 'Was handed the most important deal the company had to drive revenue. Learned partnership GTM, field enablement, and what it actually takes to get a partner\'s team selling your product.', 'More battle scars here than anywhere else. Also more people I\'d go to war for.', 'Everything I\'ve built since Stack Overflow is being used at once. Building things that actually work, with people who care.'],
+    preview: 'First real executive trust. First true enterprise motion. These are people I\'d go to war for.',
+    lessons: [
+      'First time I\'ve had real executive trust to build and sell my own way. That changes everything about how you show up.',
+      'First true enterprise motion — in-VPC deployments, dedicated instances, private links, co-architecting AI solutions with Fortune 500 engineering teams. This is where I learned what enterprise actually means.',
+      'Was thrown into the most important deal the company had. Learned partnership GTM, field enablement, and what it takes to enable a partner\'s team to sell your product — the good, the hard, and the humbling.',
+      'Selling raw JSON as a product is hard. You need to demo the full end-to-end vision — not just the output, but where it lives in the customer\'s stack and why it matters. The product is invisible until the story lands.',
+      'Super challenging product issues, lots of in-person, lots of battle scars. These are people I\'d go to war for.'
+    ],
+    closing: 'This is where everything I\'ve learned is being used at once. Building things that actually work, with people who care.',
+    tabs: [{ key: 'career', label: 'Story', type: 'career' }]
+  }
+];
+
+// ── Playbooks (GTM Departments) ─────────────────────────────────────────────
+
+const GTM = [
+  {
+    id: 'sales',
+    type: 'department',
+    name: 'Sales',
+    accent: '#E8503A',
+    purpose: 'Convert pipeline into revenue. Every deal is a signal — on process, pricing, ICP, and competitive position.',
+    stageImportance: { early: 'critical', growth: 'very-high', scale: 'high' },
+    stageNotes: {
+      early: 'Founders close everything, pattern-matching on ICP and deal mechanics before any rep is hired.',
+      growth: 'Building repeatable motion, hiring and ramping reps, creating playbooks from what founders proved out.',
+      scale: 'Systematized and forecast-driven. Comp plans, territories, and pipeline coverage ratios matter.'
+    },
+    metrics: [
+      {
+        name: 'SQL → Closed Won Rate',
+        shortLabel: 'SQL→Won',
+        shortValue: '20–30%',
+        description: 'Tells you if your pipeline quality and sales execution are aligned. A dropping rate usually means either bad pipeline or execution gaps.',
+        benchmark: 'Healthy: 20–30% for most B2B'
+      },
+      {
+        name: 'Avg Sales Cycle Length',
+        shortLabel: 'Sales Cycle',
+        shortValue: 'Watch Trend',
+        description: 'Proxy for deal complexity and process efficiency. Watch for lengthening cycles — they signal friction, poor qualification, or stakeholder expansion you didn\'t plan for.',
+        benchmark: 'Watch the trend, not just the number. Lengthening = warning sign.'
+      }
+    ],
+    meetingTags: ['Weekly Pipeline', 'Deal Strategy', 'Monthly Forecast', 'QBR'],
+    meetings: [
+      {
+        name: 'Weekly Pipeline Review',
+        cadence: 'Weekly',
+        attendees: 'AEs + Sales Manager',
+        decisions: 'Every open opp reviewed. Next action confirmed. Close date confidence pressure-tested. Move, stuck, or dead.'
+      },
+      {
+        name: 'Deal Strategy Session',
+        cadence: 'Per strategic opp',
+        attendees: 'Sales + SE + sometimes Exec',
+        decisions: 'Pressure-test deal assumptions, align on resource deployment, agree on multi-threaded plan.'
+      },
+      {
+        name: 'Monthly Forecast Call',
+        cadence: 'Monthly',
+        attendees: 'Sales + CEO + Finance',
+        decisions: 'Commit vs best case vs pipeline. Where are we vs plan? What needs to move?'
+      },
+      {
+        name: 'QBR',
+        cadence: 'Quarterly',
+        attendees: 'Full GTM team',
+        decisions: 'What worked, what didn\'t, what changes. Territory, quota, and motion adjustments for next quarter.'
+      }
+    ],
+    risks: [
+      {
+        title: 'Hiring Reps Before a Repeatable Motion',
+        body: 'You\'ll churn them and waste runway. A founder or VP needs to personally close 5–10 deals with a clear, documented pattern before you hire reps to replicate it.'
+      },
+      {
+        title: 'Discounting Without Guardrails',
+        body: 'Erodes ASP, trains buyers to wait for end-of-quarter deals, and destroys gross margin over time. Build a discount approval matrix early — even a simple one.'
+      },
+      {
+        title: 'Ignoring Sales Cycle as a Leading Indicator',
+        body: 'By the time close rates visibly drop, it\'s too late to course-correct the quarter. Watch cycle length weekly — it moves first.'
+      }
+    ],
+    salesStrategy: true
+  },
+  {
+    id: 'demandgen',
+    type: 'department',
+    name: 'Demand Generation',
+    accent: '#1DB374',
+    purpose: 'Fill the pipeline with qualified opportunities across channels.',
+    stageImportance: { early: 'critical', growth: 'very-high', scale: 'high' },
+    stageNotes: {
+      early: 'Figuring out which channels produce real pipeline — not just leads. Everything is an experiment.',
+      growth: 'Doubling down on what works, cutting what doesn\'t, building repeatable channel playbooks.',
+      scale: 'Channel diversification, efficiency metrics, and CAC payback discipline. Marketing becomes a revenue center.'
+    },
+    metrics: [
+      {
+        name: 'Pipeline Created by Channel',
+        shortLabel: 'Pipeline / Channel',
+        shortValue: 'Track All',
+        description: 'Not leads. Not MQLs. Actual pipeline created. This is the only demand gen metric that maps directly to revenue.',
+        benchmark: 'No universal target — optimize for channel efficiency relative to CAC payback.'
+      },
+      {
+        name: 'Cost per SQL',
+        shortLabel: 'Cost per SQL',
+        shortValue: 'CAC < 18mo',
+        description: 'Full-loaded cost to create one sales-qualified lead. If implied CAC payback exceeds 18 months, something is broken.',
+        benchmark: 'If CAC payback > 18 months, investigate before scaling spend.'
+      }
+    ],
+    metricsComparison: {
+      inbound: ['MQL volume', 'MQL→SQL rate', 'CAC by channel', 'Organic traffic growth', 'Content-attributed pipeline'],
+      outbound: ['Reply rate (healthy: 3–5%)', 'Meeting booked rate', 'Sequence-to-opp rate', 'CAC', 'Cost per meeting']
+    },
+    meetingTags: ['Weekly Review', 'Monthly Readout', 'Quarterly Budget'],
+    meetings: [
+      {
+        name: 'Weekly Pipeline & Channel Review',
+        cadence: 'Weekly',
+        attendees: 'Demand Gen + Sales',
+        decisions: 'Is pipe being created? Is it converting? Which channels are moving this week vs stalling?'
+      },
+      {
+        name: 'Monthly Channel Experiment Readout',
+        cadence: 'Monthly',
+        attendees: 'Demand Gen + Growth + Exec',
+        decisions: 'What did we test? What did we learn? What gets scaled or killed next month?'
+      },
+      {
+        name: 'Quarterly Budget Allocation',
+        cadence: 'Quarterly',
+        attendees: 'Demand Gen + Finance + VP Marketing',
+        decisions: 'Where does next quarter\'s spend go based on channel efficiency data from the past 90 days?'
+      }
+    ],
+    risks: [
+      {
+        title: 'Optimizing for MQLs Instead of Pipeline',
+        body: 'MQLs are a vanity metric. Sales doesn\'t care about leads — they care about qualified pipeline. Align on SQLs as the shared north star or misalignment compounds fast.'
+      },
+      {
+        title: 'Over-Investing in a Single Channel',
+        body: 'Channels plateau, get saturated, or break. Build at least 3 working channels before you\'re comfortable with channel concentration.'
+      },
+      {
+        title: 'Misalignment with ICP',
+        body: 'If ICP isn\'t locked, demand gen is spending against the wrong audience. Garbage in, garbage out.'
+      }
+    ]
+  },
+  {
+    id: 'outbound',
+    type: 'department',
+    name: 'Outbound Sequences',
+    accent: '#F72585',
+    purpose: 'Create demand through targeted, personalized outreach. Build sequences that earn replies, not just send emails.',
+    stageImportance: { early: 'high', growth: 'very-high', scale: 'high' },
+    stageNotes: {
+      early: 'Outbound is often the fastest path to early revenue. Founders should run sequences personally before delegating.',
+      growth: 'Systematize what worked in early stage. Build templates, hire SDRs, measure sequence performance ruthlessly.',
+      scale: 'Specialization matters. Different sequences for different ICPs, verticals, and personas.'
+    },
+    tabs: [
+      { key: 'principles', label: 'Principles', type: 'principles', content: [
+        'Every sequence needs a hook: why this person, why this company, why now. If you can\'t answer all three, don\'t send it.',
+        'Personalization at scale means researching the trigger, not rewriting the whole email. One specific sentence about their world beats five generic sentences about yours.',
+        'The goal of the first email is not to sell the product. It is to earn a reply. Optimize for curiosity, not comprehension.',
+        'Sequences should have a perspective. The best outbound takes a position on something the prospect cares about.',
+        'Follow up. Most replies come after the 3rd–5th touch. One email is not a sequence.'
+      ]},
+      { key: 'sequence', label: 'Sequence Structure', type: 'steps', content: [
+        { day: 'Day 1', action: 'Email', note: 'Hook + one-line value prop + soft CTA' },
+        { day: 'Day 3', action: 'LinkedIn', note: 'Connection request — no pitch' },
+        { day: 'Day 5', action: 'Email', note: 'Different angle, lead with insight or case study' },
+        { day: 'Day 7', action: 'Call', note: 'Call + voicemail — reference the emails' },
+        { day: 'Day 10', action: 'Email', note: 'Direct ask or breakup' },
+        { day: 'Day 14', action: 'LinkedIn', note: 'Short, casual — different tone from email' },
+        { day: 'Day 21', action: 'Email', note: 'The "breakup" — this consistently generates replies' }
+      ]},
+      { key: 'callscripts', label: 'Call Scripts', type: 'principles', content: [
+        '<strong style="color:var(--text)">Opening (5 seconds):</strong> "Hey [name] — [your name] from [company]. Did I catch you at a bad time?" Wait. Don\'t apologize for calling.',
+        '<strong style="color:var(--text)">The hook (10 seconds):</strong> "The reason I\'m calling — we work with [role] at companies like [peer] to [specific outcome]. Wanted to see if that\'s a problem you\'re dealing with."',
+        '<strong style="color:var(--text)">The question:</strong> "Is [pain point] something your team is actively working on right now?" Then stop talking.',
+        '<strong style="color:var(--text)">If yes:</strong> Book the meeting. Don\'t pitch on the cold call.',
+        '<strong style="color:var(--text)">If no:</strong> "Who on your team would that be most relevant for?" or "What would need to change for it to be a priority?"'
+      ]},
+      { key: 'metrics', label: 'Metrics' },
+      { key: 'risks', label: 'Risks' }
+    ],
+    metrics: [
+      {
+        name: 'Reply Rate',
+        shortLabel: 'Reply Rate',
+        shortValue: '3–5% healthy',
+        description: 'The primary health metric for outbound sequences. Below 2% means the message or the list is wrong. Diagnose before scaling.',
+        benchmark: 'Healthy: 3–5%. Below 2% = diagnose immediately.'
+      },
+      {
+        name: 'Meeting Booked Rate',
+        shortLabel: 'Meetings Booked',
+        shortValue: 'Track',
+        description: 'Replies are vanity if they don\'t convert to meetings. Track reply-to-meeting rate to understand if your CTA is working.',
+        benchmark: 'Target 30–40% of positive replies converting to booked meetings.'
+      }
+    ],
+    meetingTags: ['Sequence Review', 'Template Audit', 'Rep Training'],
+    meetings: [
+      {
+        name: 'Weekly Sequence Performance Review',
+        cadence: 'Weekly',
+        attendees: 'SDR/BDR team + Manager',
+        decisions: 'Reply rates by sequence and step. Which sequences are underperforming? What gets paused, tested, or killed?'
+      },
+      {
+        name: 'Monthly Template Audit',
+        cadence: 'Monthly',
+        attendees: 'Demand Gen + Sales',
+        decisions: 'Review top and bottom performing email templates. Update messaging based on sales feedback and market signal.'
+      }
+    ],
+    risks: [
+      {
+        title: 'Generic Sequences at Scale',
+        body: 'Spray-and-pray outbound at volume kills your domain reputation. One highly personalized sequence to 50 perfect-fit prospects outperforms a generic one to 500 marginal ones.'
+      },
+      {
+        title: 'Optimizing for Sends, Not Replies',
+        body: 'SDR activity metrics are not outcomes. Reply rate and meeting booked rate are the only metrics that matter. High activity with low reply rate means the message is broken.'
+      },
+      {
+        title: 'No Feedback Loop to Demand Gen',
+        body: 'What prospects say in replies and on calls is the most valuable market research you have. If that signal isn\'t making it back to message refinement, you\'re leaving a compounding advantage on the table.'
+      }
+    ]
+  },
+  {
+    id: 'cs',
+    type: 'department',
+    name: 'Customer Success',
+    accent: '#2A9FD6',
+    purpose: 'Turn revenue into retention and expansion. NRR is the growth engine.',
+    stageImportance: { early: 'medium', growth: 'very-high', scale: 'critical' },
+    stageNotes: {
+      early: 'Founders own CS. Stay close to every customer — churn is existential at small scale.',
+      growth: 'Churn kills growth-stage companies. One bad cohort can wipe a quarter of ARR.',
+      scale: 'Net revenue retention above 120% means you grow even without new logo sales. CS IS the growth engine.'
+    },
+    tabs: [
+      { key: 'overview', label: 'Overview' },
+      { key: 'principles', label: 'Principles', type: 'principles', content: [
+        'If you have a technical product, you need technical success. A CSM who can\'t speak the language of the builders will never earn trust and will never catch churn before it happens.',
+        'Monthly QBRs that nobody wants to attend don\'t drive NRR. You need to stay close through deployments, through getting-to-value, and through staying-at-value. The relationship has to mean something between renewal conversations.',
+        'The best CS motion at early stage is almost indistinguishable from professional services. You\'re in the product with them, not reporting on it from the outside.',
+        'NRR is a lagging indicator. The leading indicators are: time to first value, product adoption depth, stakeholder breadth, and whether your champion would take your call on a Saturday.',
+        'Expansion doesn\'t come from asking for it. It comes from earning it by making the first use case undeniably successful, then making it obvious what the next one should be.'
+      ]},
+      { key: 'metrics', label: 'Metrics' },
+      { key: 'meetings', label: 'Meetings' },
+      { key: 'risks', label: 'Risks' }
+    ],
+    metrics: [
+      {
+        name: 'Net Revenue Retention (NRR)',
+        shortLabel: 'NRR',
+        shortValue: '>120% world-class',
+        description: 'The single most important CS metric. Above 100% means expansion outpaces churn.',
+        benchmark: '>100% = healthy, >110% = strong, >120% = world-class'
+      },
+      {
+        name: 'Time to First Value',
+        shortLabel: 'Time to Value',
+        shortValue: 'Minimize',
+        description: 'How fast does a new customer hit their first meaningful outcome? Predicts long-term retention better than almost any other early signal.',
+        benchmark: 'Define your "first value moment" specifically, then track median days to reach it.'
+      }
+    ],
+    meetingTags: ['Weekly At-Risk', 'Monthly Expansion', 'QBR w/ Accounts'],
+    meetings: [
+      {
+        name: 'Weekly At-Risk Account Review',
+        cadence: 'Weekly',
+        attendees: 'CS team',
+        decisions: 'Which accounts are showing churn signals? What\'s the save plan? Who owns the next touch and by when?'
+      },
+      {
+        name: 'Monthly Expansion Pipeline Review',
+        cadence: 'Monthly',
+        attendees: 'CS + AEs',
+        decisions: 'Which accounts are ready for upsell or cross-sell? What\'s the expansion strategy and timeline?'
+      },
+      {
+        name: 'Quarterly Business Review (QBR)',
+        cadence: 'Quarterly',
+        attendees: 'CS + Customer Exec Sponsor',
+        decisions: 'Value delivered vs. expected. Roadmap alignment. Renewal confidence. Expansion opportunities identified.'
+      }
+    ],
+    risks: [
+      {
+        title: 'Treating CS as Support',
+        body: 'If CS is just handling tickets, you\'re leaving expansion revenue on the table. CS should own a revenue number — expansion ARR at minimum.'
+      },
+      {
+        title: 'Waiting Too Long to Build CS',
+        body: 'Founders often delay hiring CS until churn is already a problem. By then, you\'re playing defense. Hire your first CS lead around $2–3M ARR.'
+      },
+      {
+        title: 'No Early-Warning System',
+        body: 'If you can\'t identify at-risk accounts 90 days before renewal, you can\'t save them. Build health scores early — product usage, support tickets, champion engagement.'
+      }
+    ]
+  },
+  {
+    id: 'revops',
+    type: 'department',
+    name: 'Revenue Operations',
+    accent: '#7B72E9',
+    purpose: 'The GTM system backbone — data, tooling, process, forecasting, and market intelligence.',
+    stageImportance: { early: 'low', growth: 'high', scale: 'critical' },
+    stageNotes: {
+      early: 'Keep it simple. Founder does this with a spreadsheet and a basic CRM. Don\'t over-build.',
+      growth: 'Without this function, chaos sets in. You can\'t forecast, can\'t diagnose, can\'t scale headcount safely.',
+      scale: 'Forecasting, territory design, comp plans, ICP definition, and competitive intel all live here.'
+    },
+    metrics: [
+      {
+        name: 'Forecast Accuracy',
+        shortLabel: 'Forecast Accuracy',
+        shortValue: '±10%',
+        description: 'How close is your commit to actual close? Consistently off = process problem.',
+        benchmark: 'Healthy: commit within 10% of actual closed. Worse than ±20% = something is broken.'
+      },
+      {
+        name: 'CRM Data Completeness',
+        shortLabel: 'CRM Completeness',
+        shortValue: '90%+',
+        description: 'If reps aren\'t logging required fields, your data is fiction and your forecasts are guesses.',
+        benchmark: 'Target 90%+ on required opp fields. Below 75% = data is not usable for planning.'
+      }
+    ],
+    meetingTags: ['Weekly Standup', 'Monthly Systems', 'Quarterly Planning'],
+    meetings: [
+      {
+        name: 'Weekly RevOps Standup',
+        cadence: 'Weekly',
+        attendees: 'RevOps team',
+        decisions: 'Data issues, tooling fires, pipeline data quality flags, anything blocking clean forecasting.'
+      },
+      {
+        name: 'Monthly GTM Systems Review',
+        cadence: 'Monthly',
+        attendees: 'RevOps + GTM leads',
+        decisions: 'Is the system giving us the right signals? What data quality issues are distorting decisions?'
+      },
+      {
+        name: 'Quarterly Territory & Quota Planning',
+        cadence: 'Quarterly',
+        attendees: 'RevOps + VP Sales + Finance',
+        decisions: 'Territory design, quota setting, comp plan review.'
+      }
+    ],
+    risks: [
+      {
+        title: 'Building a Frankenstein Tech Stack',
+        body: 'Every tool adds integration debt and data fragmentation. Start with CRM + enrichment + sequencing and only add when there\'s a clear, measurable ROI.'
+      },
+      {
+        title: 'Letting CRM Hygiene Slide',
+        body: 'Once reps stop trusting the data, they stop entering it. It\'s a death spiral. Make data quality visible in every pipeline review.'
+      },
+      {
+        title: 'RevOps as a Ticketing System',
+        body: 'RevOps should be a strategic planning function, not admins processing Salesforce requests. Give them a seat at the planning table.'
+      }
+    ]
+  },
+  {
+    id: 'partnerships',
+    type: 'department',
+    name: 'Partnerships',
+    accent: '#E8A020',
+    purpose: 'Access new markets, pipeline, and distribution through third parties.',
+    stageImportance: { early: 'low', growth: 'medium', scale: 'high' },
+    stageNotes: {
+      early: 'Usually a distraction unless a partner IS the primary channel from day one. Don\'t build a partner motion before you have a direct motion.',
+      growth: 'Channel and integration partnerships start to meaningfully contribute.',
+      scale: 'Resellers, SIs, and co-sell programs can drive 20–40% of revenue.'
+    },
+    metrics: [
+      {
+        name: 'Partner-Sourced Pipeline %',
+        shortLabel: 'Partner Pipeline',
+        shortValue: '20–30% target',
+        description: 'What % of total pipeline came from or through a partner?',
+        benchmark: 'Directional target at scale: 20–30% of pipeline partner-sourced or partner-influenced.'
+      },
+      {
+        name: 'Partner-Influenced Revenue',
+        shortLabel: 'Partner Influence',
+        shortValue: 'Track',
+        description: 'Deals where a partner was involved even if not the source. Shows ecosystem health.',
+        benchmark: 'Should grow as partner motion matures.'
+      }
+    ],
+    meetingTags: ['Monthly Pipeline', 'Quarterly PBR'],
+    meetings: [
+      {
+        name: 'Monthly Partner Pipeline Review',
+        cadence: 'Monthly',
+        attendees: 'Partnerships team + Sales',
+        decisions: 'Which partner opps are moving, which need co-sell support, where are partners stuck?'
+      },
+      {
+        name: 'Quarterly Partner Business Review (PBR)',
+        cadence: 'Quarterly',
+        attendees: 'You + Top Partners',
+        decisions: 'Pipeline performance review. Enablement gaps. Joint GTM plans for next quarter.'
+      }
+    ],
+    risks: [
+      {
+        title: 'Misalignment on Deal Economics',
+        body: 'If a partner\'s cut makes the deal unprofitable, walk away. Bad partner deals are worse than no partner deals — they set precedent.'
+      },
+      {
+        title: 'Underinvesting in Partner Enablement',
+        body: 'Partners sell what they understand. If they can\'t articulate your value prop, they won\'t prioritize you.'
+      },
+      {
+        title: 'Too Many Shallow Partnerships',
+        body: '10 shallow partnerships produce less revenue than 2 deep ones. Quality over quantity.'
+      }
+    ]
+  },
+  {
+    id: 'events',
+    type: 'department',
+    name: 'Events',
+    accent: '#FF9B54',
+    purpose: 'Generate pipeline and relationships through in-person presence. Treat every event as a pipeline exercise.',
+    stageImportance: { early: 'low', growth: 'medium', scale: 'high' },
+    stageNotes: {
+      early: 'Attend selectively. Don\'t sponsor — attend, network, host a small dinner.',
+      growth: 'Strategic events worth sponsoring start to make sense.',
+      scale: 'Events become a meaningful pipeline source. Flagship presence and hosted experiences compound.'
+    },
+    tabs: [
+      { key: 'strategy', label: 'Strategy', type: 'principles', content: [
+        'Events are expensive. Treat every event as a pipeline generation exercise, not a brand exercise.',
+        'Tier your events: flagship (where your buyers actually go), secondary (worth a booth), and community (worth a presence but not a check).',
+        'The ROI calculation: pipeline generated divided by total event cost including staff time. If you can\'t measure this, you shouldn\'t be spending.',
+        'The best event strategy at early stage is often to not sponsor — attend, host a dinner, run a side event. More memorable, lower cost, better conversations.'
+      ]},
+      { key: 'before', label: 'Before', type: 'principles', content: [
+        'Build your target account list 6 weeks out. Know who you want to meet before you arrive.',
+        'Reach out before the event. "We\'ll both be at [conference] — would love to grab 20 minutes." Response rates are 3–5x higher than cold outbound.',
+        'Brief your reps on the top 10 accounts you want to crack. Give them a conversation starter, not a pitch.',
+        'Have a reason to follow up from the event. A dinner, a breakfast, a roundtable — something that isn\'t just "come to our booth."'
+      ]},
+      { key: 'after', label: 'After', type: 'principles', content: [
+        'Follow up within 24 hours. The window is short — everyone gets back to their inbox and forgets the conversation.',
+        'Personalize every follow-up to the specific conversation. "You mentioned X — here\'s what I was thinking about that" is the only acceptable format.',
+        'Route leads to the right rep immediately. Leads that sit for 48+ hours after an event are effectively dead.',
+        'Do a debrief within one week: what conversations happened, what pipeline was created, what follow-ups are outstanding.'
+      ]},
+      { key: 'metrics', label: 'Metrics' },
+      { key: 'risks', label: 'Risks' }
+    ],
+    metrics: [
+      {
+        name: 'Pipeline Generated (90-day)',
+        shortLabel: 'Event Pipeline',
+        shortValue: 'Track',
+        description: 'Pipeline sourced and influenced within 90 days of the event. The only metric that tells you if the event was worth the cost.',
+        benchmark: 'Target 3–5x event cost in pipeline created within 90 days.'
+      },
+      {
+        name: 'Cost per Qualified Meeting',
+        shortLabel: 'Cost/Meeting',
+        shortValue: 'Benchmark',
+        description: 'Total event cost divided by qualified meetings booked — including pre-event outreach.',
+        benchmark: 'Pre-event outreach meetings should outnumber on-site meetings.'
+      }
+    ],
+    meetingTags: ['Event Strategy', 'Pre-Event Prep', 'Post-Event Debrief'],
+    meetings: [
+      {
+        name: 'Event Strategy Session',
+        cadence: 'Per event (6 weeks out)',
+        attendees: 'Marketing + Sales',
+        decisions: 'Which events, what\'s the goal, top 10 target accounts, pre-event outreach plan.'
+      },
+      {
+        name: 'Post-Event Debrief',
+        cadence: 'Within 1 week of event',
+        attendees: 'Marketing + Sales + all attendees',
+        decisions: 'What conversations happened? What pipeline was created? Was it worth the investment?'
+      }
+    ],
+    risks: [
+      {
+        title: 'Sponsoring Without a Pipeline Plan',
+        body: 'A logo on a lanyard without a pre-event outreach plan is an expensive brand exercise. If you can\'t measure pipeline from an event, you\'re paying for vibes.'
+      },
+      {
+        title: 'Booth Without a Qualification Process',
+        body: '200 badge scans without context is worthless. Train reps to qualify quickly and move on from poor fits.'
+      },
+      {
+        title: 'No Follow-Up System Built in Advance',
+        body: 'The half-life of an event conversation is 48 hours. Build the follow-up system before the event, not after.'
+      }
+    ]
+  }
+];

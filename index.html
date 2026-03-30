@@ -1,0 +1,1240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kevin Krom</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #080810;
+    --surface: #0f0f18;
+    --surface2: #15151f;
+    --border: #1e1e2e;
+    --border2: #2a2a3f;
+    --text: #e8e8f0;
+    --muted: #6a6a88;
+    --subtle: #2a2a40;
+    --mx: 50%;
+    --my: 50%;
+  }
+
+  html { font-size: 15px; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    min-height: 100vh;
+    line-height: 1.5;
+    overflow-x: hidden;
+  }
+
+  /* ── Grain overlay ── */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    pointer-events: none;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 180px 180px;
+  }
+
+  /* ── Mouse glow ── */
+  .mouse-glow {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background: radial-gradient(700px circle at var(--mx) var(--my), rgba(100, 60, 220, 0.06), transparent 50%);
+  }
+
+  /* ── Header ── */
+  header {
+    padding: 1.4rem 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    z-index: 10;
+    border-bottom: 1px solid var(--border);
+  }
+  .header-name {
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .header-name span { color: var(--text); }
+
+  /* ── Stage Toggle ── */
+  .stage-toggle {
+    display: flex;
+    gap: 0.3rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 0.25rem;
+  }
+  .stage-btn {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-family: inherit;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.28rem 0.85rem;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+  }
+  .stage-btn:hover { color: var(--text); }
+  .stage-btn.active { background: var(--surface2); color: var(--text); }
+
+  /* ── View Bar ── */
+  .view-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.7rem 2.5rem;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.76rem;
+    position: relative;
+    z-index: 10;
+  }
+  .back-btn {
+    background: none;
+    border: none;
+    color: var(--muted);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.76rem;
+    font-weight: 500;
+    padding: 0;
+    transition: color 0.15s;
+  }
+  .back-btn:hover { color: var(--text); }
+  .view-bar-sep { color: var(--subtle); }
+  .view-bar-current { font-weight: 700; }
+  .stage-label-inline { margin-left: auto; font-size: 0.68rem; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; }
+
+  /* ── Card area ── */
+  #card-area { position: relative; z-index: 2; min-height: calc(100vh - 58px); }
+
+  /* ── HOME: typographic row list ── */
+  .home-wrap {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 0 2.5rem 4rem;
+  }
+  .home-intro {
+    padding: 3rem 0 2.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .home-intro-eyebrow {
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+  }
+  .home-intro-title {
+    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    font-weight: 700;
+    letter-spacing: -0.035em;
+    line-height: 1.05;
+    color: var(--text);
+  }
+  .home-intro-sub {
+    margin-top: 1rem;
+    font-size: 0.88rem;
+    color: var(--muted);
+    max-width: 460px;
+    line-height: 1.7;
+    font-weight: 400;
+  }
+  .home-row {
+    display: flex;
+    align-items: center;
+    padding: 1.75rem 0;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    gap: 1.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: padding-left 0.2s ease;
+  }
+  .home-row::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, var(--row-glow, rgba(255,255,255,0)) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+  }
+  .home-row:hover { padding-left: 0.5rem; }
+  .home-row:hover::after { opacity: 1; }
+  .home-row-num {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    width: 26px;
+    flex-shrink: 0;
+    transition: color 0.2s;
+  }
+  .home-row-content { flex: 1; }
+  .home-row-name {
+    font-size: clamp(1.5rem, 2.8vw, 2.2rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    transition: color 0.2s;
+    line-height: 1.1;
+  }
+  .home-row-desc {
+    font-size: 0.78rem;
+    color: var(--muted);
+    margin-top: 0.3rem;
+    max-width: 400px;
+    line-height: 1.5;
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity 0.25s, transform 0.25s;
+  }
+  .home-row:hover .home-row-desc { opacity: 1; transform: translateY(0); }
+  .home-row-chips {
+    display: flex;
+    gap: 0.35rem;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    max-width: 260px;
+  }
+  .home-row-chip {
+    font-size: 0.62rem;
+    padding: 0.14rem 0.45rem;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    white-space: nowrap;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .home-row-arrow {
+    font-size: 1rem;
+    color: var(--muted);
+    flex-shrink: 0;
+    transition: transform 0.2s, color 0.2s;
+    width: 20px;
+    text-align: right;
+  }
+  .home-row:hover .home-row-num    { color: var(--row-color); }
+  .home-row:hover .home-row-name   { color: var(--row-color); }
+  .home-row:hover .home-row-arrow  { transform: translateX(5px); color: var(--row-color); }
+  .home-row:hover .home-row-chip   { color: var(--text); border-color: var(--border2); }
+
+  /* ── Category hero ── */
+  .cat-hero {
+    padding: 2.5rem 2.5rem 2rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .cat-hero-eyebrow {
+    font-size: 0.65rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+    margin-bottom: 0.6rem;
+  }
+  .cat-hero-title {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    letter-spacing: -0.035em;
+    line-height: 1.05;
+  }
+  .cat-hero-desc {
+    margin-top: 0.65rem;
+    font-size: 0.83rem;
+    color: var(--muted);
+    max-width: 480px;
+    line-height: 1.65;
+  }
+
+  /* ── Card grid (borderless mosaic) ── */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 0;
+  }
+
+  /* ── Card base ── */
+  .card {
+    background: var(--bg);
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 1.75rem;
+    cursor: pointer;
+    transition: background 0.2s;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    position: relative;
+    overflow: hidden;
+    animation: fadeUp 0.4s ease both;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 2px;
+    height: 0;
+    background: var(--card-accent, var(--muted));
+    transition: height 0.3s ease;
+  }
+  .card:hover { background: var(--surface); }
+  .card:hover::before { height: 100%; }
+
+  .card:nth-child(1) { animation-delay: 0.04s; }
+  .card:nth-child(2) { animation-delay: 0.08s; }
+  .card:nth-child(3) { animation-delay: 0.12s; }
+  .card:nth-child(4) { animation-delay: 0.16s; }
+  .card:nth-child(5) { animation-delay: 0.20s; }
+  .card:nth-child(6) { animation-delay: 0.23s; }
+  .card:nth-child(7) { animation-delay: 0.26s; }
+
+  .card-name    { font-size: 1.05rem; font-weight: 700; letter-spacing: -0.015em; }
+  .card-purpose { color: var(--muted); font-size: 0.8rem; line-height: 1.55; }
+  .card-cta     { display: flex; justify-content: flex-end; margin-top: auto; padding-top: 0.5rem; }
+  .card-cta span { font-size: 0.72rem; color: var(--muted); transition: color 0.2s; }
+  .card:hover .card-cta span { color: var(--text); }
+
+  /* ── Philosophy card ── */
+  .phil-preview {
+    font-size: 0.8rem;
+    color: var(--muted);
+    line-height: 1.65;
+    font-style: italic;
+  }
+
+  /* ── Story carousel ── */
+  .carousel-wrap {
+    overflow-x: auto;
+    display: flex;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding: 2rem 2.5rem 3rem;
+    gap: 1rem;
+    cursor: grab;
+    user-select: none;
+  }
+  .carousel-wrap::-webkit-scrollbar { display: none; }
+  .carousel-wrap:active { cursor: grabbing; }
+  .carousel-wrap .card {
+    flex: 0 0 360px;
+    min-height: 300px;
+    scroll-snap-align: start;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    animation: none;
+  }
+
+  /* ── Story card ── */
+  .story-label {
+    font-size: 0.58rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 700;
+    padding: 0.12rem 0.45rem;
+    border-radius: 999px;
+    border: 1px solid;
+    display: inline-block;
+    width: fit-content;
+  }
+  .story-company {
+    font-size: 1.3rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+  .story-teaser {
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: -0.005em;
+    line-height: 1.5;
+    color: var(--muted);
+  }
+  .story-context { font-size: 0.7rem; color: var(--muted); opacity: 0.7; }
+
+  /* ── Playbook card extras ── */
+  .card-metrics { display: flex; flex-direction: column; gap: 0.28rem; }
+  .metric-pill {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.26rem 0.52rem;
+    border-radius: 5px;
+    font-size: 0.72rem;
+  }
+  .metric-pill-label { color: var(--muted); }
+  .metric-pill-value { font-weight: 700; }
+  .card-tags { display: flex; flex-wrap: wrap; gap: 0.28rem; }
+  .tag {
+    font-size: 0.62rem;
+    padding: 0.16rem 0.48rem;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    color: var(--muted);
+  }
+  .tier-badge {
+    position: absolute;
+    top: 1.1rem; right: 1.1rem;
+    font-size: 0.56rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 700;
+    padding: 0.1rem 0.42rem;
+    border-radius: 999px;
+    border: 1px solid currentColor;
+  }
+  .tier-medium { opacity: 0.82; }
+  .tier-low    { opacity: 0.52; }
+
+  /* ── Right panel ── */
+  .panel-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .panel-backdrop.open { opacity: 1; pointer-events: all; }
+  .panel-scrim {
+    position: absolute;
+    inset: 0;
+    background: rgba(4, 4, 10, 0.72);
+    backdrop-filter: blur(3px);
+  }
+  .panel {
+    position: absolute;
+    top: 0; right: 0; bottom: 0;
+    width: min(680px, 100vw);
+    background: var(--surface);
+    border-left: 1px solid var(--border2);
+    display: flex;
+    flex-direction: column;
+    transform: translateX(100%);
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .panel-backdrop.open .panel { transform: translateX(0); }
+
+  .panel-header {
+    padding: 2rem 2rem 1.25rem;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+    position: relative;
+  }
+  .panel-close {
+    position: absolute;
+    top: 1.25rem; right: 1.25rem;
+    background: none;
+    border: 1px solid var(--border2);
+    color: var(--muted);
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-family: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .panel-close:hover { color: var(--text); border-color: var(--muted); }
+  .panel-title {
+    font-size: 1.85rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    padding-right: 2.5rem;
+  }
+  .panel-purpose {
+    font-size: 0.78rem;
+    color: var(--muted);
+    margin-top: 0.4rem;
+    line-height: 1.55;
+  }
+
+  /* ── Panel tabs ── */
+  .panel-tabs {
+    display: flex;
+    padding: 0 2rem;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .panel-tabs::-webkit-scrollbar { display: none; }
+  .tab-btn {
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: var(--muted);
+    font-family: inherit;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    padding: 0.8rem 1rem;
+    cursor: pointer;
+    transition: color 0.15s, border-color 0.15s;
+    white-space: nowrap;
+    margin-bottom: -1px;
+  }
+  .tab-btn:hover { color: var(--text); }
+  .tab-btn.active { color: var(--text); }
+
+  /* ── Panel body ── */
+  .panel-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 2rem 2rem 3rem;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border2) transparent;
+  }
+  .panel-body::-webkit-scrollbar { width: 4px; }
+  .panel-body::-webkit-scrollbar-track { background: transparent; }
+  .panel-body::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 4px; }
+
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* ── Principles: numbered editorial ── */
+  .principles-list { display: flex; flex-direction: column; }
+  .principle-item {
+    display: flex;
+    gap: 1.5rem;
+    padding: 1.6rem 0;
+    border-bottom: 1px solid var(--border);
+    align-items: flex-start;
+  }
+  .principle-item:last-child { border-bottom: none; }
+  .principle-num {
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    width: 22px;
+    flex-shrink: 0;
+    padding-top: 0.3rem;
+    opacity: 0.4;
+  }
+  .principle-text { font-size: 0.9rem; line-height: 1.6; }
+  .principle-text strong {
+    display: block;
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    color: var(--text);
+    margin-bottom: 0.2rem;
+  }
+  .principle-body { color: var(--muted); }
+
+  /* ── Prose ── */
+  .prose-body { max-width: 520px; }
+  .prose-para { font-size: 0.87rem; color: var(--muted); line-height: 1.85; margin-bottom: 1.1rem; }
+  .prose-para:last-child { margin-bottom: 0; }
+
+  /* ── Metrics tab ── */
+  .metric-card { padding: 1rem 1.1rem; background: var(--surface2); border-radius: 8px; border: 1px solid var(--border); margin-bottom: 0.6rem; }
+  .metric-card-header { display: flex; align-items: baseline; justify-content: space-between; gap: 0.75rem; margin-bottom: 0.4rem; flex-wrap: wrap; }
+  .metric-card-name { font-size: 0.88rem; font-weight: 700; }
+  .metric-card-desc { font-size: 0.77rem; color: var(--muted); line-height: 1.5; margin-bottom: 0.45rem; }
+  .metric-benchmark { font-size: 0.7rem; padding: 0.2rem 0.52rem; border-radius: 5px; display: inline-block; font-weight: 600; }
+
+  /* ── Meetings tab ── */
+  .meeting-row { padding: 1rem 0; border-bottom: 1px solid var(--border); }
+  .meeting-row:last-child { border-bottom: none; }
+  .meeting-row-top { display: flex; align-items: baseline; justify-content: space-between; gap: 0.75rem; margin-bottom: 0.3rem; flex-wrap: wrap; }
+  .meeting-name { font-size: 0.88rem; font-weight: 700; }
+  .meeting-cadence { font-size: 0.66rem; padding: 0.14rem 0.48rem; background: var(--surface2); border: 1px solid var(--border); border-radius: 999px; color: var(--muted); font-weight: 600; white-space: nowrap; }
+  .meeting-attendees { font-size: 0.72rem; color: var(--muted); margin-bottom: 0.2rem; }
+  .meeting-decisions { font-size: 0.75rem; color: var(--muted); line-height: 1.55; }
+
+  /* ── Risks tab ── */
+  .risk-card { padding: 0.9rem 1rem; background: var(--surface2); border-radius: 8px; border: 1px solid var(--border); border-left-width: 3px; margin-bottom: 0.6rem; }
+  .risk-title { font-size: 0.85rem; font-weight: 700; margin-bottom: 0.3rem; }
+  .risk-body { font-size: 0.76rem; color: var(--muted); line-height: 1.6; }
+
+  /* ── Overview tab ── */
+  .overview-stage-note { margin-top: 1rem; padding: 0.9rem 1rem; background: var(--surface2); border-radius: 8px; border-left: 3px solid var(--border); }
+  .stage-note-label { font-size: 0.66rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.2rem; font-weight: 600; }
+  .stage-note-tier { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.2rem; }
+  .stage-note-body { font-size: 0.78rem; color: var(--muted); }
+  .section-intro { font-size: 0.8rem; color: var(--muted); line-height: 1.6; margin-bottom: 1rem; }
+  .sales-strategy { margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid var(--border); }
+  .sales-strategy h3 { font-size: 0.88rem; font-weight: 700; margin-bottom: 1rem; }
+  .strategy-block { margin-bottom: 1rem; }
+  .strategy-block h4 { font-size: 0.66rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.45rem; }
+  .strategy-block p { font-size: 0.79rem; color: var(--muted); line-height: 1.6; }
+  .segment-list { display: flex; flex-direction: column; gap: 0.35rem; }
+  .segment-item { display: flex; flex-direction: column; gap: 0.07rem; padding: 0.5rem 0.7rem; background: var(--surface); border-radius: 6px; border: 1px solid var(--border); }
+  .segment-label { font-size: 0.72rem; font-weight: 700; }
+  .segment-desc { font-size: 0.71rem; color: var(--muted); }
+
+  /* ── Steps tab ── */
+  .steps-list { margin-top: 0.5rem; }
+  .step-row { display: flex; gap: 0.75rem; margin-bottom: 0.5rem; align-items: flex-start; }
+  .step-marker { min-width: 52px; text-align: center; padding: 0.17rem 0.3rem; border-radius: 5px; font-size: 0.64rem; font-weight: 700; letter-spacing: 0.04em; flex-shrink: 0; margin-top: 2px; }
+  .step-action { font-size: 0.84rem; font-weight: 700; }
+  .step-note { font-size: 0.75rem; color: var(--muted); line-height: 1.5; margin-top: 0.1rem; }
+
+  /* ── Comparison table ── */
+  .comparison-table { margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid var(--border); }
+  .comparison-table h3 { font-size: 0.8rem; font-weight: 700; margin-bottom: 0.7rem; }
+  .comparison-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .comparison-col-header { font-size: 0.64rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.45rem; }
+  .comparison-item { font-size: 0.76rem; color: var(--muted); padding: 0.24rem 0; border-bottom: 1px solid var(--border); line-height: 1.4; }
+  .comparison-item:last-child { border-bottom: none; }
+
+  /* ── Career timeline list ── */
+  .career-list { display: flex; flex-direction: column; }
+  .career-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    padding: 1.6rem 2.5rem;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    position: relative;
+    transition: background 0.15s, padding-left 0.2s;
+    overflow: hidden;
+  }
+  .career-row::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 2px; height: 0;
+    background: var(--row-color, var(--muted));
+    transition: height 0.28s ease;
+  }
+  .career-row:hover { background: var(--surface); padding-left: 2.9rem; }
+  .career-row:hover::before { height: 100%; }
+  .career-row-left { flex: 1; display: flex; flex-direction: column; gap: 0.35rem; }
+  .career-company {
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    transition: color 0.15s;
+  }
+  .career-row:hover .career-company { color: var(--row-color); }
+  .career-role-line {
+    font-size: 0.74rem;
+    color: var(--muted);
+  }
+  .career-bullets {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    margin-top: 0.3rem;
+  }
+  .career-bullets li {
+    font-size: 0.78rem;
+    color: var(--muted);
+    padding-left: 0.85rem;
+    position: relative;
+    line-height: 1.5;
+  }
+  .career-bullets li::before {
+    content: '–';
+    position: absolute;
+    left: 0;
+    color: var(--subtle);
+  }
+  .career-arrow {
+    font-size: 0.9rem;
+    color: var(--muted);
+    transition: transform 0.2s, color 0.15s;
+    flex-shrink: 0;
+    padding-top: 0.2rem;
+  }
+  .career-row:hover .career-arrow { transform: translateX(4px); color: var(--row-color); }
+
+  /* ── Career panel content ── */
+  .career-lessons { display: flex; flex-direction: column; }
+  .career-lesson {
+    display: flex;
+    gap: 1.25rem;
+    padding: 1.4rem 0;
+    border-bottom: 1px solid var(--border);
+    align-items: flex-start;
+  }
+  .career-lesson:last-child { border-bottom: none; }
+  .career-lesson-num {
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    width: 20px;
+    flex-shrink: 0;
+    padding-top: 0.2rem;
+    opacity: 0.35;
+  }
+  .career-lesson-text {
+    font-size: 0.87rem;
+    color: var(--muted);
+    line-height: 1.75;
+  }
+  .career-closing {
+    margin-top: 2rem;
+    padding: 1.25rem 1.5rem;
+    border-left: 2px solid var(--closing-accent, var(--border2));
+    background: var(--surface2);
+    border-radius: 0 8px 8px 0;
+  }
+  .career-closing p {
+    font-size: 0.9rem;
+    font-style: italic;
+    color: var(--text);
+    line-height: 1.7;
+  }
+
+  /* ── Animations ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .home-row {
+    animation: fadeUp 0.45s ease both;
+  }
+  .home-row:nth-child(1) { animation-delay: 0.30s; }
+  .home-row:nth-child(2) { animation-delay: 0.38s; }
+  .home-row:nth-child(3) { animation-delay: 0.46s; }
+  .home-row:nth-child(4) { animation-delay: 0.54s; }
+  .home-intro { animation: fadeUp 0.4s ease 0.1s both; }
+
+  /* ── Nyan Cat ── */
+  .nyan-header {
+    width: 48px;
+    height: 48px;
+    image-rendering: pixelated;
+    display: block;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 640px) {
+    header { padding: 1.1rem 1.25rem; }
+    .view-bar { padding: 0.6rem 1.25rem; }
+    .home-wrap { padding: 0 1.25rem 3rem; }
+    .home-row-chips { display: none; }
+    .cat-hero { padding: 1.75rem 1.25rem 1.5rem; }
+    .grid { grid-template-columns: 1fr; }
+    .card { padding: 1.4rem 1.25rem; }
+    .panel { width: 100vw; }
+    .panel-header { padding: 1.5rem 1.25rem 1rem; }
+    .panel-tabs { padding: 0 1.25rem; }
+    .panel-body { padding: 1.5rem 1.25rem 3rem; }
+    .coming-soon { padding: 2.5rem 1.25rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="mouse-glow"></div>
+
+
+<header>
+  <div class="header-name"><span>Kevin Krom</span></div>
+  <img src="nyan.png" alt="Nyan Cat" class="nyan-header">
+  <div class="stage-toggle" id="stage-toggle" style="display:none">
+    <button class="stage-btn active" data-stage="early">Early</button>
+    <button class="stage-btn" data-stage="growth">Growth</button>
+    <button class="stage-btn" data-stage="scale">Scale</button>
+  </div>
+</header>
+
+<div class="view-bar" id="view-bar" style="display:none">
+  <button class="back-btn" id="back-btn">← Back</button>
+  <span class="view-bar-sep">/</span>
+  <span class="view-bar-current" id="view-bar-current"></span>
+  <div class="stage-label-inline" id="stage-label-inline"></div>
+</div>
+
+<div id="card-area"></div>
+
+<!-- Right panel -->
+<div class="panel-backdrop" id="modal-backdrop" role="dialog" aria-modal="true">
+  <div class="panel-scrim" id="panel-scrim"></div>
+  <div class="panel" id="modal">
+    <div class="panel-header">
+      <div class="panel-title" id="modal-title"></div>
+      <div class="panel-purpose" id="modal-purpose"></div>
+      <button class="panel-close" id="modal-close" aria-label="Close">✕</button>
+    </div>
+    <div class="panel-tabs" id="modal-tabs"></div>
+    <div class="panel-body" id="modal-body"></div>
+  </div>
+</div>
+
+<script src="data.js"></script>
+<script>
+
+const STAGE_LABELS = { early: 'Early Stage', growth: 'Growth Stage', scale: 'Scale Stage' };
+const TIER_ORDER   = { 'critical': 0, 'very-high': 1, 'high': 2, 'medium': 3, 'low': 4 };
+const TIER_LABELS  = { 'critical': 'Critical', 'very-high': 'Very High', 'high': 'High', 'medium': 'Medium', 'low': 'Low' };
+
+let currentStage    = 'early';
+let currentCategory = null;
+let currentTab      = null;
+
+// ── Mouse glow ──────────────────────────────────────────────────────────────
+
+document.addEventListener('mousemove', e => {
+  document.documentElement.style.setProperty('--mx', e.clientX + 'px');
+  document.documentElement.style.setProperty('--my', e.clientY + 'px');
+});
+
+
+// ── Helpers ─────────────────────────────────────────────────────────────────
+
+function tierClass(tier) {
+  return { 'critical': 'tier-critical', 'very-high': 'tier-very-high', 'high': 'tier-high', 'medium': 'tier-medium' }[tier] || 'tier-low';
+}
+
+function getDefaultTabs() {
+  return [
+    { key: 'overview', label: 'Overview' },
+    { key: 'metrics',  label: 'Metrics'  },
+    { key: 'meetings', label: 'Meetings' },
+    { key: 'risks',    label: 'Risks'    }
+  ];
+}
+
+function findItem(id) {
+  return GTM.find(f => f.id === id) || STORIES.find(s => s.id === id) || PHILOSOPHY.find(p => p.id === id) || BACKGROUND.find(b => b.id === id);
+}
+
+// ── Story carousel (infinite + drag) ────────────────────────────────────────
+
+function initStoryCarousel(el) {
+  // Clone cards to both ends for infinite wrap
+  const originals = [...el.querySelectorAll('.card')];
+
+  originals.forEach(card => {
+    const clone = card.cloneNode(true);
+    el.appendChild(clone);
+    clone.addEventListener('click', () => openModal(clone.dataset.id));
+  });
+  ;[...originals].reverse().forEach(card => {
+    const clone = card.cloneNode(true);
+    el.prepend(clone);
+    clone.addEventListener('click', () => openModal(clone.dataset.id));
+  });
+
+  // Start scrolled to the real (middle) set
+  requestAnimationFrame(() => {
+    el.scrollLeft = el.scrollWidth / 3;
+  });
+
+  // Silent jump when entering clone territory
+  el.addEventListener('scroll', () => {
+    const setW = el.scrollWidth / 3;
+    if (el.scrollLeft < setW)        el.scrollLeft += setW;
+    else if (el.scrollLeft >= setW * 2) el.scrollLeft -= setW;
+  }, { passive: true });
+
+  // Drag to scroll
+  let isDown = false, startX, startScroll, moved = false;
+  el.addEventListener('mousedown', e => {
+    isDown = true; moved = false;
+    startX = e.pageX - el.offsetLeft;
+    startScroll = el.scrollLeft;
+  });
+  el.addEventListener('mouseleave', () => { isDown = false; });
+  el.addEventListener('mouseup',    () => { isDown = false; });
+  el.addEventListener('mousemove', e => {
+    if (!isDown) return;
+    e.preventDefault();
+    const dx = (e.pageX - el.offsetLeft - startX) * 1.4;
+    if (Math.abs(dx) > 4) moved = true;
+    el.scrollLeft = startScroll - dx;
+  });
+  el.addEventListener('click', e => {
+    if (moved) { e.stopPropagation(); moved = false; }
+  }, true);
+}
+
+// ── Home ────────────────────────────────────────────────────────────────────
+
+function renderHome() {
+  currentCategory = null;
+  document.getElementById('stage-toggle').style.display = 'none';
+  document.getElementById('view-bar').style.display = 'none';
+
+  const area = document.getElementById('card-area');
+  area.innerHTML = `
+    <div class="home-wrap">
+      <div class="home-intro">
+        <div class="home-intro-eyebrow">Field Notes</div>
+        <div class="home-intro-title">Sales. Deals.<br>What actually works.</div>
+        <div class="home-intro-sub">How I think about building pipeline, running deals, and operating GTM teams — from the field, not a whiteboard.</div>
+      </div>
+      ${CATEGORIES.map((cat, i) => {
+        const chips = cat.preview.slice(0, 4).map(p => `<span class="home-row-chip">${p}</span>`).join('');
+        return `
+          <div class="home-row" data-id="${cat.id}"
+            style="--row-color:${cat.accent}; --row-glow:${cat.accent}0d">
+            <div class="home-row-num">0${i + 1}</div>
+            <div class="home-row-content">
+              <div class="home-row-name">${cat.name}</div>
+              <div class="home-row-desc">${cat.description}</div>
+            </div>
+            <div class="home-row-chips">${chips}</div>
+            <div class="home-row-arrow">→</div>
+          </div>`;
+      }).join('')}
+    </div>`;
+
+  area.querySelectorAll('.home-row').forEach(row => {
+    row.addEventListener('click', () => enterCategory(row.dataset.id));
+  });
+}
+
+// ── Category view ────────────────────────────────────────────────────────────
+
+function enterCategory(categoryId) {
+  currentCategory = categoryId;
+  const cat = CATEGORIES.find(c => c.id === categoryId);
+  if (!cat) return;
+
+  document.getElementById('view-bar').style.display = 'flex';
+  document.getElementById('view-bar-current').textContent = cat.name;
+  document.getElementById('view-bar-current').style.color = cat.accent;
+  document.getElementById('back-btn').onclick = renderHome;
+
+  const st = document.getElementById('stage-toggle');
+  if (categoryId === 'playbooks') {
+    st.style.display = 'flex';
+    document.getElementById('stage-label-inline').textContent = `${STAGE_LABELS[currentStage]} view`;
+  } else {
+    st.style.display = 'none';
+    document.getElementById('stage-label-inline').textContent = '';
+  }
+
+  const hero = `
+    <div class="cat-hero">
+      <div class="cat-hero-eyebrow">Collection</div>
+      <div class="cat-hero-title" style="color:${cat.accent}">${cat.name}</div>
+      <div class="cat-hero-desc">${cat.description}</div>
+    </div>`;
+
+  const area = document.getElementById('card-area');
+
+  if (categoryId === 'philosophy') {
+    area.innerHTML = hero + `<div class="grid">${PHILOSOPHY.map(item => renderPhilosophyCard(item)).join('')}</div>`;
+    area.querySelectorAll('.card').forEach(c => c.addEventListener('click', () => openModal(c.dataset.id)));
+
+  } else if (categoryId === 'playbooks') {
+    area.innerHTML = hero;
+    renderPlaybooks();
+
+  } else if (categoryId === 'stories') {
+    area.innerHTML = hero + `<div class="carousel-wrap" id="story-carousel">${STORIES.map(item => renderStoryCard(item)).join('')}</div>`;
+    area.querySelectorAll('.card').forEach(c => c.addEventListener('click', () => openModal(c.dataset.id)));
+    initStoryCarousel(document.getElementById('story-carousel'));
+
+  } else if (categoryId === 'background') {
+    area.innerHTML = hero + `
+      <div class="career-list">
+        ${BACKGROUND.map(item => `
+          <div class="career-row" data-id="${item.id}" style="--row-color:${item.accent}">
+            <div class="career-row-left">
+              <div class="career-company">${item.name}</div>
+              <div class="career-role-line">${item.role} · ${item.years} · ${item.location}${item.acv ? ' · ' + item.acv : ''}</div>
+              <ul class="career-bullets">
+                ${(item.bullets || []).map(b => `<li>${b}</li>`).join('')}
+              </ul>
+            </div>
+            <div class="career-arrow">→</div>
+          </div>`).join('')}
+      </div>`;
+    area.querySelectorAll('.career-row').forEach(row => {
+      row.addEventListener('click', () => openModal(row.dataset.id));
+    });
+  }
+}
+
+// ── Card renderers ───────────────────────────────────────────────────────────
+
+function renderPhilosophyCard(item) {
+  return `
+    <div class="card" data-id="${item.id}" role="button" tabindex="0" style="--card-accent:${item.accent}">
+      <div class="card-name" style="color:${item.accent}">${item.name}</div>
+      <div class="phil-preview">${item.preview}</div>
+      <div class="card-cta"><span>Read →</span></div>
+    </div>`;
+}
+
+function renderStoryCard(item) {
+  const labelColor = item.label === 'Win' ? '#1DB374' : '#FF9B54';
+  return `
+    <div class="card" data-id="${item.id}" role="button" tabindex="0" style="--card-accent:${item.accent || labelColor}">
+      <div class="story-label" style="color:${labelColor};border-color:${labelColor}44">${item.label}</div>
+      ${item.company ? `<div class="story-company" style="color:${item.accent}">${item.company}</div>` : ''}
+      <div class="story-teaser">${item.teaser}</div>
+      <div class="story-context">${item.context}</div>
+      <div class="card-cta"><span>Read story →</span></div>
+    </div>`;
+}
+
+function renderPlaybooks() {
+  const sorted = [...GTM].sort((a, b) =>
+    TIER_ORDER[a.stageImportance[currentStage]] - TIER_ORDER[b.stageImportance[currentStage]]
+  );
+  const area = document.getElementById('card-area');
+  const heroEl = area.querySelector('.cat-hero');
+  const heroHTML = heroEl ? heroEl.outerHTML : '';
+
+  area.innerHTML = heroHTML + `<div class="grid">${sorted.map(fn => {
+    const tier = fn.stageImportance[currentStage];
+    const tc   = tierClass(tier);
+    const bc   = tier === 'critical' ? fn.accent : tier === 'very-high' ? fn.accent + 'bb' : 'var(--muted)';
+    const pills = (fn.metrics || []).map(m => `
+      <div class="metric-pill" style="background:${fn.accent}14">
+        <span class="metric-pill-label">${m.shortLabel}</span>
+        <span class="metric-pill-value" style="color:${fn.accent}">${m.shortValue}</span>
+      </div>`).join('');
+    const tags = (fn.meetingTags || []).map(t => `<span class="tag">${t}</span>`).join('');
+    return `
+      <div class="card ${tc}" data-id="${fn.id}" role="button" tabindex="0" style="--card-accent:${fn.accent}">
+        <div class="tier-badge" style="color:${bc};border-color:${bc}44">${TIER_LABELS[tier]}</div>
+        <div class="card-name" style="color:${fn.accent}">${fn.name}</div>
+        <div class="card-purpose">${fn.purpose}</div>
+        <div class="card-metrics">${pills}</div>
+        <div class="card-tags">${tags}</div>
+        <div class="card-cta"><span>View details →</span></div>
+      </div>`;
+  }).join('')}</div>`;
+
+  area.querySelectorAll('.card').forEach(card => {
+    card.addEventListener('click', () => openModal(card.dataset.id));
+    card.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openModal(card.dataset.id); } });
+  });
+}
+
+// ── Tab renderers ────────────────────────────────────────────────────────────
+
+function renderTab(fn, tab) {
+  const type = tab.type || tab.key;
+  switch (type) {
+    case 'overview':   return renderOverview(fn);
+    case 'metrics':    return renderMetrics(fn);
+    case 'meetings':   return renderMeetings(fn);
+    case 'risks':      return renderRisks(fn);
+    case 'principles': return renderPrinciples(tab.content || [], fn.accent);
+    case 'steps':      return renderSteps(tab.content || [], fn.accent);
+    case 'prose':      return renderProse(tab.content || []);
+    case 'career':     return renderCareer(fn);
+    default:           return '';
+  }
+}
+
+function renderOverview(fn) {
+  const tier      = fn.stageImportance[currentStage];
+  const note      = fn.stageNotes[currentStage];
+  const tierColor = tier === 'critical' || tier === 'very-high' ? fn.accent : tier === 'high' ? fn.accent + 'cc' : 'var(--muted)';
+  let extra = '';
+  if (fn.salesStrategy) {
+    extra = `
+      <div class="sales-strategy">
+        <h3>Sales Strategy</h3>
+        <div class="strategy-block">
+          <h4>Segments — Motion by ACV</h4>
+          <div class="segment-list">
+            <div class="segment-item"><span class="segment-label">SMB &lt; $10K ACV</span><span class="segment-desc">High velocity, low touch, product-led where possible.</span></div>
+            <div class="segment-item"><span class="segment-label">Mid-Market $10K–$100K ACV</span><span class="segment-desc">Hybrid motion, solutions-oriented, 30–90 day cycles.</span></div>
+            <div class="segment-item"><span class="segment-label">Enterprise $100K+ ACV</span><span class="segment-desc">Multi-stakeholder, 6–18 month cycles. Champion ≠ decision-maker.</span></div>
+          </div>
+        </div>
+        <div class="strategy-block">
+          <h4>Sales Model — Channel Mix</h4>
+          <p><strong style="color:var(--text)">Inbound-led:</strong> Lower CAC, compound over time. Hard to control short-term.</p>
+          <p style="margin-top:0.4rem"><strong style="color:var(--text)">Outbound-led:</strong> Controllable and immediate, but expensive. Requires strong ICP.</p>
+          <p style="margin-top:0.4rem"><strong style="color:var(--text)">PLG-assisted:</strong> Scalable and low-touch, but requires meaningful product investment.</p>
+        </div>
+      </div>`;
+  }
+  return `
+    <p class="section-intro">${fn.purpose}</p>
+    <div class="overview-stage-note" style="border-left-color:${fn.accent}55">
+      <div class="stage-note-label">${STAGE_LABELS[currentStage]}</div>
+      <div class="stage-note-tier" style="color:${tierColor}">${TIER_LABELS[tier]}</div>
+      <div class="stage-note-body">${note}</div>
+    </div>${extra}`;
+}
+
+function renderMetrics(fn) {
+  let html = (fn.metrics || []).map(m => `
+    <div class="metric-card">
+      <div class="metric-card-header"><div class="metric-card-name" style="color:${fn.accent}">${m.name}</div></div>
+      <div class="metric-card-desc">${m.description}</div>
+      <div class="metric-benchmark" style="background:${fn.accent}18;color:${fn.accent}">${m.benchmark}</div>
+    </div>`).join('');
+  if (fn.metricsComparison) {
+    const c = fn.metricsComparison;
+    html += `<div class="comparison-table"><h3>Inbound vs Outbound Metrics</h3><div class="comparison-cols">
+      <div><div class="comparison-col-header" style="color:${fn.accent}">Inbound</div>${c.inbound.map(m => `<div class="comparison-item">${m}</div>`).join('')}</div>
+      <div><div class="comparison-col-header" style="color:${fn.accent}">Outbound</div>${c.outbound.map(m => `<div class="comparison-item">${m}</div>`).join('')}</div>
+    </div></div>`;
+  }
+  return html;
+}
+
+function renderMeetings(fn) {
+  return (fn.meetings || []).map(m => `
+    <div class="meeting-row">
+      <div class="meeting-row-top"><div class="meeting-name">${m.name}</div><div class="meeting-cadence">${m.cadence}</div></div>
+      <div class="meeting-attendees">👥 ${m.attendees}</div>
+      <div class="meeting-decisions">${m.decisions}</div>
+    </div>`).join('');
+}
+
+function renderRisks(fn) {
+  return (fn.risks || []).map(r => `
+    <div class="risk-card" style="border-left-color:${fn.accent}66">
+      <div class="risk-title" style="color:${fn.accent}">${r.title}</div>
+      <div class="risk-body">${r.body}</div>
+    </div>`).join('');
+}
+
+function renderPrinciples(content, accent) {
+  return `<div class="principles-list">${(content || []).map((p, i) => {
+    const formatted = p.replace(/^(<strong>.*?<\/strong>) — ([\s\S]*)$/, '$1<span class="principle-body">$2</span>');
+    return `
+      <div class="principle-item">
+        <div class="principle-num" style="color:${accent}">${String(i + 1).padStart(2, '0')}</div>
+        <div class="principle-text">${formatted}</div>
+      </div>`;
+  }).join('')}</div>`;
+}
+
+function renderCareer(fn) {
+  const lessons = (fn.lessons || []).map((l, i) => `
+    <div class="career-lesson">
+      <div class="career-lesson-num" style="color:${fn.accent}">${String(i + 1).padStart(2, '0')}</div>
+      <div class="career-lesson-text">${l}</div>
+    </div>`).join('');
+  const closing = fn.closing ? `
+    <div class="career-closing" style="--closing-accent:${fn.accent}; border-left-color:${fn.accent}">
+      <p>${fn.closing}</p>
+    </div>` : '';
+  return `<div class="career-lessons">${lessons}</div>${closing}`;
+}
+
+function renderProse(content) {
+  return `<div class="prose-body">${(content || []).map(p => `<p class="prose-para">${p}</p>`).join('')}</div>`;
+}
+
+function renderSteps(content, accent) {
+  return `
+    <p class="section-intro" style="margin-bottom:1rem">A structured multi-touch sequence designed to earn replies, not just send emails.</p>
+    <div class="steps-list">${(content || []).map(s => `
+      <div class="step-row">
+        <div class="step-marker" style="background:${accent}22;color:${accent}">${s.day}</div>
+        <div class="step-content">
+          <div class="step-action">${s.action}</div>
+          ${s.note ? `<div class="step-note">${s.note}</div>` : ''}
+        </div>
+      </div>`).join('')}
+    </div>`;
+}
+
+// ── Panel (modal) ────────────────────────────────────────────────────────────
+
+function openModal(id) {
+  const fn = findItem(id);
+  if (!fn) return;
+
+  const tabs = fn.tabs || getDefaultTabs();
+  currentTab = tabs[0].key;
+
+  document.getElementById('modal-title').textContent   = fn.name;
+  document.getElementById('modal-title').style.color   = fn.accent;
+  const subtitle = fn.type === 'background'
+    ? `${fn.role} · ${fn.years} · ${fn.location}${fn.acv ? ' · ' + fn.acv : ''}`
+    : (fn.purpose || fn.teaser || '');
+  document.getElementById('modal-purpose').textContent = subtitle;
+
+  const accent = fn.accent;
+  document.getElementById('modal-tabs').innerHTML = tabs.map(t =>
+    `<button class="tab-btn ${t.key === currentTab ? 'active' : ''}" data-tab="${t.key}"
+      style="${t.key === currentTab ? `border-bottom-color:${accent};color:var(--text)` : ''}">${t.label}</button>`
+  ).join('');
+  document.getElementById('modal-tabs').dataset.accent = accent;
+
+  document.getElementById('modal-body').innerHTML = tabs.map(t =>
+    `<div class="tab-panel ${t.key === currentTab ? 'active' : ''}" id="tab-${t.key}">${renderTab(fn, t)}</div>`
+  ).join('');
+
+  document.getElementById('modal-backdrop').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  setTimeout(() => document.getElementById('modal-close').focus(), 50);
+}
+
+function closeModal() {
+  document.getElementById('modal-backdrop').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// ── Stage toggle ─────────────────────────────────────────────────────────────
+
+document.querySelectorAll('.stage-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    currentStage = btn.dataset.stage;
+    document.querySelectorAll('.stage-btn').forEach(b => b.classList.toggle('active', b === btn));
+    document.getElementById('stage-label-inline').textContent = `${STAGE_LABELS[currentStage]} view`;
+    if (currentCategory === 'playbooks') renderPlaybooks();
+  });
+});
+
+// ── Tab switching ─────────────────────────────────────────────────────────────
+
+document.getElementById('modal-tabs').addEventListener('click', e => {
+  const btn = e.target.closest('.tab-btn');
+  if (!btn) return;
+  const accent = e.currentTarget.dataset.accent || 'var(--text)';
+  currentTab = btn.dataset.tab;
+  document.querySelectorAll('.tab-btn').forEach(b => {
+    b.classList.toggle('active', b === btn);
+    b.style.borderBottomColor = b === btn ? accent : '';
+    b.style.color = b === btn ? 'var(--text)' : '';
+  });
+  document.querySelectorAll('.tab-panel').forEach(p => {
+    p.classList.toggle('active', p.id === `tab-${currentTab}`);
+  });
+});
+
+// ── Close panel ───────────────────────────────────────────────────────────────
+
+document.getElementById('modal-close').addEventListener('click', closeModal);
+document.getElementById('panel-scrim').addEventListener('click', closeModal);
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+// ── Boot ──────────────────────────────────────────────────────────────────────
+
+renderHome();
+
+</script>
+</body>
+</html>
