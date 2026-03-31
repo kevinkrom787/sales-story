@@ -4,7 +4,7 @@ const CATEGORIES = [
     name: 'Sales Philosophy',
     accent: '#E8503A',
     description: 'How I think about selling, building pipeline, and running GTM teams. Opinionated, experience-backed, and mostly learned the hard way.',
-    preview: ['How I Operate', 'On Pipeline', 'On Customer Success', 'On Hiring for Stage']
+    preview: ['How I Operate', 'On Pipeline', 'On Customer Success', 'On Hiring for Stage', 'The Pitch']
   },
   {
     id: 'playbooks',
@@ -111,6 +111,161 @@ const PHILOSOPHY = [
         '<strong>Hire for the trench</strong> — You\'ll be in it together when things break. Choose people you trust and want to go through it with.'
       ]}
     ]
+  }
+  ,
+  {
+    id: 'the-pitch',
+    type: 'philosophy',
+    name: 'The Pitch',
+    accent: '#00B4D8',
+    purpose: 'A repeatable structure for any enterprise pitch. Plug in your company, your problem, your product. The bones don\'t change.',
+    preview: 'Establish credibility. Name their pain. Visualize the mess. Earn the right to show product.',
+    tabs: [
+      {
+        key: 'company-bg',
+        label: 'Company Background',
+        type: 'pitch-section',
+        content: {
+          section: '01',
+          headline: 'Establish credibility fast. Then stop talking.',
+          coaching: 'This is not a company story — it\'s a proof point. 60 seconds max. Lead with the strongest signal that matches your buyer\'s world (customers they recognize, certifications they require, numbers that land). Then ask if they know you and move on.',
+          points: [
+            '<strong>Your one-line positioning.</strong> What you do and who it\'s for. Crisp enough to repeat.',
+            '<strong>Your top 2–3 metrics.</strong> Pick the ones that prove you\'re real — downloads, uptime, win rate, benchmark rank. Don\'t spray the whole slide.',
+            '<strong>Logos they recognize.</strong> Customers, partners, or investors in their industry or peer set.',
+            '<strong>Certifications that matter to them.</strong> SOC 2, HIPAA, FedRAMP — only show what\'s relevant to this account.',
+            '<strong>Recognition that builds trust.</strong> Analyst coverage, media, awards. One or two. Not a trophy shelf.',
+            '<strong>Ask before moving on.</strong> "Have you come across us before?" It resets the room and surfaces assumptions early.'
+          ],
+          avoid: 'Avoid: founding story, org charts, investor lists, a timeline of your product releases. They don\'t care yet.',
+          callout: '"Before we get into it — can you tell me a bit about what you\'re working on right now and what brought you to this conversation?"'
+        }
+      },
+      {
+        key: 'problem',
+        label: 'Problem Statement',
+        type: 'pitch-section',
+        content: {
+          section: '02',
+          headline: 'Name the pain they already feel.',
+          coaching: 'You\'re not teaching them that a problem exists — they already know. You\'re proving you understand it better than they expected. Frame the problem in the language of their world, their moment, their pressure. If they\'re nodding before you finish the sentence, you\'ve got it right.',
+          points: [
+            '<strong>Set the context with timing.</strong> What\'s changed in their market or technology landscape that makes this problem acute right now?',
+            '<strong>State the surface problem.</strong> What are teams or buyers visibly struggling with? Keep it concrete.',
+            '<strong>Name the compounding effects.</strong> What does that surface problem actually cost — in time, money, risk, or credibility?',
+            '<strong>Make it structural, not anecdotal.</strong> Show that this isn\'t one team\'s bad luck — it\'s a systemic condition affecting everyone at their stage.',
+            '<strong>Use their language.</strong> Mirror the words your best customers used to describe the problem before they bought. That\'s what lands.'
+          ],
+          avoid: 'Avoid: leading with your product. If you\'re on slide 3 and you\'ve already said your product name more than twice, you\'re pitching too early.',
+          callout: '"Does that match what you\'re seeing internally? Where are you feeling this the most right now?"'
+        }
+      },
+      {
+        key: 'visual-problem',
+        label: 'Visual Problem',
+        type: 'pitch-section',
+        content: {
+          section: '03',
+          headline: 'Show them their own mess.',
+          coaching: 'The best version of this slide makes them laugh, then grimace. It should feel uncomfortably familiar — like you\'ve been watching their team work. The goal isn\'t to embarrass them. It\'s to make the status quo viscerally real. A before-state diagram or a chaos map works better than words.',
+          points: [
+            '<strong>Draw the "before" state.</strong> What does the current solution actually look like — the duct tape, the custom code, the fragile handoffs?',
+            '<strong>Make it visual if you can.</strong> Architecture diagrams, workflow sprawl, a list of 12 tools doing what one should — visuals stick.',
+            '<strong>Show the hidden costs.</strong> Maintenance burden, the person who left who knew how it worked, the alert that fires at 2am.',
+            '<strong>Use real specifics.</strong> Name the tools, the workarounds, the failure modes your customers actually described. Specificity = credibility.',
+            '<strong>Let them react.</strong> Don\'t rush this slide. The pause after they recognize themselves is working time.'
+          ],
+          avoid: 'Avoid: making the "before" state feel like an attack on their team\'s decisions. They made reasonable choices with what was available. Honor that.',
+          callout: '"How close is this to what your setup looks like today? What\'s the part that\'s causing the most pain?"'
+        }
+      },
+      {
+        key: 'enterprise-zoom',
+        label: 'Enterprise Zoom Out',
+        type: 'pitch-section',
+        content: {
+          section: '04',
+          headline: 'Scale the pain to the org — not just the team.',
+          coaching: 'This section is conditional. Use it for enterprise accounts where the problem multiplies across teams, departments, or business units. Skip it or shorten it for mid-market. If you\'re talking to a central platform or architecture team, lean hard into this. If you\'re talking to a single product team, come back to it later.',
+          points: [
+            '<strong>Multiply the problem.</strong> How many teams are independently building the same thing? What does that cost at scale?',
+            '<strong>Show the governance gap.</strong> No standardization, no reuse, no visibility into what\'s running where. This is what keeps a CTO up at night.',
+            '<strong>Name what compounds.</strong> Same failures discovered separately. Same bad decisions made independently. The org learns nothing.',
+            '<strong>Reframe it as a platform decision.</strong> At a certain scale, this stops being a tooling conversation and starts being a strategic infrastructure decision.',
+            '<strong>Connect to the economic buyer.</strong> Whoever owns the AI platform budget or architecture standard is who this section is written for. Make sure you\'re in the room with them or building toward it.'
+          ],
+          avoid: 'Avoid: overstating the enterprise angle if you\'re talking to a team-level buyer. It makes the problem feel too big to solve and the deal feel too small to move.',
+          callout: '"Is this a decision that\'s being made at the team level, or is there a central group thinking about AI infrastructure across the org?"'
+        }
+      },
+      {
+        key: 'strategic-outcomes',
+        label: 'Strategic Outcomes',
+        type: 'pitch-section',
+        content: {
+          section: '05',
+          headline: 'What solving this actually unlocks.',
+          coaching: 'Don\'t pitch features. Pitch the future state. What does their world look like when this problem is gone? This section bridges the problem and the product. If you skip it and jump straight to your platform, you lose the thread. They need to feel the destination before they care about the vehicle.',
+          points: [
+            '<strong>Name the use cases they can activate.</strong> What becomes possible that\'s currently blocked? Be specific to their industry or function.',
+            '<strong>Connect to the business outcome.</strong> Revenue saved, time recovered, risk reduced, products shipped. Ground it in the metric they\'re measured on.',
+            '<strong>Show breadth without overselling.</strong> If your platform unlocks multiple outcomes, give them a category view — but focus depth on the one they care about most.',
+            '<strong>Make the ROI implicit.</strong> You don\'t have to build a formal model here. Just make it obvious that solving this pays for itself.',
+            '<strong>Pick their lane.</strong> Ask which use case maps to what they\'re building. You\'re narrowing toward qualification, not broadening toward a generic pitch.'
+          ],
+          avoid: 'Avoid: listing every use case you support. Breadth without relevance kills urgency. More categories ≠ more compelling.',
+          callout: '"Of the outcomes I just described — which one maps most closely to what your team is trying to accomplish this year?"'
+        }
+      },
+      {
+        key: 'value-prop',
+        label: 'Value Prop & Differentiation',
+        type: 'pitch-section',
+        content: {
+          section: '06',
+          headline: 'Where you fit. How you\'re different.',
+          coaching: 'This is the "why us" section — but earn it. Only land here after they\'ve felt the pain and nodded at the outcomes. If you lead with this, it sounds like marketing. If you get here after sections 02–05, it sounds like the answer they\'ve been waiting for. Keep it simple. Three differentiators max.',
+          points: [
+            '<strong>State your clear positioning.</strong> What category do you own or are you creating? Where do you sit in their stack?',
+            '<strong>Lead with your sharpest differentiator.</strong> The one thing you do better than anyone else. Not a laundry list — one headline claim, well-supported.',
+            '<strong>Proof the claim immediately.</strong> Every differentiator needs a proof point: a benchmark, a customer quote, a deployment stat. Claims without proof are just marketing copy.',
+            '<strong>Address the obvious alternative.</strong> What are they doing today, or what competitor are they evaluating? Name it. Then say why you win that comparison.',
+            '<strong>Keep it concise.</strong> This section should take 3–5 minutes. If it\'s going longer, you\'re pitching instead of having a conversation.'
+          ],
+          avoid: 'Avoid: comparing yourself to competitors by name without being ready to defend it. And avoid "we\'re the only company that..." unless you can back it up cold.',
+          callout: '"Does that differentiation map to what matters most to your team, or is there a specific comparison you\'re working through right now?"'
+        }
+      },
+      {
+        key: 'platform',
+        label: 'Platform',
+        type: 'pitch-section',
+        content: {
+          section: '07',
+          headline: 'Earn the product walk. Then go deep.',
+          coaching: 'Don\'t open a demo or go deep on platform until they\'ve been through the problem and value prop. If you do it earlier, you\'re showing a product before they understand why they need it. This section is where technical credibility gets built — but only if you\'ve earned the right to be here. Calibrate depth to the room.',
+          points: [
+            '<strong>Start with architecture, not features.</strong> Show where your platform sits in their stack. What does it replace? What does it connect to?',
+            '<strong>Walk the core workflow.</strong> The end-to-end motion — how data or a process moves through your system. Don\'t demo every feature. Demo the thing they care about.',
+            '<strong>Match depth to the audience.</strong> Exec room = business outcomes and integrations. Technical room = architecture, APIs, configuration, observability.',
+            '<strong>Show the connective tissue.</strong> Integrations, APIs, deployment options (cloud, on-prem, air-gapped). Enterprise buyers need to know this fits before they care about anything else.',
+            '<strong>Let them drive.</strong> Ask what they want to see. "Is there a specific part of the platform you\'d like to go deeper on?" — then follow their lead.',
+            '<strong>Leave time for questions.</strong> The best platform conversations are 60% questions, 40% showing. You\'re validating fit, not delivering a demo.'
+          ],
+          avoid: 'Avoid: showing every feature. It signals insecurity, not depth. Show one thing really well and let them ask for more.',
+          callout: '"Before I go deeper — what does your current setup look like, and what\'s the specific workflow you\'re trying to improve? I want to make sure we\'re looking at the right part of the platform."'
+        }
+      }
+    ]
+  },
+  {
+    id: 'ai-seller',
+    type: 'philosophy',
+    name: 'The AI-Powered Seller',
+    accent: '#a855f7',
+    purpose: 'How AI tools transform a generalist seller into a precision machine.',
+    preview: 'When legal, security, demos, and lead routing run on autopilot — you only touch deals you can win.',
+    externalLink: 'transformer.html',
   }
 ];
 

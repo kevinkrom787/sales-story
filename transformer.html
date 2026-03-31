@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The AI-Powered Seller | Megazord Mode</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #05050d;
+    --green: #10b981; --green-g: #6ee7b7;
+    --orange: #f97316; --orange-g: #fdba74;
+    --purple: #a855f7; --purple-g: #d8b4fe;
+    --blue: #3b82f6; --blue-g: #93c5fd;
+    --gold: #eab308; --gold-g: #fde68a;
+  }
+
+  html, body {
+    width: 100%; height: 100%;
+    overflow: hidden;
+    font-family: 'Space Grotesk', sans-serif;
+    background: var(--bg);
+    color: #e8e8f0;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.022) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.022) 1px, transparent 1px);
+    background-size: 64px 64px;
+  }
+
+  body::after {
+    content: '';
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background: radial-gradient(ellipse 80% 80% at 50% 50%, transparent 20%, #05050d 100%);
+  }
+
+  #stage { position: fixed; inset: 0; z-index: 2; }
+
+  canvas, #lines {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    display: block;
+  }
+
+  #header {
+    position: absolute; top: 22px; left: 50%;
+    transform: translateX(-50%);
+    text-align: center; z-index: 20; pointer-events: none;
+  }
+  #header .eyebrow {
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 0.35em; text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+  }
+  #header .main-title {
+    font-size: clamp(20px, 3.5vw, 40px); font-weight: 700;
+    letter-spacing: 0.06em; color: #e8e8f0; margin-top: 4px;
+  }
+
+  .bot {
+    position: absolute;
+    display: flex; flex-direction: column; align-items: center;
+    gap: 10px;
+    z-index: 10;
+    will-change: transform, opacity;
+    cursor: default;
+    opacity: 0;
+  }
+
+  .bot-label {
+    background: rgba(6,6,18,0.8);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-top-width: 2px;
+    border-radius: 6px; padding: 7px 14px;
+    text-align: center; min-width: 148px;
+    backdrop-filter: blur(10px);
+    transition: box-shadow 0.25s;
+  }
+  .bot:hover .bot-label { box-shadow: 0 6px 24px rgba(0,0,0,0.6); }
+
+  .bot-label .lname {
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.2em; text-transform: uppercase;
+  }
+  .bot-label .ldesc { font-size: 10px; color: rgba(255,255,255,0.38); margin-top: 3px; line-height: 1.35; }
+
+  @keyframes bob {
+    0%, 100% { transform: translate(-50%, calc(-50% - 7px)); }
+    50%       { transform: translate(-50%, calc(-50% + 7px)); }
+  }
+  .bot.bobbing { animation: bob 3.2s ease-in-out infinite; }
+
+  @keyframes core-pulse {
+    0%, 100% { opacity: 0.9; }
+    50%       { opacity: 0.2; }
+  }
+  .cp  { animation: core-pulse 2s ease-in-out infinite; }
+  .cp2 { animation: core-pulse 2s ease-in-out infinite 0.45s; }
+  .cp3 { animation: core-pulse 2s ease-in-out infinite 0.9s; }
+
+  #combine-btn {
+    position: absolute; bottom: 36px; left: 50%;
+    transform: translateX(-50%);
+    z-index: 20; padding: 13px 40px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 12px; font-weight: 700;
+    letter-spacing: 0.35em; text-transform: uppercase;
+    color: var(--gold); background: transparent;
+    border: 2px solid var(--gold); border-radius: 4px;
+    cursor: pointer;
+    animation: btn-glow 2.2s ease-in-out infinite;
+    transition: background 0.2s, transform 0.15s;
+  }
+  @keyframes btn-glow {
+    0%, 100% { box-shadow: 0 0 14px rgba(234,179,8,0.3); }
+    50%       { box-shadow: 0 0 42px rgba(234,179,8,0.65); }
+  }
+  #combine-btn:hover { background: rgba(234,179,8,0.1); transform: translateX(-50%) scale(1.04); }
+  #combine-btn:active { transform: translateX(-50%) scale(0.97); }
+
+  #status {
+    position: absolute; bottom: 100px; left: 50%;
+    transform: translateX(-50%);
+    z-index: 20; font-size: 10px; font-weight: 700;
+    letter-spacing: 0.3em; text-transform: uppercase;
+    color: rgba(255,255,255,0.5); opacity: 0;
+    pointer-events: none; transition: opacity 0.4s;
+    white-space: nowrap;
+  }
+
+  #flash {
+    position: fixed; inset: 0; z-index: 200;
+    background: white; opacity: 0; pointer-events: none;
+  }
+
+  #final-form {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex; flex-direction: column; align-items: center;
+    gap: 12px; z-index: 15;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.9s;
+    max-height: 92vh; overflow: hidden;
+  }
+  #final-form.visible { opacity: 1; pointer-events: auto; }
+
+  #mz-title { text-align: center; }
+  #mz-title .tag {
+    font-size: 9px; font-weight: 700; letter-spacing: 0.35em;
+    text-transform: uppercase; color: rgba(255,255,255,0.28);
+  }
+  #mz-title .name {
+    font-size: clamp(16px, 2.8vw, 28px); font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    background: linear-gradient(90deg, #10b981, #3b82f6, #a855f7, #f97316, #eab308);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  #caps-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 8px; width: min(360px, 90vw);
+  }
+  .cap {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 6px; padding: 9px 12px;
+  }
+  .cap .cn { font-size: 10px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 3px; }
+  .cap .cd { font-size: 10px; color: rgba(255,255,255,0.38); line-height: 1.35; }
+
+  #focus-bar {
+    width: min(360px, 90vw);
+    border: 1px solid rgba(234,179,8,0.28);
+    border-radius: 6px; padding: 10px 18px;
+    text-align: center; background: rgba(234,179,8,0.06);
+  }
+  #focus-bar .fl { font-size: 9px; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; color: rgba(255,255,255,0.3); }
+  #focus-bar .fv { font-size: 13px; font-weight: 700; letter-spacing: 0.08em; color: var(--gold); margin-top: 3px; }
+
+  #reset-btn {
+    font-family: 'Space Grotesk', sans-serif; font-size: 9px; font-weight: 600;
+    letter-spacing: 0.22em; text-transform: uppercase;
+    color: rgba(255,255,255,0.2); background: transparent;
+    border: 1px solid rgba(255,255,255,0.1); border-radius: 4px;
+    padding: 6px 16px; cursor: pointer; transition: all 0.2s;
+  }
+  #reset-btn:hover { color: rgba(255,255,255,0.5); border-color: rgba(255,255,255,0.28); }
+
+  @keyframes mz-float {
+    0%, 100% { transform: translateY(-4px); }
+    50%       { transform: translateY(4px); }
+  }
+  #megazord-svg { animation: mz-float 3s ease-in-out infinite; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <canvas id="canvas"></canvas>
+
+  <svg id="lines" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <filter id="lglow" x="-50%" y="-50%" width="200%" height="200%">
+        <feGaussianBlur stdDeviation="2" result="b"/>
+        <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+    </defs>
+  </svg>
+
+  <div id="header">
+    <div class="eyebrow">The generalist seller + AI tools =</div>
+    <div class="main-title">MEGAZORD MODE</div>
+  </div>
+
+  <div id="status"></div>
+  <button id="combine-btn">⚡ &nbsp;COMBINE&nbsp; ⚡</button>
+
+  <div id="final-form">
+    <div id="mz-title">
+      <div class="tag">ALL SYSTEMS ONLINE &nbsp;·&nbsp; PERFECT FIT LEADS ONLY</div>
+      <div class="name">THE AI-POWERED SELLER</div>
+    </div>
+
+    <svg id="megazord-svg" viewBox="0 0 120 200" xmlns="http://www.w3.org/2000/svg"
+         style="width:108px;height:180px;overflow:visible;filter:drop-shadow(0 0 18px rgba(168,85,247,0.55)) drop-shadow(0 0 45px rgba(255,255,255,0.12))">
+      <defs>
+        <linearGradient id="mg" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%"   stop-color="#10b981"/>
+          <stop offset="25%"  stop-color="#3b82f6"/>
+          <stop offset="50%"  stop-color="#a855f7"/>
+          <stop offset="75%"  stop-color="#f97316"/>
+          <stop offset="100%" stop-color="#eab308"/>
+        </linearGradient>
+        <radialGradient id="mg-aura" cx="50%" cy="50%" r="50%">
+          <stop offset="0%"   stop-color="#a855f7" stop-opacity="0.22"/>
+          <stop offset="100%" stop-color="#a855f7" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+
+      <!-- Aura -->
+      <ellipse cx="60" cy="100" rx="57" ry="90" fill="url(#mg-aura)"/>
+
+      <!-- Crown crest -->
+      <polygon points="60,0 53,13 57,11 60,17 63,11 67,13" fill="#eab308" opacity="0.95"/>
+      <rect x="57.5" y="4" width="5" height="11" rx="1" fill="#eab308" opacity="0.6"/>
+
+      <!-- Head -->
+      <rect x="27" y="15" width="66" height="45" rx="6" fill="url(#mg)" opacity="0.93"/>
+      <rect x="29" y="17" width="62" height="41" rx="4" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="1"/>
+
+      <!-- Visor -->
+      <rect x="32" y="25" width="56" height="20" rx="3" fill="#00ccee" opacity="0.45"/>
+      <rect x="34" y="27" width="52" height="16" rx="2" fill="#001830" opacity="0.88"/>
+      <rect x="35" y="28" width="9" height="14" rx="2" fill="#00ccee" opacity="0.9" class="cp"/>
+
+      <!-- Jaw plate -->
+      <rect x="38" y="52" width="44" height="8" rx="2.5" fill="url(#mg)" opacity="0.6"/>
+
+      <!-- Neck -->
+      <rect x="47" y="60" width="26" height="11" rx="3" fill="url(#mg)" opacity="0.8"/>
+
+      <!-- Torso -->
+      <rect x="9" y="71" width="102" height="62" rx="8" fill="url(#mg)" opacity="0.9"/>
+      <rect x="11" y="73" width="98" height="58" rx="6" fill="rgba(0,0,0,0.18)"/>
+      <rect x="11" y="73" width="98" height="58" rx="6" fill="none" stroke="rgba(255,255,255,0.14)" stroke-width="1"/>
+
+      <!-- Shoulder wings -->
+      <polygon points="9,71 0,64 0,84 9,88"  fill="#10b981" opacity="0.88"/>
+      <polygon points="111,71 120,64 120,84 111,88" fill="#f97316" opacity="0.88"/>
+
+      <!-- Chest hex plate -->
+      <polygon points="60,76 74,84 74,104 60,112 46,104 46,84" fill="rgba(0,0,0,0.32)"/>
+      <polygon points="60,78 72,85 72,103 60,110 48,103 48,85" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+
+      <!-- 5-point power cores (one per bot color) -->
+      <!-- Center (gold/seller) -->
+      <circle cx="60" cy="94" r="9" fill="rgba(0,0,0,0.4)" class="cp"/>
+      <circle cx="60" cy="94" r="6" fill="#eab308" opacity="0.9" class="cp2"/>
+      <circle cx="60" cy="94" r="2.5" fill="white"/>
+      <!-- Top (purple/code) -->
+      <circle cx="60" cy="79" r="4.5" fill="#a855f7" opacity="0.88" class="cp3"/>
+      <!-- Left (green/legal) -->
+      <circle cx="48" cy="94" r="4.5" fill="#10b981" opacity="0.88" class="cp2"/>
+      <!-- Right (orange/sec) -->
+      <circle cx="72" cy="94" r="4.5" fill="#f97316" opacity="0.88" class="cp"/>
+      <!-- Bottom (blue/route) -->
+      <circle cx="60" cy="109" r="4.5" fill="#3b82f6" opacity="0.88" class="cp3"/>
+
+      <!-- Left arm (green) -->
+      <rect x="0" y="73" width="10" height="44" rx="4" fill="#10b981" opacity="0.85"/>
+      <rect x="0" y="92" width="11" height="8"  rx="3" fill="#10b981"/> <!-- elbow guard -->
+      <rect x="0" y="113" width="12" height="12" rx="3" fill="#10b981" opacity="0.9"/> <!-- fist -->
+
+      <!-- Right arm (orange) -->
+      <rect x="110" y="73" width="10" height="44" rx="4" fill="#f97316" opacity="0.85"/>
+      <rect x="109" y="92" width="11" height="8"  rx="3" fill="#f97316"/>
+      <rect x="108" y="113" width="12" height="12" rx="3" fill="#f97316" opacity="0.9"/>
+
+      <!-- Hip/belt -->
+      <rect x="13" y="133" width="94" height="14" rx="4" fill="url(#mg)" opacity="0.75"/>
+      <rect x="50" y="131" width="20" height="18" rx="3" fill="#eab308" opacity="0.45"/>
+
+      <!-- Left leg (blue) -->
+      <rect x="14" y="146" width="38" height="26" rx="5" fill="#3b82f6" opacity="0.87"/>
+      <rect x="16" y="158" width="34" height="9" rx="2" fill="#93c5fd" opacity="0.22"/>
+      <rect x="15" y="171" width="36" height="24" rx="4" fill="#3b82f6" opacity="0.82"/>
+      <!-- Left knee guard -->
+      <rect x="16" y="168" width="34" height="8" rx="2" fill="#3b82f6"/>
+      <!-- Left foot -->
+      <rect x="11" y="191" width="42" height="9" rx="3" fill="#3b82f6"/>
+
+      <!-- Right leg (purple) -->
+      <rect x="68" y="146" width="38" height="26" rx="5" fill="#a855f7" opacity="0.87"/>
+      <rect x="70" y="158" width="34" height="9" rx="2" fill="#d8b4fe" opacity="0.22"/>
+      <rect x="69" y="171" width="36" height="24" rx="4" fill="#a855f7" opacity="0.82"/>
+      <!-- Right knee guard -->
+      <rect x="70" y="168" width="34" height="8" rx="2" fill="#a855f7"/>
+      <!-- Right foot -->
+      <rect x="67" y="191" width="42" height="9" rx="3" fill="#a855f7"/>
+    </svg>
+
+    <div id="caps-grid">
+      <div class="cap" style="border-color:rgba(16,185,129,0.28)">
+        <div class="cn" style="color:#10b981">⚖️ &nbsp;LEGAL-3000</div>
+        <div class="cd">ChatGPT handles NDA review &amp; legal first pass autonomously</div>
+      </div>
+      <div class="cap" style="border-color:rgba(249,115,22,0.28)">
+        <div class="cn" style="color:#f97316">🛡️ &nbsp;SEC-BOT</div>
+        <div class="cd">Security agents complete questionnaires without seller touch</div>
+      </div>
+      <div class="cap" style="border-color:rgba(168,85,247,0.28)">
+        <div class="cn" style="color:#a855f7">💻 &nbsp;CODE-BOT</div>
+        <div class="cd">Claude Code builds demos &amp; lightweight POC features for SAs</div>
+      </div>
+      <div class="cap" style="border-color:rgba(59,130,246,0.28)">
+        <div class="cn" style="color:#3b82f6">🔀 &nbsp;ROUTE-BOT</div>
+        <div class="cd">Non-fit leads routed to self-serve instantly — zero seller time</div>
+      </div>
+    </div>
+
+    <div id="focus-bar">
+      <div class="fl">Seller now exclusively focused on</div>
+      <div class="fv">PERFECT FIT, WINNABLE DEALS</div>
+    </div>
+
+    <button id="reset-btn">↺ &nbsp;RESET</button>
+  </div>
+
+  <div id="flash"></div>
+</div>
+
+<script>
+// ── CONFIG ─────────────────────────────────────────────────────────────
+const BOTS = [
+  { id:'legal',  name:'LEGAL-3000', tool:'ChatGPT',        desc:'NDA review · Legal first pass',       color:'#10b981', glow:'#6ee7b7', xp:0.18, yp:0.30 },
+  { id:'sec',    name:'SEC-BOT',    tool:'Security Agent', desc:'Security questionnaire killer',        color:'#f97316', glow:'#fdba74', xp:0.82, yp:0.30 },
+  { id:'code',   name:'CODE-BOT',   tool:'Claude Code',    desc:'Demo builder · POC assist',            color:'#a855f7', glow:'#d8b4fe', xp:0.82, yp:0.66 },
+  { id:'route',  name:'ROUTE-BOT',  tool:'Self-Serve',     desc:'Non-fit lead router',                 color:'#3b82f6', glow:'#93c5fd', xp:0.18, yp:0.66 },
+  { id:'seller', name:'THE SELLER', tool:'Human',          desc:'Relationships · Close · Strategy',    color:'#eab308', glow:'#fde68a', xp:0.50, yp:0.47, isCenter:true },
+];
+
+const ICONS = { legal:'⚖️', sec:'🛡️', code:'💻', route:'🔀', seller:'🧠' };
+
+// ── BOT SVG ────────────────────────────────────────────────────────────
+function makeBotSVG(color, glow, isCenter) {
+  const uid = Math.random().toString(36).slice(2,7);
+  const W = isCenter ? 72 : 64, H = isCenter ? 108 : 96;
+  return `
+<svg viewBox="0 0 80 120" xmlns="http://www.w3.org/2000/svg"
+     style="width:${W}px;height:${H}px;overflow:visible;filter:drop-shadow(0 0 10px ${color}) drop-shadow(0 0 20px ${color}55)">
+  <defs>
+    <radialGradient id="a${uid}" cx="50%" cy="40%" r="60%">
+      <stop offset="0%"   stop-color="${glow}" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="${color}" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <ellipse cx="40" cy="62" rx="38" ry="56" fill="url(#a${uid})"/>
+  <line x1="40" y1="2" x2="40" y2="12" stroke="${color}" stroke-width="2.5" stroke-linecap="round"/>
+  <circle cx="40" cy="1" r="3.5" fill="${glow}" class="cp"/>
+  <rect x="18" y="10" width="44" height="30" rx="5" fill="${color}" opacity="0.9"/>
+  <rect x="20" y="12" width="40" height="26" rx="3" fill="rgba(0,0,0,0.22)"/>
+  <rect x="22" y="16" width="36" height="12" rx="2.5" fill="${glow}" opacity="0.45"/>
+  <rect x="24" y="18" width="32" height="8" rx="1.5" fill="#001830" opacity="0.88"/>
+  <rect x="25" y="19" width="6" height="6" rx="1" fill="${glow}" opacity="0.95" class="cp2"/>
+  <rect x="27" y="34" width="26" height="6" rx="2" fill="${color}" opacity="0.55"/>
+  <rect x="32" y="40" width="16" height="7" rx="2" fill="${color}" opacity="0.7"/>
+  <rect x="10" y="47" width="60" height="42" rx="7" fill="${color}" opacity="0.87"/>
+  <rect x="12" y="49" width="56" height="38" rx="5" fill="rgba(0,0,0,0.18)"/>
+  <rect x="3"  y="45" width="9" height="16" rx="3" fill="${color}" opacity="0.9"/>
+  <rect x="68" y="45" width="9" height="16" rx="3" fill="${color}" opacity="0.9"/>
+  <rect x="1"  y="49" width="9" height="28" rx="3.5" fill="${color}" opacity="0.82"/>
+  <rect x="70" y="49" width="9" height="28" rx="3.5" fill="${color}" opacity="0.82"/>
+  <circle cx="40" cy="68" r="10" fill="rgba(0,0,0,0.38)" class="cp"/>
+  <circle cx="40" cy="68" r="6.5" fill="${glow}" opacity="0.32" class="cp2"/>
+  <circle cx="40" cy="68" r="3.5" fill="${glow}" opacity="0.95"/>
+  <rect x="0"  y="74" width="11" height="10" rx="2.5" fill="${color}" opacity="0.88"/>
+  <rect x="69" y="74" width="11" height="10" rx="2.5" fill="${color}" opacity="0.88"/>
+  <rect x="13" y="89" width="54" height="9" rx="3" fill="${color}" opacity="0.7"/>
+  <rect x="14" y="97" width="22" height="20" rx="3.5" fill="${color}" opacity="0.85"/>
+  <rect x="44" y="97" width="22" height="20" rx="3.5" fill="${color}" opacity="0.85"/>
+  <rect x="15" y="106" width="20" height="6" rx="1.5" fill="${glow}" opacity="0.28"/>
+  <rect x="45" y="106" width="20" height="6" rx="1.5" fill="${glow}" opacity="0.28"/>
+  <rect x="11" y="113" width="27" height="7" rx="2" fill="${color}"/>
+  <rect x="42" y="113" width="27" height="7" rx="2" fill="${color}"/>
+</svg>`;
+}
+
+// ── CREATE BOTS ────────────────────────────────────────────────────────
+const stage   = document.getElementById('stage');
+const botEls  = {};
+
+BOTS.forEach((bot, i) => {
+  const el = document.createElement('div');
+  el.className = 'bot';
+  el.id = `bot-${bot.id}`;
+  el.style.left = `${bot.xp * 100}%`;
+  el.style.top  = `${bot.yp * 100}%`;
+  el.style.transform = 'translate(-50%,-50%)';
+
+  el.innerHTML = `
+    ${makeBotSVG(bot.color, bot.glow, bot.isCenter)}
+    <div class="bot-label" style="border-top-color:${bot.color}55">
+      <div class="lname" style="color:${bot.color}">${ICONS[bot.id]} &nbsp;${bot.name}</div>
+      <div class="ldesc">${bot.tool} · ${bot.desc}</div>
+    </div>
+  `;
+
+  // Insert before the status div
+  stage.insertBefore(el, document.getElementById('status'));
+  botEls[bot.id] = el;
+
+  // Staggered fade-in
+  setTimeout(() => {
+    el.style.transition = 'opacity 0.6s';
+    el.style.opacity = '1';
+    setTimeout(() => {
+      el.style.transition = '';
+      el.style.animationDelay = `${i * 0.48}s`;
+      el.classList.add('bobbing');
+    }, 620);
+  }, 200 + i * 130);
+});
+
+// ── ENERGY LINES ──────────────────────────────────────────────────────
+const linesSVG = document.getElementById('lines');
+const lineMap  = {};
+let dashOffset = 0;
+let linesActive = true;
+
+BOTS.forEach(bot => {
+  if (bot.isCenter) return;
+  const line = document.createElementNS('http://www.w3.org/2000/svg','line');
+  line.setAttribute('stroke', bot.color);
+  line.setAttribute('stroke-width', '1.5');
+  line.setAttribute('stroke-dasharray', '7 5');
+  line.setAttribute('opacity', '0.22');
+  line.setAttribute('filter', 'url(#lglow)');
+  linesSVG.appendChild(line);
+  lineMap[bot.id] = line;
+});
+
+function updateLines() {
+  if (!linesActive) return;
+  const selR = botEls.seller.getBoundingClientRect();
+  const cx = selR.left + selR.width / 2;
+  const cy = selR.top  + selR.height / 2;
+  dashOffset -= 0.4;
+  BOTS.forEach(bot => {
+    if (bot.isCenter) return;
+    const r = botEls[bot.id].getBoundingClientRect();
+    const bx = r.left + r.width  / 2;
+    const by = r.top  + r.height / 2;
+    const ln = lineMap[bot.id];
+    ln.setAttribute('x1', bx); ln.setAttribute('y1', by);
+    ln.setAttribute('x2', cx); ln.setAttribute('y2', cy);
+    ln.setAttribute('stroke-dashoffset', dashOffset);
+  });
+}
+
+// ── CANVAS: STARS + PARTICLES ─────────────────────────────────────────
+const canvas = document.getElementById('canvas');
+const ctx    = canvas.getContext('2d');
+let W, H;
+
+function resize() { W = canvas.width = innerWidth; H = canvas.height = innerHeight; }
+resize();
+addEventListener('resize', resize);
+
+const STARS = Array.from({length:65}, () => ({
+  x: Math.random(), y: Math.random(),
+  r: Math.random() * 1.3 + 0.2,
+  base: Math.random() * 0.45 + 0.08,
+  spd: Math.random() * 0.007 + 0.003,
+  ph: Math.random() * Math.PI * 2,
+}));
+
+let parts = [];
+let t = 0;
+
+function hexToRGBA(hex, a) {
+  const n = parseInt(hex.slice(1), 16);
+  return `rgba(${(n>>16)&255},${(n>>8)&255},${n&255},${a.toFixed(3)})`;
+}
+
+function spawnBurst(x, y, n, colors) {
+  for (let i = 0; i < n; i++) {
+    const angle = (Math.PI * 2 * i / n) + Math.random() * 0.9;
+    const spd   = 2 + Math.random() * 9;
+    parts.push({
+      x, y,
+      vx: Math.cos(angle) * spd,
+      vy: Math.sin(angle) * spd,
+      life: 1,
+      decay: 0.011 + Math.random() * 0.023,
+      r: 1.5 + Math.random() * 5.5,
+      color: colors[Math.floor(Math.random() * colors.length)],
+    });
+  }
+}
+
+function tick() {
+  ctx.clearRect(0, 0, W, H);
+  t += 0.016;
+
+  // Stars
+  STARS.forEach(s => {
+    const o = s.base * (0.55 + 0.45 * Math.sin(t * s.spd * 40 + s.ph));
+    ctx.beginPath();
+    ctx.arc(s.x * W, s.y * H, s.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(255,255,255,${o})`;
+    ctx.fill();
+  });
+
+  updateLines();
+
+  // Particles
+  parts = parts.filter(p => p.life > 0.01);
+  parts.forEach(p => {
+    p.x += p.vx; p.y += p.vy;
+    p.vx *= 0.94; p.vy *= 0.94;
+    p.life -= p.decay;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, Math.max(0.1, p.r * p.life), 0, Math.PI * 2);
+    ctx.fillStyle = hexToRGBA(p.color, p.life);
+    ctx.fill();
+  });
+
+  requestAnimationFrame(tick);
+}
+tick();
+
+// ── COMBINE SEQUENCE ──────────────────────────────────────────────────
+const ALL_COLORS = BOTS.flatMap(b => [b.color, b.glow]).concat(['#ffffff','#fffde7']);
+
+const combineBtn = document.getElementById('combine-btn');
+const statusEl   = document.getElementById('status');
+const finalForm  = document.getElementById('final-form');
+const flash      = document.getElementById('flash');
+
+combineBtn.addEventListener('click', () => {
+  combineBtn.style.display = 'none';
+  statusEl.style.opacity = '1';
+  statusEl.textContent = '⚡  INITIATING COMBINE SEQUENCE  ⚡';
+
+  // Fade lines
+  setTimeout(() => {
+    linesActive = false;
+    Object.values(lineMap).forEach(l => {
+      l.style.transition = 'opacity 0.5s';
+      l.setAttribute('opacity','0');
+    });
+  }, 80);
+
+  // Fly bots to center
+  setTimeout(() => {
+    statusEl.textContent = 'SYSTEMS MERGING...';
+    const cx = W / 2, cy = H / 2;
+
+    BOTS.forEach(bot => {
+      const el = botEls[bot.id];
+      el.classList.remove('bobbing');
+      el.style.animationDelay = '0s';
+
+      const r  = el.getBoundingClientRect();
+      const bx = r.left + r.width  / 2;
+      const by = r.top  + r.height / 2;
+      const dx = cx - bx, dy = cy - by;
+
+      el.style.transition = 'transform 0.75s cubic-bezier(0.55,0,0.8,0.6), opacity 0.75s';
+      el.style.transform  = `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px)) scale(0.04)`;
+      el.style.opacity    = '0';
+
+      // Trail particles
+      let step = 0;
+      const iv = setInterval(() => {
+        const p = step / 20;
+        spawnBurst(bx + (cx - bx)*p, by + (cy - by)*p, 4, [bot.color, bot.glow]);
+        if (++step >= 20) clearInterval(iv);
+      }, 38);
+    });
+  }, 550);
+
+  // Flash
+  setTimeout(() => {
+    statusEl.textContent = 'POWER LEVEL: MAXIMUM';
+    flash.style.opacity = '1';
+    spawnBurst(W/2, H/2, 150, ALL_COLORS);
+  }, 1500);
+
+  // Reveal
+  setTimeout(() => {
+    flash.style.transition = 'opacity 0.75s';
+    flash.style.opacity = '0';
+    BOTS.forEach(b => { botEls[b.id].style.display = 'none'; });
+    statusEl.style.opacity = '0';
+    finalForm.classList.add('visible');
+
+    [0, 180, 360, 540, 720].forEach(d => {
+      setTimeout(() => spawnBurst(W/2, H/2, 28, ALL_COLORS), d);
+    });
+
+    // Header update
+    document.querySelector('#header .eyebrow').textContent = 'Generalist seller + AI tools =';
+    const t2 = document.querySelector('#header .main-title');
+    t2.textContent = 'PERFECT FIT DEALS ONLY';
+    t2.style.background = 'linear-gradient(90deg,#10b981,#3b82f6,#a855f7,#f97316,#eab308)';
+    t2.style.webkitBackgroundClip = 'text';
+    t2.style.backgroundClip = 'text';
+    t2.style.webkitTextFillColor = 'transparent';
+  }, 1780);
+});
+
+document.getElementById('reset-btn').addEventListener('click', () => location.reload());
+
+// Keep bots repositioned on resize (before combine)
+addEventListener('resize', () => {
+  BOTS.forEach(bot => {
+    const el = botEls[bot.id];
+    if (el.style.display !== 'none' && parseFloat(el.style.opacity) > 0.5) {
+      el.style.left = `${bot.xp * 100}%`;
+      el.style.top  = `${bot.yp * 100}%`;
+    }
+  });
+});
+</script>
+</body>
+</html>

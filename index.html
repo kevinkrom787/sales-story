@@ -704,6 +704,119 @@
     .bg-split-card { border-right: none; min-height: 260px; }
   }
 
+  /* ── Pitch Section tab ── */
+  .pitch-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .pitch-slide-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 1rem;
+  }
+  .pitch-slide-badge span {
+    display: inline-block;
+    padding: 0.2rem 0.55rem;
+    border-radius: 3px;
+    font-size: 0.58rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+  }
+  .pitch-headline {
+    font-size: 1.45rem;
+    font-weight: 800;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.25rem;
+    color: var(--text);
+  }
+  .pitch-coaching {
+    font-size: 0.8rem;
+    line-height: 1.65;
+    color: var(--muted);
+    padding: 0.9rem 1.1rem;
+    border-left: 3px solid var(--border2);
+    margin-bottom: 1.75rem;
+    font-style: italic;
+  }
+  .pitch-coaching::before {
+    content: 'Coach: ';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 0.3rem;
+  }
+  .pitch-points {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-bottom: 1.75rem;
+  }
+  .pitch-point {
+    display: flex;
+    gap: 1rem;
+    padding: 1.1rem 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.82rem;
+    line-height: 1.6;
+    color: var(--text);
+    align-items: flex-start;
+  }
+  .pitch-point:first-child { border-top: 1px solid var(--border); }
+  .pitch-point-dot {
+    flex-shrink: 0;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    margin-top: 0.42rem;
+  }
+  .pitch-avoid {
+    font-size: 0.78rem;
+    line-height: 1.6;
+    color: var(--muted);
+    padding: 0.75rem 1rem;
+    border-radius: 4px;
+    background: rgba(255,80,80,0.07);
+    margin-bottom: 1.25rem;
+  }
+  .pitch-avoid-label {
+    display: inline-block;
+    font-size: 0.58rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #e05;
+    margin-right: 0.5rem;
+  }
+  .pitch-callout {
+    font-size: 0.82rem;
+    line-height: 1.6;
+    padding: 1rem 1.25rem;
+    border-radius: 6px;
+    font-weight: 500;
+    color: var(--text);
+  }
+  .pitch-callout::before {
+    content: 'Transition →';
+    display: block;
+    font-size: 0.58rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+    opacity: 0.6;
+  }
+
   /* ── The Human section ── */
   .human-section {
     display: grid;
@@ -1277,7 +1390,10 @@ function enterCategory(categoryId) {
 
   if (categoryId === 'philosophy') {
     area.innerHTML = hero + `<div class="grid">${PHILOSOPHY.map(item => renderPhilosophyCard(item)).join('')}</div>`;
-    area.querySelectorAll('.card').forEach(c => c.addEventListener('click', () => openModal(c.dataset.id)));
+    area.querySelectorAll('.card').forEach(c => c.addEventListener('click', () => {
+      if (c.dataset.href) { window.open(c.dataset.href, '_blank'); return; }
+      openModal(c.dataset.id);
+    }));
 
   } else if (categoryId === 'playbooks') {
     area.innerHTML = hero;
@@ -1296,7 +1412,15 @@ function enterCategory(categoryId) {
 // ── Card renderers ───────────────────────────────────────────────────────────
 
 function renderPhilosophyCard(item) {
-  const accent = CATEGORIES.find(c => c.id === 'philosophy').accent;
+  const accent = item.accent || CATEGORIES.find(c => c.id === 'philosophy').accent;
+  if (item.externalLink) {
+    return `
+      <div class="card" data-href="${item.externalLink}" role="button" tabindex="0" style="--card-accent:${accent}">
+        <div class="card-name">${item.name}</div>
+        <div class="phil-preview">${item.preview}</div>
+        <div class="card-cta"><span>Explore ↗</span></div>
+      </div>`;
+  }
   return `
     <div class="card" data-id="${item.id}" role="button" tabindex="0" style="--card-accent:${accent}">
       <div class="card-name">${item.name}</div>
@@ -1361,10 +1485,11 @@ function renderTab(fn, tab) {
     case 'metrics':    return renderMetrics(fn);
     case 'meetings':   return renderMeetings(fn);
     case 'risks':      return renderRisks(fn);
-    case 'principles': return renderPrinciples(tab.content || [], fn.accent);
-    case 'steps':      return renderSteps(tab.content || [], fn.accent);
-    case 'prose':      return renderProse(tab.content || []);
-    case 'career':     return renderCareer(fn);
+    case 'principles':    return renderPrinciples(tab.content || [], fn.accent);
+    case 'steps':         return renderSteps(tab.content || [], fn.accent);
+    case 'prose':         return renderProse(tab.content || []);
+    case 'career':        return renderCareer(fn);
+    case 'pitch-section': return renderPitchSection(tab.content || {}, fn.accent);
     default:           return '';
   }
 }
@@ -1463,6 +1588,30 @@ function renderCareer(fn) {
 
 function renderProse(content) {
   return `<div class="prose-body">${(content || []).map(p => `<p class="prose-para">${p}</p>`).join('')}</div>`;
+}
+
+function renderPitchSection(c, accent) {
+  const points = (c.points || []).map(p => `
+    <div class="pitch-point">
+      <div class="pitch-point-dot" style="background:${accent}"></div>
+      <div>${p}</div>
+    </div>`).join('');
+  const avoidBlock = c.avoid ? `
+    <div class="pitch-avoid">
+      <span class="pitch-avoid-label">Avoid</span>
+      ${c.avoid}
+    </div>` : '';
+  return `
+    <div class="pitch-section">
+      <div class="pitch-slide-badge">
+        <span style="background:${accent}22;color:${accent}">Section ${c.section || '—'}</span>
+      </div>
+      <div class="pitch-headline">${c.headline || ''}</div>
+      <div class="pitch-coaching" style="border-left-color:${accent}66">${c.coaching || ''}</div>
+      <div class="pitch-points">${points}</div>
+      ${avoidBlock}
+      ${c.callout ? `<div class="pitch-callout" style="background:${accent}11;border-left:3px solid ${accent}">${c.callout}</div>` : ''}
+    </div>`;
 }
 
 function renderSteps(content, accent) {
