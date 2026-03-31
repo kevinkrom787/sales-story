@@ -202,6 +202,20 @@
     50%       { transform: translateY(4px); }
   }
   #megazord-svg { animation: mz-float 3s ease-in-out infinite; }
+
+  @media (max-width: 600px) {
+    #header .main-title { font-size: 20px; }
+    .bot-label { min-width: 90px; max-width: 130px; padding: 5px 8px; }
+    .bot-label .lname { font-size: 9px; letter-spacing: 0.12em; }
+    .bot-label .ldesc { font-size: 9px; }
+    #combine-btn { font-size: 11px; padding: 10px 22px; letter-spacing: 0.25em; }
+    #status { font-size: 9px; bottom: 90px; }
+    #caps-grid { grid-template-columns: 1fr; width: min(260px, 88vw); }
+    #focus-bar { width: min(260px, 88vw); }
+    #megazord-svg { width: 80px !important; height: 134px !important; }
+    #final-form { gap: 8px; }
+    #mz-title .name { font-size: 16px; }
+  }
 </style>
 </head>
 <body>
@@ -227,7 +241,7 @@
 
   <div id="final-form">
     <div id="mz-title">
-      <div class="tag">ALL SYSTEMS ONLINE &nbsp;·&nbsp; PERFECT FIT LEADS ONLY</div>
+      <div class="tag">ALL SYSTEMS ONLINE &nbsp;·&nbsp; NO WAITING. JUST HUNTING.</div>
       <div class="name">THE AI-POWERED SELLER</div>
     </div>
 
@@ -332,25 +346,25 @@
     <div id="caps-grid">
       <div class="cap" style="border-color:rgba(16,185,129,0.28)">
         <div class="cn" style="color:#10b981">⚖️ &nbsp;LEGAL-3000</div>
-        <div class="cd">ChatGPT handles NDA review &amp; legal first pass autonomously</div>
+        <div class="cd">NDA reviews &amp; legal cost reduction — ChatGPT handles the first pass</div>
       </div>
       <div class="cap" style="border-color:rgba(249,115,22,0.28)">
         <div class="cn" style="color:#f97316">🛡️ &nbsp;SEC-BOT</div>
         <div class="cd">Security agents complete questionnaires without seller touch</div>
       </div>
       <div class="cap" style="border-color:rgba(168,85,247,0.28)">
-        <div class="cn" style="color:#a855f7">💻 &nbsp;CODE-BOT</div>
-        <div class="cd">Claude Code builds demos &amp; lightweight POC features for SAs</div>
+        <div class="cn" style="color:#a855f7">🎬 &nbsp;DEMO-BOT</div>
+        <div class="cd">Empowered to run demos &amp; support POCs with real code</div>
       </div>
       <div class="cap" style="border-color:rgba(59,130,246,0.28)">
-        <div class="cn" style="color:#3b82f6">🔀 &nbsp;ROUTE-BOT</div>
-        <div class="cd">Non-fit leads routed to self-serve instantly — zero seller time</div>
+        <div class="cn" style="color:#3b82f6">🚀 &nbsp;OUTBOUND-O-TRON</div>
+        <div class="cd">AI-powered pipegen — supercharged prospecting at scale</div>
       </div>
     </div>
 
     <div id="focus-bar">
-      <div class="fl">Seller now exclusively focused on</div>
-      <div class="fv">PERFECT FIT, WINNABLE DEALS</div>
+      <div class="fl">No blockers. No waiting on legal, security, infra, or marketing.</div>
+      <div class="fv">LEAN. UNBLOCKED. JUST HUNT.</div>
     </div>
 
     <button id="reset-btn">↺ &nbsp;RESET</button>
@@ -362,19 +376,21 @@
 <script>
 // ── CONFIG ─────────────────────────────────────────────────────────────
 const BOTS = [
-  { id:'legal',  name:'LEGAL-3000', tool:'ChatGPT',        desc:'NDA review · Legal first pass',       color:'#10b981', glow:'#6ee7b7', xp:0.18, yp:0.30 },
-  { id:'sec',    name:'SEC-BOT',    tool:'Security Agent', desc:'Security questionnaire killer',        color:'#f97316', glow:'#fdba74', xp:0.82, yp:0.30 },
-  { id:'code',   name:'CODE-BOT',   tool:'Claude Code',    desc:'Demo builder · POC assist',            color:'#a855f7', glow:'#d8b4fe', xp:0.82, yp:0.66 },
-  { id:'route',  name:'ROUTE-BOT',  tool:'Self-Serve',     desc:'Non-fit lead router',                 color:'#3b82f6', glow:'#93c5fd', xp:0.18, yp:0.66 },
+  { id:'legal',    name:'LEGAL-3000',       tool:'ChatGPT',        desc:'NDA reviews · Reduce legal costs',        color:'#10b981', glow:'#6ee7b7', xp:0.18, yp:0.30 },
+  { id:'sec',      name:'SEC-BOT',          tool:'Security Agent', desc:'Security questionnaire killer',           color:'#f97316', glow:'#fdba74', xp:0.82, yp:0.30 },
+  { id:'demo',     name:'DEMO-BOT',         tool:'Claude Code',    desc:'Empowered to demo · POC code support',    color:'#a855f7', glow:'#d8b4fe', xp:0.82, yp:0.66 },
+  { id:'outbound', name:'OUTBOUND-O-TRON',  tool:'AI Agents',      desc:'Supercharged pipegen',                    color:'#3b82f6', glow:'#93c5fd', xp:0.18, yp:0.66 },
   { id:'seller', name:'THE SELLER', tool:'Human',          desc:'Relationships · Close · Strategy',    color:'#eab308', glow:'#fde68a', xp:0.50, yp:0.47, isCenter:true },
 ];
 
-const ICONS = { legal:'⚖️', sec:'🛡️', code:'💻', route:'🔀', seller:'🧠' };
+const ICONS = { legal:'⚖️', sec:'🛡️', demo:'🎬', outbound:'🚀', seller:'🧠' };
 
 // ── BOT SVG ────────────────────────────────────────────────────────────
 function makeBotSVG(color, glow, isCenter) {
   const uid = Math.random().toString(36).slice(2,7);
-  const W = isCenter ? 72 : 64, H = isCenter ? 108 : 96;
+  const mobile = innerWidth < 600;
+  const W = isCenter ? (mobile ? 52 : 72) : (mobile ? 46 : 64);
+  const H = isCenter ? (mobile ? 78 : 108) : (mobile ? 69 : 96);
   return `
 <svg viewBox="0 0 80 120" xmlns="http://www.w3.org/2000/svg"
      style="width:${W}px;height:${H}px;overflow:visible;filter:drop-shadow(0 0 10px ${color}) drop-shadow(0 0 20px ${color}55)">
@@ -630,9 +646,9 @@ combineBtn.addEventListener('click', () => {
     });
 
     // Header update
-    document.querySelector('#header .eyebrow').textContent = 'Generalist seller + AI tools =';
+    document.querySelector('#header .eyebrow').textContent = 'No waiting on legal, security, infra, or marketing —';
     const t2 = document.querySelector('#header .main-title');
-    t2.textContent = 'PERFECT FIT DEALS ONLY';
+    t2.textContent = 'LEAN. UNBLOCKED. JUST HUNT.';
     t2.style.background = 'linear-gradient(90deg,#10b981,#3b82f6,#a855f7,#f97316,#eab308)';
     t2.style.webkitBackgroundClip = 'text';
     t2.style.backgroundClip = 'text';
