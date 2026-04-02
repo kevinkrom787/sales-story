@@ -4,7 +4,7 @@ const CATEGORIES = [
     name: 'Sales Philosophy',
     accent: '#E8503A',
     description: 'How I think about selling, building pipeline, and running GTM teams. Opinionated, experience-backed, and mostly learned the hard way.',
-    preview: ['How I Operate', 'On Pipeline', 'On Customer Success', 'On Hiring for Stage', 'The Pitch']
+    preview: ['How I Operate', 'On Pipeline', 'On Customer Success', 'On Hiring for Stage', 'The Pitch', 'On Legal & Contracts']
   },
   {
     id: 'playbooks',
@@ -256,6 +256,37 @@ const PHILOSOPHY = [
           callout: '"Before I go deeper — what does your current setup look like, and what\'s the specific workflow you\'re trying to improve? I want to make sure we\'re looking at the right part of the platform."'
         }
       }
+    ]
+  },
+  {
+    id: 'on-legal',
+    type: 'philosophy',
+    name: 'On Legal & Contracts',
+    accent: '#F59E0B',
+    purpose: 'How to run a clean legal process that closes deals instead of killing them.',
+    preview: 'Your paper. Your terms. Deal size sets the redline budget — not their legal team.',
+    tabs: [
+      { key: 'rules', label: 'Rules', type: 'principles', content: [
+        '<strong>Always use your paper</strong> — Every deal runs on your MSA. If you\'re in their paper, you\'ve already lost. Their contract was written for their lawyers, their risk, their world — not your product.',
+        '<strong>Build MSAs around your product</strong> — Generic contracts create gaps. Your MSA should be written specifically for your deployment types, your data model, your liability exposure. One-size-fits-all is a legal liability.',
+        '<strong>Deal size sets the redline budget</strong> — Get to a number before you get into a redline conversation. Don\'t open the negotiation door without knowing which room you\'re walking into.',
+        '<strong>In mid-range deals, you prescribe what\'s negotiable</strong> — Not them. Come with three specific items you\'ll consider and hold the list. Nothing outside it.',
+        '<strong>Speed is a competitive advantage</strong> — A clean MSA that closes in five days beats a negotiated one that closes in ninety. Make it easy to say yes.',
+        '<strong>Legal cycles kill deals</strong> — Every week in legal is a week for the deal to die, for a competitor to close, for a champion to leave. Redlines cost time. Time kills momentum.',
+        '<strong>Never move on indemnification or IP</strong> — These are the two clauses that will haunt you at scale. Hold the line. Every time. No exceptions.'
+      ]},
+      { key: 'tiers', label: 'Redline Tiers', type: 'pitch-section', content: {
+        section: '$$',
+        headline: 'Deal size determines how much you negotiate — not how much they demand.',
+        coaching: 'This framework exists so your legal process is predictable, fast, and doesn\'t become a negotiation about the negotiation. Know your tier before the first redline request lands. Share it early. It resets expectations and puts you in control of the process.',
+        points: [
+          '<strong>$1K–$50K — No redlines.</strong> Standard MSA, your paper, your terms. Full stop. The deal doesn\'t justify legal hours on either side. If they push back, offer a call to walk them through it. Don\'t open the document.',
+          '<strong>$50K–$100K — Three redlines max.</strong> You prescribe what\'s on the table. Define the three things you\'ll consider — typically: liability cap, indemnification scope, and data handling. Come to the conversation with that list. Nothing outside it.',
+          '<strong>$100K+ — Open negotiation, but only on your paper.</strong> You can go deep. But you never take their MSA. It was written for their lawyers and their risk profile. You will lose every clause that matters. Negotiate on your document or don\'t negotiate at all.'
+        ],
+        avoid: 'Avoid their paper at any deal size. No matter how big the deal, no matter how much they insist. Their MSA was not written with your product, your deployment model, or your exposure in mind. Once you\'re in their paper you\'re playing defense on every clause from page one.',
+        callout: '"We work from our standard MSA — it\'s purpose-built for this type of deployment and we can turn it around fast. What\'s the contract value looking like? That tells us where we land on terms flexibility."'
+      }}
     ]
   },
   {
