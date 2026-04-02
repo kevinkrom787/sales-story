@@ -1007,12 +1007,12 @@ const GTM = [
     type: 'department',
     name: 'Partnerships',
     accent: '#E8A020',
-    purpose: 'Access new markets, pipeline, and distribution through third parties.',
+    purpose: 'Partnerships can unlock markets you can\'t reach alone — or become the most expensive distraction you\'ve ever funded. Know the difference before you sign.',
     stageImportance: { early: 'low', growth: 'medium', scale: 'high' },
     stageNotes: {
       early: 'Usually a distraction unless a partner IS the primary channel from day one. Don\'t build a partner motion before you have a direct motion.',
       growth: 'Channel and integration partnerships start to meaningfully contribute.',
-      scale: 'Resellers, SIs, and co-sell programs can drive 20–40% of revenue.'
+      scale: 'Resellers, SIs, and co-sell programs can drive 20–40% of revenue at the right margin.'
     },
     metrics: [
       {
@@ -1023,41 +1023,62 @@ const GTM = [
         benchmark: 'Directional target at scale: 20–30% of pipeline partner-sourced or partner-influenced.'
       },
       {
-        name: 'Partner-Influenced Revenue',
-        shortLabel: 'Partner Influence',
-        shortValue: 'Track',
-        description: 'Deals where a partner was involved even if not the source. Shows ecosystem health.',
-        benchmark: 'Should grow as partner motion matures.'
+        name: 'Partner Gross Margin',
+        shortLabel: 'Partner GM',
+        shortValue: 'Know Your Floor',
+        description: 'What is your actual gross margin after the partner cut, implementation lift, and internal cost to support the deal? If you don\'t know this number, you\'re flying blind.',
+        benchmark: 'Set a walk-away GM floor before signing any agreement. No exceptions.'
       }
     ],
     meetingTags: ['Monthly Pipeline', 'Quarterly PBR'],
-    meetings: [
-      {
-        name: 'Monthly Partner Pipeline Review',
-        cadence: 'Monthly',
-        attendees: 'Partnerships team + Sales',
-        decisions: 'Which partner opps are moving, which need co-sell support, where are partners stuck?'
-      },
-      {
-        name: 'Quarterly Partner Business Review (PBR)',
-        cadence: 'Quarterly',
-        attendees: 'You + Top Partners',
-        decisions: 'Pipeline performance review. Enablement gaps. Joint GTM plans for next quarter.'
-      }
-    ],
-    risks: [
-      {
-        title: 'Misalignment on Deal Economics',
-        body: 'If a partner\'s cut makes the deal unprofitable, walk away. Bad partner deals are worse than no partner deals — they set precedent.'
-      },
-      {
-        title: 'Underinvesting in Partner Enablement',
-        body: 'Partners sell what they understand. If they can\'t articulate your value prop, they won\'t prioritize you.'
-      },
-      {
-        title: 'Too Many Shallow Partnerships',
-        body: '10 shallow partnerships produce less revenue than 2 deep ones. Quality over quantity.'
-      }
+    tabs: [
+      { key: 'principles', label: 'Principles', type: 'principles', content: [
+        '<strong>Build a direct motion first</strong> — Partnerships amplify a working GTM. They don\'t replace one. If you don\'t know why customers buy from you directly, a partner won\'t figure it out for you.',
+        '<strong>Misaligned incentives kill partnerships before they start</strong> — Your partner has hundreds of products they can sell. You are one line item in their catalog. If selling you doesn\'t make their reps money, visibly and quickly, you will not be prioritized. Full stop.',
+        '<strong>A signed agreement is not pipeline</strong> — Announcing a partnership is not a channel. The work starts after the ink dries. Most partnerships that fail do so because both sides thought the signing was the milestone.',
+        '<strong>Protect gross margin from day one</strong> — Know your floor before you enter any negotiation. The partner cut, plus your cost to enable and support the deal, plus implementation lift — model it all before you agree to anything. Bad economics compound.',
+        '<strong>Exec alignment on both sides, or don\'t start</strong> — A named exec champion at the partner who is accountable for the relationship and has pipeline targets attached. Not a "we\'re excited to work together" quote in a press release.',
+        '<strong>One deep partnership beats ten shallow ones</strong> — Shallow partnerships are marketing events. Deep ones are revenue programs. Put your energy where you have real traction.',
+        '<strong>Enablement is your job</strong> — Partner reps will not learn your product on their own. Self-service materials, a sandbox they can demo without you, a tight value prop they can deliver in two minutes. If they can\'t sell without you in the room, the economics will never work.',
+        '<strong>Partners are not a substitute for your ICP problem</strong> — If you don\'t know who your best customer is, a partner with broad distribution will just help you reach more of the wrong people faster.'
+      ]},
+      { key: 'oem-trap', label: 'The OEM Trap', type: 'pitch-section', content: {
+        section: '⚠',
+        headline: 'The pitch sounds perfect. The reality is a different conversation.',
+        coaching: 'OEM and reseller partnerships have a standard pitch: "We have thousands of reps, your product fits our portfolio perfectly, you\'ll barely have to do anything and the revenue just flows." This pitch has been delivered to thousands of companies. Most of them spent the next 18 months learning why it was wrong. Here\'s what actually happens.',
+        points: [
+          '<strong>You are one of 200 products in their catalog.</strong> Their reps have quarterly numbers to hit, accelerators to chase, and products they understand. You are not on that list until you\'ve proven you can make them money. Until then, you\'re a favor ask.',
+          '<strong>Enablement never ends.</strong> Global sales teams rotate. The rep you trained in EMEA in January is in a different role by June. You\'ll spend months flying to Munich, Singapore, and Chicago to run the same enablement session to people who may or may not use it.',
+          '<strong>Gross margins get shredded.</strong> The partner cut was the obvious cost. Add your internal cost to support every partner deal — the SEs, the partner manager, the legal time, the co-marketing spend. That\'s your real margin. Run the model before you\'re in it.',
+          '<strong>Every deal still needs you.</strong> The promise was independence. The reality is the partner calls you in for every deal that gets serious. You\'re doing half the work at a fraction of the margin.',
+          '<strong>You\'re on their timeline now.</strong> Their QBRs, their priority list, their product roadmap conflicts. When they deprioritize your category for a quarter, your pipeline dries up and there\'s nothing you can do about it.'
+        ],
+        avoid: 'Avoid anchoring your growth forecast to partner-sourced pipeline before you have 6 months of live data showing it actually converts. Partner pipeline that doesn\'t move is worse than no pipeline — it gives false comfort.',
+        callout: '"If this partnership only works when we\'re in every deal, the economics don\'t work. What\'s the path to them closing without us?"'
+      }},
+      { key: 'when-it-works', label: 'When It Works', type: 'pitch-section', content: {
+        section: '✓',
+        headline: 'Partnerships create real leverage — when the conditions are right.',
+        coaching: 'The companies that build successful partner channels aren\'t lucky. They\'re deliberate about which partnerships they pursue and ruthless about walking away from ones that don\'t meet the bar. Before you invest, check every item on this list. Partial credit doesn\'t count.',
+        points: [
+          '<strong>Your product is genuinely easy to deploy.</strong> Minimal implementation lift, no heavy customization, no dependency on your team to get a customer live. If it takes a specialist to implement, the partner will never own the full motion.',
+          '<strong>Selling you drives them meaningful revenue.</strong> Not nominal. Meaningful — enough that you show up in their top 10 at a regional level. If the deal economics aren\'t exciting for their reps, you\'ll never be a priority.',
+          '<strong>You make them look good to their customers.</strong> You solve a problem their customers are already asking about. You fill a gap in their portfolio. You add credibility, not complexity.',
+          '<strong>They have accounts you genuinely can\'t reach.</strong> Installed base, regional coverage, regulated industry access, or procurement relationships. There has to be a real door they open that you can\'t open yourself.',
+          '<strong>You\'ve already proven the direct motion.</strong> You know your ICP, your value prop converts, and your close rate is measurable. Partners amplify a working machine — they don\'t build it for you.',
+          '<strong>Named exec sponsors exist on both sides.</strong> Not aspirational. Actual names, actual accountability, actual pipeline commitments in the partnership agreement.'
+        ],
+        callout: '"Before we go deeper — what does a rep at your firm earn from selling us? And how does that compare to the other products in your portfolio?"'
+      }},
+      { key: 'make-it-work', label: 'Make It Work', type: 'principles', content: [
+        '<strong>Treat it like a sales motion</strong> — Define the ICP for partner deals (it may differ from your direct ICP), set pipeline targets, assign conversion metrics. A partnership without a pipeline model is a hope strategy.',
+        '<strong>Start with a pilot, not a global rollout</strong> — Pick one region, one segment, one partner team. Prove the economics and the motion before you invest in global enablement. Every failed global rollout started as an unproven pilot that skipped this step.',
+        '<strong>Build self-service enablement</strong> — Pitch deck, objection handler, demo environment they can run without you, a one-pager they can leave behind. The goal is a partner rep who can run a first call alone. Measure how many actually can.',
+        '<strong>Know your walk-away number before you sit down</strong> — Model your fully-loaded gross margin at the deal sizes you expect. Set a floor. Don\'t negotiate against it. A bad partnership deal is worse than no deal — it sets precedent and it costs you time.',
+        '<strong>Build pipeline accountability into the contract</strong> — Quarterly pipeline targets, not just activity. If the partner isn\'t generating pipeline after two quarters, the relationship needs to be restructured or ended.',
+        '<strong>Assign a dedicated resource</strong> — A moonlighting AE running partner deals will not build a partner channel. If the motion is worth investing in, it needs an owner whose only job is partnerships.',
+        '<strong>Co-sell is better than resell early on</strong> — You stay in the deal, you protect the relationship, you learn what the partner sales team actually needs. Pure resell before you have mature enablement is how deals get misrepresented and customers get oversold.'
+      ]}
     ]
   },
   {
