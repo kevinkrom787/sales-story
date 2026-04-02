@@ -694,7 +694,7 @@ const GTM = [
     type: 'department',
     name: 'Demand Generation',
     accent: '#1DB374',
-    purpose: 'Fill the pipeline with qualified opportunities across channels.',
+    purpose: 'Build a demand engine rooted in ICP clarity, split-lane messaging, and experiments that actually reach a decision.',
     stageImportance: { early: 'critical', growth: 'very-high', scale: 'high' },
     stageNotes: {
       early: 'Figuring out which channels produce real pipeline — not just leads. Everything is an experiment.',
@@ -710,51 +710,60 @@ const GTM = [
         benchmark: 'No universal target — optimize for channel efficiency relative to CAC payback.'
       },
       {
-        name: 'Cost per SQL',
-        shortLabel: 'Cost per SQL',
-        shortValue: 'CAC < 18mo',
-        description: 'Full-loaded cost to create one sales-qualified lead. If implied CAC payback exceeds 18 months, something is broken.',
-        benchmark: 'If CAC payback > 18 months, investigate before scaling spend.'
+        name: 'Disco → Opp Rate by Source',
+        shortLabel: 'Disco → Opp',
+        shortValue: 'By Source',
+        description: 'Not all booked meetings are equal. Know which sources convert to qualified opps and fund those — defund the ones that fill calendars but not pipeline.',
+        benchmark: 'If a source has run 90 days with no qualified opps, it\'s not a runway problem. It\'s a channel or ICP problem.'
       }
     ],
-    metricsComparison: {
-      inbound: ['MQL volume', 'MQL→SQL rate', 'CAC by channel', 'Organic traffic growth', 'Content-attributed pipeline'],
-      outbound: ['Reply rate (healthy: 3–5%)', 'Meeting booked rate', 'Sequence-to-opp rate', 'CAC', 'Cost per meeting']
-    },
     meetingTags: ['Weekly Review', 'Monthly Readout', 'Quarterly Budget'],
-    meetings: [
-      {
-        name: 'Weekly Pipeline & Channel Review',
-        cadence: 'Weekly',
-        attendees: 'Demand Gen + Sales',
-        decisions: 'Is pipe being created? Is it converting? Which channels are moving this week vs stalling?'
-      },
-      {
-        name: 'Monthly Channel Experiment Readout',
-        cadence: 'Monthly',
-        attendees: 'Demand Gen + Growth + Exec',
-        decisions: 'What did we test? What did we learn? What gets scaled or killed next month?'
-      },
-      {
-        name: 'Quarterly Budget Allocation',
-        cadence: 'Quarterly',
-        attendees: 'Demand Gen + Finance + VP Marketing',
-        decisions: 'Where does next quarter\'s spend go based on channel efficiency data from the past 90 days?'
-      }
-    ],
-    risks: [
-      {
-        title: 'Optimizing for MQLs Instead of Pipeline',
-        body: 'MQLs are a vanity metric. Sales doesn\'t care about leads — they care about qualified pipeline. Align on SQLs as the shared north star or misalignment compounds fast.'
-      },
-      {
-        title: 'Over-Investing in a Single Channel',
-        body: 'Channels plateau, get saturated, or break. Build at least 3 working channels before you\'re comfortable with channel concentration.'
-      },
-      {
-        title: 'Misalignment with ICP',
-        body: 'If ICP isn\'t locked, demand gen is spending against the wrong audience. Garbage in, garbage out.'
-      }
+    tabs: [
+      { key: 'principles', label: 'Principles', type: 'principles', content: [
+        '<strong>Start with the ICP, not the channel</strong> — Before you write a single email or run a single ad, know exactly who you\'re targeting: role, company stage, tech stack, trigger event, and pain. Fuzzy ICP means wasted spend across every channel.',
+        '<strong>Let the ICP shape both lanes</strong> — Your inbound and outbound strategy should look different for ICs versus DMs, and different again for SMB versus enterprise. One tight ICP doc should drive all of it.',
+        '<strong>Fewer experiments, done better</strong> — The instinct is to run five tests at once. The discipline is to run one well: real hypothesis, real sample size, real timeline, real decision. Three experiments that reach a conclusion beat twelve that never do.',
+        '<strong>Plan → Test → Decide</strong> — Every channel bet needs a written plan before it starts, a clear test window, and a binary outcome at the end. Scale it or kill it. No zombie experiments.',
+        '<strong>Split lane your messaging</strong> — ICs and DMs are not the same buyer. They have different pain, different outcomes, different CTAs. Build sequences for each and don\'t blend them.',
+        '<strong>Score every discovery call</strong> — Define what a good call looks like before you run the first one. Score them weekly. Track which sources produce calls that actually score well.',
+        '<strong>Measure what converts to Opp, not what generates noise</strong> — Clicks, opens, and attendees don\'t pay the bills. What moves to a qualified opportunity? Find those patterns and repeat them relentlessly.',
+        '<strong>Build feedback loops, not reports</strong> — Weekly reviews with Sales aren\'t about accountability. They\'re about signal. What\'s converting? What\'s stalling? Feed it back into channel and messaging strategy fast.'
+      ]},
+      { key: 'split-lane', label: 'IC vs DM', type: 'pitch-section', content: {
+        section: '↕',
+        headline: 'Same product. Different buyer. Different everything.',
+        coaching: 'ICs and DMs share a problem but experience it differently. ICs feel the friction every day — they want to see the product work. DMs feel the cost every quarter — they want a business case. If you\'re sending the same message to both, you\'re converting neither. Build two lanes and treat them as separate motions.',
+        points: [
+          '<strong>IC messaging → lead with product.</strong> Show them how it changes their actual day. CTAs should go to a trial, a sandbox, a demo, or a how-to. They want to see before they commit to anything.',
+          '<strong>DM messaging → lead with outcome.</strong> Cost reduction, team velocity, risk reduction, competitive positioning. CTAs should go to an intro call or an exec-to-exec conversation — not a product tour.',
+          '<strong>ICs influence up — DMs decide down.</strong> Build IC sequences to generate champions. Build DM sequences to generate decisions. Know which motion you\'re in on every active target.',
+          '<strong>Use different channels and timing.</strong> ICs respond to content, product-led signals, LinkedIn activity, and community. DMs respond to executive outreach, peer references, and events.',
+          '<strong>Don\'t let the IC sequence close the deal.</strong> If an IC is engaged, get above them fast. A champion without a DM sponsor is just a fan.'
+        ],
+        callout: '"What does this person wake up thinking about? That\'s your opening line."'
+      }},
+      { key: 'experiments', label: 'Experiments', type: 'pitch-section', content: {
+        section: '⚗',
+        headline: 'Commit fewer bets. Win more of them.',
+        coaching: 'Most demand gen teams run too many experiments at once — none reach the sample size needed to make a real decision. The result is a graveyard of inconclusive tests and no durable channel playbook. Pick fewer things. Go deeper. Build the feedback loop that compounds.',
+        points: [
+          '<strong>Write a one-pager before every test.</strong> Hypothesis, audience, sample size, timeline, success metric, and kill criteria. If you can\'t fill it out, you\'re not ready to run.',
+          '<strong>Give tests real runway.</strong> Most channels need 4–6 weeks minimum to produce signal. Two-week tests with 40 contacts tell you nothing useful.',
+          '<strong>Set a binary decision point.</strong> When the window closes: scale, kill, or run a new hypothesis. "Let\'s run it a bit longer" is a choice to avoid making a decision.',
+          '<strong>Cap concurrent experiments at 2–3.</strong> More than that and none of them get the attention they need. Focus beats breadth.',
+          '<strong>Nail one thing before you stack the next.</strong> Get inbound working before you layer paid. Nail outbound in one segment before you replicate it. Compounding only works if the foundation holds.'
+        ],
+        avoid: 'Avoid running experiments with no pre-defined success criteria. You\'ll always find a way to read ambiguous results as promising — and keep spending against something that\'s not working.',
+        callout: '"If we can\'t make a go/no-go decision from this test, we\'re not running it."'
+      }},
+      { key: 'measure', label: 'Measure', type: 'principles', content: [
+        '<strong>Score every discovery call</strong> — Build a scorecard before the first call happens. 5–7 criteria: ICP fit, pain clarity, timeline, DM access, next step quality. Score 1–3. Review weekly with the team.',
+        '<strong>Measure disco → Opp rate by source</strong> — Not all meetings are equal. An inbound trial-request meeting converts differently than a cold SDR-sourced call. Know the rate for each source and fund accordingly.',
+        '<strong>Track what converts, not what fills</strong> — Volume metrics are inputs. Opp creation and Opp-to-Close rates are outputs. Build your reporting stack around outputs and use inputs to explain them.',
+        '<strong>Make every closed-won traceable</strong> — Every closed deal should trace back to its demand gen source. Review monthly: which sources actually produced revenue — not just pipeline.',
+        '<strong>Weekly call scoring is also weekly coaching</strong> — What made a high-scoring call this week? What patterns are emerging across reps? The scoring process surfaces what to repeat.',
+        '<strong>Kill non-converting channels in 90 days</strong> — If a channel has run a full quarter with no qualified opps, don\'t extend the runway. Diagnose: wrong channel, wrong ICP, or wrong message — then decide.'
+      ]}
     ]
   },
   {
