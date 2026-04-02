@@ -933,7 +933,7 @@ const GTM = [
     type: 'department',
     name: 'Revenue Operations',
     accent: '#7B72E9',
-    purpose: 'The GTM system backbone — data, tooling, process, forecasting, and market intelligence.',
+    purpose: 'Remove friction from every seller touchpoint. Automate the admin. Let reps open their console, work their day, and go hunt.',
     stageImportance: { early: 'low', growth: 'high', scale: 'critical' },
     stageNotes: {
       early: 'Keep it simple. Founder does this with a spreadsheet and a basic CRM. Don\'t over-build.',
@@ -957,39 +957,49 @@ const GTM = [
       }
     ],
     meetingTags: ['Weekly Standup', 'Monthly Systems', 'Quarterly Planning'],
-    meetings: [
-      {
-        name: 'Weekly RevOps Standup',
-        cadence: 'Weekly',
-        attendees: 'RevOps team',
-        decisions: 'Data issues, tooling fires, pipeline data quality flags, anything blocking clean forecasting.'
-      },
-      {
-        name: 'Monthly GTM Systems Review',
-        cadence: 'Monthly',
-        attendees: 'RevOps + GTM leads',
-        decisions: 'Is the system giving us the right signals? What data quality issues are distorting decisions?'
-      },
-      {
-        name: 'Quarterly Territory & Quota Planning',
-        cadence: 'Quarterly',
-        attendees: 'RevOps + VP Sales + Finance',
-        decisions: 'Territory design, quota setting, comp plan review.'
-      }
-    ],
-    risks: [
-      {
-        title: 'Building a Frankenstein Tech Stack',
-        body: 'Every tool adds integration debt and data fragmentation. Start with CRM + enrichment + sequencing and only add when there\'s a clear, measurable ROI.'
-      },
-      {
-        title: 'Letting CRM Hygiene Slide',
-        body: 'Once reps stop trusting the data, they stop entering it. It\'s a death spiral. Make data quality visible in every pipeline review.'
-      },
-      {
-        title: 'RevOps as a Ticketing System',
-        body: 'RevOps should be a strategic planning function, not admins processing Salesforce requests. Give them a seat at the planning table.'
-      }
+    tabs: [
+      { key: 'principles', label: 'Principles', type: 'principles', content: [
+        '<strong>Build for the seller, not the spreadsheet</strong> — Every RevOps decision should be evaluated through one lens: does this make the rep\'s day easier or harder? If it\'s adding admin, you\'re solving the wrong problem.',
+        '<strong>Every manual step is a process failure</strong> — If a rep is logging a call, updating a field, or copy-pasting data between tools, RevOps missed something. The goal is zero required manual input from reps wherever technically possible.',
+        '<strong>Data quality is a system design problem</strong> — Reps don\'t update CRM because they\'re lazy. They don\'t update it because it\'s annoying and they don\'t trust it. Fix the system. Enforcement doesn\'t work — automation does.',
+        '<strong>Automate activity capture first</strong> — Email sync, calendar sync, call recording integration. The system should know what happened without asking anyone. This is table stakes before anything else.',
+        '<strong>The CRM should tell reps what to do next</strong> — Not ask them what happened. Surfacing next steps, at-risk deals, and overdue follow-ups is more valuable than any dashboard you\'ll build.',
+        '<strong>Fewer tools that work beats more tools that don\'t connect</strong> — Every tool adds integration debt, data fragmentation, and a login reps won\'t use. Start with CRM + enrichment + sequencing. Add only when there\'s a clear gap and a measurable ROI.',
+        '<strong>Forecasting should be driven by signals, not gut checks</strong> — Deal velocity, engagement data, stage duration, historical patterns. A rep\'s commit call should confirm what the data already suggests — not be the only input.',
+        '<strong>RevOps is a strategic function, not a ticketing system</strong> — If RevOps is spending their time processing Salesforce requests, you\'ve staffed it wrong. They should be at the planning table for headcount, territory, comp, and GTM system design.'
+      ]},
+      { key: 'console', label: 'Seller Console', type: 'pitch-section', content: {
+        section: '⌨',
+        headline: 'A rep opens their console and knows exactly what to do. No hunting. No guessing.',
+        coaching: 'The seller console is the most important surface RevOps owns. If a rep has to dig for their pipeline status, chase down data, or manually figure out who to call — the system has failed them. Design for the first 5 minutes of their day. Everything they need should be right there.',
+        points: [
+          '<strong>Today\'s priority list — surfaced automatically.</strong> Deals closing this month ranked by close date and health score. Opps that have gone cold (no activity in X days). Follow-ups that are overdue. Staged by urgency, not alphabetically.',
+          '<strong>At-risk deal alerts — pushed, not pulled.</strong> If engagement drops, a key contact goes dark, or a deal has been in the same stage too long — flag it automatically and put it at the top of the queue. Reps shouldn\'t discover problems in pipeline reviews.',
+          '<strong>One-click actions wherever possible.</strong> Log a call, schedule a follow-up, move a stage, enroll in a sequence — should be executable from the main view without opening the full record. Every extra click costs rep time and reduces adoption.',
+          '<strong>Pipeline coverage visible at a glance.</strong> What\'s the rep\'s coverage ratio this quarter? Are they on track? Show it on the console so they own it — not just their manager.',
+          '<strong>Next best action for every open deal.</strong> No next step defined = deal is at risk. The system should prompt the rep if a deal has no scheduled follow-up. Better yet, suggest one based on deal stage and contact history.'
+        ],
+        callout: '"If a rep has to think about where to start their day, the console hasn\'t done its job."'
+      }},
+      { key: 'automate', label: 'Automate First', type: 'principles', content: [
+        '<strong>Activity capture — non-negotiable</strong> — Sync email, calendar, and call recordings directly to the CRM. Every meeting, call, and email thread logged automatically. Zero rep input required for activity history.',
+        '<strong>Lead and account enrichment on creation</strong> — The moment a lead or account is created, it should auto-populate: company size, industry, tech stack, funding stage, LinkedIn data. Reps should never manually fill a firmographic field.',
+        '<strong>Stage progression triggers</strong> — Define the criteria that qualify a deal to advance. Where possible, trigger stage moves automatically based on logged activity, email engagement, or completed steps — not rep memory.',
+        '<strong>Stale deal alerts</strong> — Auto-flag any opp with no logged activity in X days by stage. Early stage: 7 days. Later stage: 4 days. Send the alert directly to the rep — not just their manager.',
+        '<strong>Follow-up task creation</strong> — Every completed meeting or call should auto-create a follow-up task with a default due date. Reps can edit or dismiss — but the system creates it so nothing falls through.',
+        '<strong>Sequence enrollment from CRM triggers</strong> — When a lead hits a defined qualification threshold or a deal moves to a certain stage, auto-enroll into the appropriate sequence. Remove the manual enrollment step entirely where the logic is clear.',
+        '<strong>SDR → AE handoff automation</strong> — Accepted meeting = auto-create the opp, auto-assign to AE, auto-notify, auto-schedule intro. The handoff shouldn\'t require anyone to remember to do anything.',
+        '<strong>AE → CS handoff on close</strong> — Closed-won = auto-trigger the CS onboarding workflow. Contract value, key contacts, implementation notes pulled from the opp and pushed to CS without a single manual step.'
+      ]},
+      { key: 'forecast', label: 'Data & Forecast', type: 'principles', content: [
+        '<strong>Forecast from signals, not conversations</strong> — Deal velocity (days in stage vs. historical average), email engagement rate, meeting frequency, champion activity. Build a model. The weekly forecast call should be validation — not discovery.',
+        '<strong>CRM completeness enforced at the workflow level</strong> — Required fields should block stage advancement, not just flag a warning. If it\'s truly required to forecast, make it required to move forward. No exceptions, no workarounds.',
+        '<strong>Pipeline coverage is a system output, not a report</strong> — Every rep and manager should see their coverage ratio updated in real time. 3x coverage minimum going into a quarter. Surface it on the console — not buried in a BI tool.',
+        '<strong>Weekly forecast without a forecast meeting</strong> — The goal is a system clean enough that the forecast is visible without a meeting to assemble it. Meetings should discuss exceptions and decisions — not gather data.',
+        '<strong>Tag win/loss automatically where possible</strong> — Closed-won and closed-lost reasons should be a required field, but surface them in the close workflow, not after the fact. Aggregate monthly to find patterns.',
+        '<strong>Comp plan visibility in the console</strong> — Reps should be able to see their attainment, accelerator status, and projected payout at any point in the quarter. If they can\'t, you\'re leaving motivation on the table.',
+        '<strong>Quarterly territory and quota review — data driven</strong> — Quota should be set based on historical conversion rates, ramp time, territory potential, and market data — not last year\'s number plus 20%. RevOps owns this model.'
+      ]}
     ]
   },
   {
