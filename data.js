@@ -4,7 +4,7 @@ const CATEGORIES = [
     name: 'Sales Philosophy',
     accent: '#E8503A',
     description: 'How I think about selling, building pipeline, and running GTM teams. Opinionated, experience-backed, and mostly learned the hard way.',
-    preview: ['How I Operate', 'On Pipeline', 'On Customer Success', 'On Hiring for Stage', 'The Pitch', 'On Legal & Contracts', 'On Building Product', 'Infra Hierarchy of Needs']
+    preview: ['How I Operate', 'On Pipeline', 'On Customer Success', 'On Hiring for Stage', 'The Pitch', 'On Legal & Contracts', 'Hierarchy of Needs']
   },
   {
     id: 'playbooks',
@@ -290,175 +290,83 @@ const PHILOSOPHY = [
     ]
   },
   {
-    id: 'on-building-product',
+    id: 'unified-hierarchy',
     type: 'philosophy',
-    name: 'On Building Product',
-    accent: '#6366f1',
-    purpose: 'What an engineering org needs to deliver, in order. Built from the bottom up — skip a level and you\'ll pay for it later.',
-    preview: 'Reliable before fast. Observable before scalable. You can\'t sell what you can\'t ship.',
-    tabs: [
-      {
-        key: 'hierarchy',
-        label: 'Hierarchy of Needs',
-        type: 'pyramid',
-        content: [
-          {
-            level: 1,
-            name: 'Reliable',
-            label: 'Physiological',
-            color: '#7B72E9',
-            items: [
-              'The product does its core job consistently — 99.9% uptime you\'d put in a contract',
-              'Core workflows don\'t regress when you ship',
-              'Nothing is silently broken in production',
-              'Data is accurate, consistent, and auditable',
-              'The team knows when something is wrong before a customer does'
-            ]
-          },
-          {
-            level: 2,
-            name: 'Deployable',
-            label: 'Safety',
-            color: '#2A9FD6',
-            items: [
-              'CI/CD pipeline catches and blocks bad code automatically',
-              'Rollback completes in under 10 minutes',
-              'You can ship any day, any time, without heroics',
-              'SAs and field teams can confidently deploy for customers, POCs, and new installs in a timely manner',
-              'Staging behaves like production'
-            ]
-          },
-          {
-            level: 3,
-            name: 'Observable',
-            label: 'Belonging',
-            color: '#1DB374',
-            items: [
-              'Metrics, logs, and traces connected end to end',
-              'Error messaging is clear, actionable, and understood by the field',
-              'Customers never the first to tell you something broke',
-              'Hooks into customer logging and observability services where possible',
-              'On-call is real, rotated, and documented — P1 response under 30 minutes'
-            ]
-          },
-          {
-            level: 4,
-            name: 'Velocity',
-            label: 'Esteem',
-            color: '#F59E0B',
-            items: [
-              'New engineer ships code in their first week',
-              'Features ship on a predictable, committed cadence',
-              'No single points of knowledge — no one is the bus',
-              'We move fast without fear of breaking things',
-              'Tech debt is managed, not accumulated in silence'
-            ]
-          },
-          {
-            level: 5,
-            name: 'Flow State',
-            label: 'Self-Actualization',
-            color: '#E8503A',
-            items: [
-              'Every merge goes to production automatically',
-              'Zero-downtime deploys — customers never notice releases',
-              'You ship new things without breaking old ones',
-              'Incident rate is near zero, not a background hum',
-              'The team is proud of what they\'re building'
-            ]
-          }
-        ]
-      },
-      { key: 'principles', label: 'Principles', type: 'principles', content: [
-        '<strong>Build the foundation before velocity</strong> — Reliable before fast. Deployable before observable. Skipping levels creates the kind of compounding debt that becomes a crisis at the worst possible moment.',
-        '<strong>Deployable is a muscle</strong> — Code that isn\'t shipped doesn\'t create value. Build the deploy motion early, make it safe, and use it constantly. Fear of shipping is a sign something is broken.',
-        '<strong>Observability is your early warning system</strong> — You cannot sell what you cannot debug. Customers don\'t have patience for "we\'re investigating." Know before they do.',
-        '<strong>Velocity is earned, not demanded</strong> — Once the foundation holds, velocity follows. Trying to force speed without the infrastructure creates firefighting, not shipping.',
-        '<strong>Flow state is the goal</strong> — When engineering is in flow state, GTM moves faster. Reps can commit more confidently, demos don\'t break, and customers feel like they\'re buying a real product.',
-        '<strong>The pyramid breaks when you skip levels</strong> — Outages during key demos. Releases that break customer workflows. Engineering firefighting that pulls people off roadmap. These are symptoms of a missing level, not bad luck.',
-        '<strong>Product quality is a GTM problem</strong> — Every production incident is a deal at risk. Every deployment failure is a conversation your AE has to manage. Engineering and sales win or lose together.'
-      ]}
-    ]
-  },
-  {
-    id: 'infra-hierarchy',
-    type: 'philosophy',
-    name: 'Infra Hierarchy of Needs',
+    name: 'Hierarchy of Needs',
     accent: '#06b6d4',
-    purpose: 'What infra needs to deliver across every deployment model. SaaS is not the product. Parity is the product.',
-    preview: 'If it only works in SaaS, it\'s broken. Parity across SaaS, Dedicated Instance, and in-VPC is the bar.',
+    purpose: 'One system. Five bars. Failure at any layer is shared — no function ships successfully if the product doesn\'t work for real customers, in their environment.',
+    preview: '"Done" means working in a customer\'s environment — not passing CI. Deployment model is a commercial choice, not a technical constraint.',
     tabs: [
       {
         key: 'hierarchy',
         label: 'Hierarchy of Needs',
         type: 'pyramid',
-        philosophy: 'We do not celebrate infra success unless it works across SaaS, Dedicated Instance, and in-VPC.<br><strong>SaaS is not the product. Parity is the product.</strong>',
+        philosophy: 'Failure at any layer is shared. No function ships successfully if the product doesn\'t work for real customers, in their environment.<br><strong>SaaS is not the product. Parity is the product.</strong>',
         content: [
           {
             level: 1,
-            name: 'Reliability',
+            name: 'Stable',
             label: 'Physiological',
             color: '#7B72E9',
             items: [
-              'All deployment types have versioned artifacts and reproducible builds',
-              'Infrastructure-as-code across SaaS, Dedicated, and in-VPC',
-              'Dedicated and in-VPC installs succeed >95% without intervention',
-              'SaaS, Dedicated, and in-VPC run the same core infra primitives',
-              'No environment-specific forks or one-off configs',
+              'Core workflows succeed consistently — 99.9% uptime you\'d put in a contract',
+              'SaaS, Dedicated, and in-VPC run on the same core primitives — no environment forks',
+              'Versioned artifacts, reproducible builds, and IaC across all environments',
+              'No silent failures; the team knows before customers do',
               '"If it only works in SaaS, it\'s broken"'
             ]
           },
           {
             level: 2,
-            name: 'Deployability',
+            name: 'Shippable',
             label: 'Safety',
             color: '#2A9FD6',
             items: [
-              'One-click / one-command deploy for SaaS, Dedicated Instance, and in-VPC',
+              'One-command deploy to SaaS, Dedicated Instance, and in-VPC',
               'Deploy times: SaaS <30 min · Dedicated <2 hrs · in-VPC <1 day',
-              'Upgrades are reliable and repeatable across all environments',
-              'No manual steps that differ by deployment type',
-              'Versioning is consistent across all deployment modes'
+              'Rollback completes in <10 minutes for any deployment type',
+              'SAs and field teams deploy, upgrade, and recover without engineering support',
+              'No manual steps that vary by deployment model; staging mirrors production'
             ]
           },
           {
             level: 3,
-            name: 'Operability',
+            name: 'Visible',
             label: 'Belonging',
             color: '#1DB374',
             items: [
-              'Unified observability across all deployment types — logs, metrics, traces',
+              'Unified logs, metrics, and traces across all deployment types',
+              'Error messages are clear and actionable to field, on-call, and customers',
               'On-call can debug any deployment model in <30 minutes',
-              'Standardized runbooks for SaaS, Dedicated, and in-VPC',
-              'Customer environments are introspectable without heroics',
-              'Clear ownership of infra across all deployment models'
+              'Customer environments are introspectable without engineering escalation',
+              'Hooks into customer observability where possible; runbooks are standardized'
             ]
           },
           {
             level: 4,
-            name: 'Consistency',
+            name: 'Consistent',
             label: 'Esteem',
             color: '#F59E0B',
             items: [
               'All releases validated across SaaS, Dedicated, and in-VPC before GA',
-              'CI/CD enforces deployment parity gates',
-              '<5% of incidents are deployment-model-specific',
-              'Infra bugs are fixed once, applied everywhere',
-              'Engineers default to multi-deploy compatibility when building'
+              'CI/CD enforces deployment parity gates — no model gets skipped',
+              'Bugs are fixed once and applied everywhere; no model-specific workarounds',
+              'Teams ship on a predictable cadence without fear of breaking things',
+              'New engineers contribute in week 1; no single points of knowledge'
             ]
           },
           {
             level: 5,
-            name: 'Infra Nirvana',
+            name: 'Integrated',
             label: 'Self-Actualization',
             color: '#E8503A',
             items: [
-              'Infra is uniform across SaaS, Dedicated Instance, and in-VPC',
-              'Every feature is simultaneously available across all deployment types',
-              'Customers can move between deployment models with near-zero friction',
-              'Deployment model is a commercial choice, not a technical constraint',
-              'No "works in SaaS only" incidents in the last 90 days',
-              'Infra differences are invisible to product and to customers'
+              'Deployment model is a commercial decision, not a technical constraint',
+              'Every feature ships simultaneously across all deployment types',
+              'Product, field, and customers share one feedback loop — roadmap reflects real usage',
+              'Customers move between SaaS, Dedicated, and in-VPC with near-zero friction',
+              'Incidents are owned by the system, not blamed on a single team',
+              '"Done" means working in a customer\'s environment — not passing CI'
             ]
           }
         ]
