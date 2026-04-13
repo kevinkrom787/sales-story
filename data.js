@@ -370,6 +370,77 @@ const PHILOSOPHY = [
             ]
           }
         ]
+      },
+      {
+        key: 'overlap',
+        label: 'Overlap & Differences',
+        type: 'team-overlap',
+        content: {
+          shared: [
+            'Deployment parity across SaaS, Dedicated, and in-VPC is everyone\'s problem — not infra\'s alone',
+            '"Done" means working in a real customer environment, not passing tests in a single deployment model',
+            'Release validation before GA spans all three deployment types — no function signs off in isolation',
+            'Incident response is a shared rotation; blame routing is a failure mode, not a resolution strategy',
+            'The bar at each pyramid layer is held jointly — no team can unilaterally declare a level cleared'
+          ],
+          teams: [
+            {
+              name: 'Product',
+              color: '#a855f7',
+              owns: [
+                'Roadmap decisions driven by real customer and field feedback — not internal intuition',
+                'Defining "ready for customers" — acceptance criteria that include all deployment types',
+                'Cross-functional alignment: translating customer problems into engineering priorities',
+                'The feedback loop between Sales, CS, and the build team',
+                'Deciding what gets cut when capacity is constrained'
+              ]
+            },
+            {
+              name: 'Engineering',
+              color: '#06b6d4',
+              owns: [
+                'Code quality, test coverage, and CI/CD enforcement',
+                'Building for multi-deploy compatibility by default — not as a retrofit',
+                'Developer onboarding and velocity',
+                'Tech debt sequencing and management',
+                'Architecture decisions that must hold across all deployment models'
+              ]
+            },
+            {
+              name: 'Infra',
+              color: '#1DB374',
+              owns: [
+                'Environment parity — same primitives across SaaS, Dedicated, and in-VPC',
+                'Deployment tooling and automation (the deploy command)',
+                'Observability infrastructure and on-call rotation',
+                'Install and upgrade reliability for Dedicated and in-VPC',
+                'Runbook quality and on-call handoff'
+              ]
+            }
+          ],
+          tensions: [
+            {
+              teams: 'Eng ↔ Infra',
+              color: '#F59E0B',
+              body: 'Engineering ships code that works in SaaS; Infra is stuck making it work everywhere. Parity must be an engineering constraint at build time, not an infra cleanup job after the fact.'
+            },
+            {
+              teams: 'Product ↔ Infra',
+              color: '#F59E0B',
+              body: 'Product wants faster cadence; Infra needs cross-model validation before GA. Parity gates must be automated — a manual tax on every release is a tax that eventually gets skipped.'
+            },
+            {
+              teams: 'Product ↔ Eng',
+              color: '#F59E0B',
+              body: 'Engineering declares done when tests pass; Product declares done when customers succeed. These definitions must be aligned before features enter the release queue — not reconciled after.'
+            },
+            {
+              teams: 'All Three',
+              color: '#E8503A',
+              body: 'Observability, deployment tooling, and runbooks are treated as infra work — but field and CS depend on them daily. These are product requirements that happen to live in infra, not optional infrastructure nice-to-haves.'
+            }
+          ]
+        }
       }
     ]
   },

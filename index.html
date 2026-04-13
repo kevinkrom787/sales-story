@@ -951,6 +951,121 @@
     transition: opacity 0.2s;
   }
 
+  /* ── Team Overlap tab ── */
+  .overlap-section-label {
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.75rem;
+  }
+  .overlap-shared {
+    padding: 1.1rem 1.25rem;
+    border-radius: 6px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    margin-bottom: 1.25rem;
+  }
+  .overlap-shared-items {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+  .overlap-shared-item {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    font-size: 0.8rem;
+    color: var(--text);
+    line-height: 1.5;
+  }
+  .overlap-shared-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 0.45em;
+  }
+  .overlap-teams {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+  }
+  .overlap-team-col {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .overlap-team-header {
+    padding: 0.65rem 0.9rem;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.03em;
+    border-bottom: 2px solid;
+  }
+  .overlap-team-items {
+    padding: 0.65rem 0.9rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  .overlap-team-item {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    color: var(--muted);
+    line-height: 1.45;
+  }
+  .overlap-team-dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 0.48em;
+    opacity: 0.7;
+  }
+  .overlap-tensions {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .overlap-tensions-header {
+    padding: 0.65rem 1rem;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+    background: rgba(255,255,255,0.02);
+  }
+  .overlap-tension-item {
+    display: flex;
+    gap: 0.9rem;
+    padding: 0.8rem 1rem;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.78rem;
+    color: var(--muted);
+    line-height: 1.55;
+    align-items: flex-start;
+  }
+  .overlap-tension-item:last-child { border-bottom: none; }
+  .overlap-tension-teams {
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+    padding-top: 0.15rem;
+    flex-shrink: 0;
+    min-width: 110px;
+  }
+  @media (max-width: 640px) {
+    .overlap-teams { grid-template-columns: 1fr; }
+  }
+
   /* ── The Human section ── */
   .human-section {
     display: grid;
@@ -1626,6 +1741,7 @@ function renderTab(fn, tab) {
     case 'career':        return renderCareer(fn);
     case 'pitch-section': return renderPitchSection(tab.content || {}, fn.accent);
     case 'pyramid':       return renderPyramid(tab.content || [], fn.accent, tab.philosophy);
+    case 'team-overlap':  return renderTeamOverlap(tab.content || {}, fn.accent);
     default:           return '';
   }
 }
@@ -1790,6 +1906,47 @@ function renderPyramid(content, accent, philosophy) {
     <p class="pyramid-intro">Each level depends on the one below it. Build from the bottom up — skip a level and you'll pay for it later.</p>
     <div class="pyramid-wrap">${tiers}</div>
     ${philosophyBlock}`;
+}
+
+function renderTeamOverlap(c, accent) {
+  const sharedItems = (c.shared || []).map(item => `
+    <div class="overlap-shared-item">
+      <div class="overlap-shared-dot" style="background:${accent}"></div>
+      <span>${item}</span>
+    </div>`).join('');
+
+  const teamCols = (c.teams || []).map(team => `
+    <div class="overlap-team-col">
+      <div class="overlap-team-header" style="color:${team.color};border-bottom-color:${team.color}">
+        ${team.name}
+      </div>
+      <div class="overlap-team-items">
+        ${team.owns.map(item => `
+          <div class="overlap-team-item">
+            <div class="overlap-team-dot" style="background:${team.color}"></div>
+            <span>${item}</span>
+          </div>`).join('')}
+      </div>
+    </div>`).join('');
+
+  const tensionRows = (c.tensions || []).map(t => `
+    <div class="overlap-tension-item">
+      <div class="overlap-tension-teams" style="color:${t.color || accent}">${t.teams}</div>
+      <span>${t.body}</span>
+    </div>`).join('');
+
+  return `
+    <div class="overlap-shared">
+      <div class="overlap-section-label">Shared — all three own this</div>
+      <div class="overlap-shared-items">${sharedItems}</div>
+    </div>
+    <div class="overlap-section-label">Where they diverge</div>
+    <div class="overlap-teams">${teamCols}</div>
+    ${tensionRows ? `
+    <div class="overlap-tensions">
+      <div class="overlap-tensions-header">Where they collide</div>
+      ${tensionRows}
+    </div>` : ''}`;
 }
 
 function renderSteps(content, accent) {
