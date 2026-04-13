@@ -921,6 +921,23 @@
     margin-top: 0.45em;
     opacity: 0.75;
   }
+  .pyramid-philosophy {
+    margin-top: 1.5rem;
+    padding: 1rem 1.25rem;
+    border-left: 3px solid;
+    border-radius: 0 6px 6px 0;
+    background: rgba(255,255,255,0.03);
+    font-size: 0.82rem;
+    line-height: 1.65;
+    color: var(--muted);
+  }
+  .pyramid-philosophy strong {
+    color: var(--text);
+    display: block;
+    margin-top: 0.35rem;
+    font-size: 0.88rem;
+  }
+
   .pyramid-shape-wrap {
     display: flex;
     flex-direction: column;
@@ -1608,7 +1625,7 @@ function renderTab(fn, tab) {
     case 'prose':         return renderProse(tab.content || []);
     case 'career':        return renderCareer(fn);
     case 'pitch-section': return renderPitchSection(tab.content || {}, fn.accent);
-    case 'pyramid':       return renderPyramid(tab.content || [], fn.accent);
+    case 'pyramid':       return renderPyramid(tab.content || [], fn.accent, tab.philosophy);
     default:           return '';
   }
 }
@@ -1733,7 +1750,7 @@ function renderPitchSection(c, accent) {
     </div>`;
 }
 
-function renderPyramid(content, accent) {
+function renderPyramid(content, accent, philosophy) {
   // content = array of {level, name, label, color, items}
   // Render top-to-bottom (highest level first = self-actualization at top)
   const sorted = [...content].sort((a, b) => b.level - a.level);
@@ -1763,10 +1780,16 @@ function renderPyramid(content, accent) {
       </div>
     </div>`).join('');
 
+  const philosophyBlock = philosophy ? `
+    <div class="pyramid-philosophy" style="border-left-color:${accent}">
+      ${philosophy}
+    </div>` : '';
+
   return `
     <div class="pyramid-shape-wrap">${shapeBands}</div>
     <p class="pyramid-intro">Each level depends on the one below it. Build from the bottom up — skip a level and you'll pay for it later.</p>
-    <div class="pyramid-wrap">${tiers}</div>`;
+    <div class="pyramid-wrap">${tiers}</div>
+    ${philosophyBlock}`;
 }
 
 function renderSteps(content, accent) {

@@ -4,7 +4,7 @@ const CATEGORIES = [
     name: 'Sales Philosophy',
     accent: '#E8503A',
     description: 'How I think about selling, building pipeline, and running GTM teams. Opinionated, experience-backed, and mostly learned the hard way.',
-    preview: ['How I Operate', 'On Pipeline', 'On Customer Success', 'On Hiring for Stage', 'The Pitch', 'On Legal & Contracts', 'On Building Product']
+    preview: ['How I Operate', 'On Pipeline', 'On Customer Success', 'On Hiring for Stage', 'The Pitch', 'On Legal & Contracts', 'On Building Product', 'Infra Hierarchy of Needs']
   },
   {
     id: 'playbooks',
@@ -378,6 +378,91 @@ const PHILOSOPHY = [
         '<strong>The pyramid breaks when you skip levels</strong> — Outages during key demos. Releases that break customer workflows. Engineering firefighting that pulls people off roadmap. These are symptoms of a missing level, not bad luck.',
         '<strong>Product quality is a GTM problem</strong> — Every production incident is a deal at risk. Every deployment failure is a conversation your AE has to manage. Engineering and sales win or lose together.'
       ]}
+    ]
+  },
+  {
+    id: 'infra-hierarchy',
+    type: 'philosophy',
+    name: 'Infra Hierarchy of Needs',
+    accent: '#06b6d4',
+    purpose: 'What infra needs to deliver across every deployment model. SaaS is not the product. Parity is the product.',
+    preview: 'If it only works in SaaS, it\'s broken. Parity across SaaS, Dedicated Instance, and in-VPC is the bar.',
+    tabs: [
+      {
+        key: 'hierarchy',
+        label: 'Hierarchy of Needs',
+        type: 'pyramid',
+        philosophy: 'We do not celebrate infra success unless it works across SaaS, Dedicated Instance, and in-VPC.<br><strong>SaaS is not the product. Parity is the product.</strong>',
+        content: [
+          {
+            level: 1,
+            name: 'Reliability',
+            label: 'Physiological',
+            color: '#7B72E9',
+            items: [
+              'All deployment types have versioned artifacts and reproducible builds',
+              'Infrastructure-as-code across SaaS, Dedicated, and in-VPC',
+              'Dedicated and in-VPC installs succeed >95% without intervention',
+              'SaaS, Dedicated, and in-VPC run the same core infra primitives',
+              'No environment-specific forks or one-off configs',
+              '"If it only works in SaaS, it\'s broken"'
+            ]
+          },
+          {
+            level: 2,
+            name: 'Deployability',
+            label: 'Safety',
+            color: '#2A9FD6',
+            items: [
+              'One-click / one-command deploy for SaaS, Dedicated Instance, and in-VPC',
+              'Deploy times: SaaS <30 min · Dedicated <2 hrs · in-VPC <1 day',
+              'Upgrades are reliable and repeatable across all environments',
+              'No manual steps that differ by deployment type',
+              'Versioning is consistent across all deployment modes'
+            ]
+          },
+          {
+            level: 3,
+            name: 'Operability',
+            label: 'Belonging',
+            color: '#1DB374',
+            items: [
+              'Unified observability across all deployment types — logs, metrics, traces',
+              'On-call can debug any deployment model in <30 minutes',
+              'Standardized runbooks for SaaS, Dedicated, and in-VPC',
+              'Customer environments are introspectable without heroics',
+              'Clear ownership of infra across all deployment models'
+            ]
+          },
+          {
+            level: 4,
+            name: 'Consistency',
+            label: 'Esteem',
+            color: '#F59E0B',
+            items: [
+              'All releases validated across SaaS, Dedicated, and in-VPC before GA',
+              'CI/CD enforces deployment parity gates',
+              '<5% of incidents are deployment-model-specific',
+              'Infra bugs are fixed once, applied everywhere',
+              'Engineers default to multi-deploy compatibility when building'
+            ]
+          },
+          {
+            level: 5,
+            name: 'Infra Nirvana',
+            label: 'Self-Actualization',
+            color: '#E8503A',
+            items: [
+              'Infra is uniform across SaaS, Dedicated Instance, and in-VPC',
+              'Every feature is simultaneously available across all deployment types',
+              'Customers can move between deployment models with near-zero friction',
+              'Deployment model is a commercial choice, not a technical constraint',
+              'No "works in SaaS only" incidents in the last 90 days',
+              'Infra differences are invisible to product and to customers'
+            ]
+          }
+        ]
+      }
     ]
   },
   {
