@@ -4,7 +4,7 @@ const CATEGORIES = [
     name: 'Sales Philosophy',
     accent: '#E8503A',
     description: 'How I think about selling, building pipeline, and running GTM teams. Opinionated, experience-backed, and mostly learned the hard way.',
-    preview: ['How I Operate', 'On Pipeline', 'On Customer Success', 'On Hiring for Stage', 'The Pitch', 'On Legal & Contracts']
+    preview: ['How I Operate', 'On Pipeline', 'On Customer Success', 'On Hiring for Stage', 'The Pitch', 'On Legal & Contracts', 'On Building Product']
   },
   {
     id: 'playbooks',
@@ -287,6 +287,97 @@ const PHILOSOPHY = [
         avoid: 'Avoid their paper at any deal size. No matter how big the deal, no matter how much they insist. Their MSA was not written with your product, your deployment model, or your exposure in mind. Once you\'re in their paper you\'re playing defense on every clause from page one.',
         callout: '"We work from our standard MSA — it\'s purpose-built for this type of deployment and we can turn it around fast. What\'s the contract value looking like? That tells us where we land on terms flexibility."'
       }}
+    ]
+  },
+  {
+    id: 'on-building-product',
+    type: 'philosophy',
+    name: 'On Building Product',
+    accent: '#6366f1',
+    purpose: 'What an engineering org needs to deliver, in order. Built from the bottom up — skip a level and you\'ll pay for it later.',
+    preview: 'Reliable before fast. Observable before scalable. You can\'t sell what you can\'t ship.',
+    tabs: [
+      {
+        key: 'hierarchy',
+        label: 'Hierarchy of Needs',
+        type: 'pyramid',
+        content: [
+          {
+            level: 1,
+            name: 'Reliable',
+            label: 'Physiological',
+            color: '#7B72E9',
+            items: [
+              'The product does its core job consistently — 99.9% uptime you\'d put in a contract',
+              'Core workflows don\'t regress when you ship',
+              'Nothing is silently broken in production',
+              'Data is accurate, consistent, and auditable',
+              'The team knows when something is wrong before a customer does'
+            ]
+          },
+          {
+            level: 2,
+            name: 'Deployable',
+            label: 'Safety',
+            color: '#2A9FD6',
+            items: [
+              'CI/CD pipeline catches and blocks bad code automatically',
+              'Rollback completes in under 10 minutes',
+              'You can ship any day, any time, without heroics',
+              'SAs and field teams can confidently deploy for customers, POCs, and new installs in a timely manner',
+              'Staging behaves like production'
+            ]
+          },
+          {
+            level: 3,
+            name: 'Observable',
+            label: 'Belonging',
+            color: '#1DB374',
+            items: [
+              'Metrics, logs, and traces connected end to end',
+              'Error messaging is clear, actionable, and understood by the field',
+              'Customers never the first to tell you something broke',
+              'Hooks into customer logging and observability services where possible',
+              'On-call is real, rotated, and documented — P1 response under 30 minutes'
+            ]
+          },
+          {
+            level: 4,
+            name: 'Velocity',
+            label: 'Esteem',
+            color: '#F59E0B',
+            items: [
+              'New engineer ships code in their first week',
+              'Features ship on a predictable, committed cadence',
+              'No single points of knowledge — no one is the bus',
+              'We move fast without fear of breaking things',
+              'Tech debt is managed, not accumulated in silence'
+            ]
+          },
+          {
+            level: 5,
+            name: 'Flow State',
+            label: 'Self-Actualization',
+            color: '#E8503A',
+            items: [
+              'Every merge goes to production automatically',
+              'Zero-downtime deploys — customers never notice releases',
+              'You ship new things without breaking old ones',
+              'Incident rate is near zero, not a background hum',
+              'The team is proud of what they\'re building'
+            ]
+          }
+        ]
+      },
+      { key: 'principles', label: 'Principles', type: 'principles', content: [
+        '<strong>Build the foundation before velocity</strong> — Reliable before fast. Deployable before observable. Skipping levels creates the kind of compounding debt that becomes a crisis at the worst possible moment.',
+        '<strong>Deployable is a muscle</strong> — Code that isn\'t shipped doesn\'t create value. Build the deploy motion early, make it safe, and use it constantly. Fear of shipping is a sign something is broken.',
+        '<strong>Observability is your early warning system</strong> — You cannot sell what you cannot debug. Customers don\'t have patience for "we\'re investigating." Know before they do.',
+        '<strong>Velocity is earned, not demanded</strong> — Once the foundation holds, velocity follows. Trying to force speed without the infrastructure creates firefighting, not shipping.',
+        '<strong>Flow state is the goal</strong> — When engineering is in flow state, GTM moves faster. Reps can commit more confidently, demos don\'t break, and customers feel like they\'re buying a real product.',
+        '<strong>The pyramid breaks when you skip levels</strong> — Outages during key demos. Releases that break customer workflows. Engineering firefighting that pulls people off roadmap. These are symptoms of a missing level, not bad luck.',
+        '<strong>Product quality is a GTM problem</strong> — Every production incident is a deal at risk. Every deployment failure is a conversation your AE has to manage. Engineering and sales win or lose together.'
+      ]}
     ]
   },
   {

@@ -817,6 +817,97 @@
     opacity: 0.6;
   }
 
+  /* ── Pyramid tab ── */
+  .pyramid-intro {
+    font-size: 0.8rem;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    font-style: italic;
+  }
+  .pyramid-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .pyramid-tier {
+    display: flex;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .pyramid-tier:hover {
+    border-color: var(--border2);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+  }
+  .pyramid-tier-label {
+    width: 148px;
+    min-width: 148px;
+    padding: 1rem 1.1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.25rem;
+  }
+  .pyramid-tier-level {
+    font-size: 0.55rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    opacity: 0.55;
+  }
+  .pyramid-tier-name {
+    font-size: 0.92rem;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    line-height: 1.15;
+  }
+  .pyramid-tier-sub {
+    font-size: 0.62rem;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    opacity: 0.55;
+    margin-top: 0.15rem;
+  }
+  .pyramid-tier-items {
+    flex: 1;
+    padding: 0.75rem 1.2rem;
+    border-left: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.22rem;
+  }
+  .pyramid-tier-item {
+    font-size: 0.78rem;
+    color: var(--muted);
+    display: flex;
+    align-items: baseline;
+    gap: 0.55rem;
+    line-height: 1.45;
+  }
+  .pyramid-tier-dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 0.45em;
+    opacity: 0.75;
+  }
+  .pyramid-shape-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    gap: 2px;
+  }
+  .pyramid-shape-band {
+    height: 10px;
+    border-radius: 3px;
+    transition: opacity 0.2s;
+  }
+
   /* ── The Human section ── */
   .human-section {
     display: grid;
@@ -1490,6 +1581,7 @@ function renderTab(fn, tab) {
     case 'prose':         return renderProse(tab.content || []);
     case 'career':        return renderCareer(fn);
     case 'pitch-section': return renderPitchSection(tab.content || {}, fn.accent);
+    case 'pyramid':       return renderPyramid(tab.content || [], fn.accent);
     default:           return '';
   }
 }
@@ -1612,6 +1704,42 @@ function renderPitchSection(c, accent) {
       ${avoidBlock}
       ${c.callout ? `<div class="pitch-callout" style="background:${accent}11;border-left:3px solid ${accent}">${c.callout}</div>` : ''}
     </div>`;
+}
+
+function renderPyramid(content, accent) {
+  // content = array of {level, name, label, color, items}
+  // Render top-to-bottom (highest level first = self-actualization at top)
+  const sorted = [...content].sort((a, b) => b.level - a.level);
+
+  // Mini decorative pyramid shape using width percentages
+  const bandWidths = sorted.map((_, i) => {
+    const pct = 28 + (i / (sorted.length - 1)) * 64;
+    return Math.round(pct);
+  });
+  const shapeBands = sorted.map((tier, i) => `
+    <div class="pyramid-shape-band" style="width:${bandWidths[i]}%;background:${tier.color};opacity:${0.55 + i * 0.09}"></div>`
+  ).join('');
+
+  const tiers = sorted.map(tier => `
+    <div class="pyramid-tier" style="border-left: 3px solid ${tier.color}">
+      <div class="pyramid-tier-label" style="background:${tier.color}14">
+        <div class="pyramid-tier-level" style="color:${tier.color}">Level ${tier.level}</div>
+        <div class="pyramid-tier-name" style="color:${tier.color}">${tier.name}</div>
+        <div class="pyramid-tier-sub">${tier.label}</div>
+      </div>
+      <div class="pyramid-tier-items">
+        ${tier.items.map(item => `
+          <div class="pyramid-tier-item">
+            <div class="pyramid-tier-dot" style="background:${tier.color}"></div>
+            <span>${item}</span>
+          </div>`).join('')}
+      </div>
+    </div>`).join('');
+
+  return `
+    <div class="pyramid-shape-wrap">${shapeBands}</div>
+    <p class="pyramid-intro">Each level depends on the one below it. Build from the bottom up — skip a level and you'll pay for it later.</p>
+    <div class="pyramid-wrap">${tiers}</div>`;
 }
 
 function renderSteps(content, accent) {
