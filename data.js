@@ -4,7 +4,7 @@ const CATEGORIES = [
     name: 'Sales Philosophy',
     accent: '#E8503A',
     description: 'How I think about selling, building pipeline, and running GTM teams. Opinionated, experience-backed, and mostly learned the hard way.',
-    preview: ['How I Operate', 'On Pipeline', 'On Customer Success', 'On Hiring for Stage', 'The Pitch', 'On Legal & Contracts', 'Hierarchy of Needs']
+    preview: ['How I Operate', 'On Pipeline', 'On Customer Success', 'On Hiring for Stage', 'The Pitch', 'On Legal & Contracts', 'Hierarchy of Needs', 'Pipeline Diversity']
   },
   {
     id: 'playbooks',
@@ -442,6 +442,25 @@ const PHILOSOPHY = [
           ]
         }
       }
+    ]
+  },
+  {
+    id: 'pipeline-diversity',
+    type: 'philosophy',
+    name: 'Pipeline Diversity',
+    accent: '#6366f1',
+    purpose: 'Segment intentionally or you\'ll optimize for the wrong customer at the wrong time.',
+    preview: 'SMB validates. Mid-market builds the motion. Enterprise tests whether the product was actually ready.',
+    tabs: [
+      { key: 'principles', label: 'Principles', type: 'principles', content: [
+        '<strong>SMB is where you find product love</strong> — Fast cycles, cheap deals, brutal feedback. If customers aren\'t excited here, they\'re not excited. Skip SMB and you\'re just selling churn with bigger ACVs upstream.',
+        '<strong>Mid-market is where you build the motion</strong> — ICP refinement, champion-building, time-to-close tracking. This is where the playbook gets written. It\'s also where most teams stall: the SMB muscle breaks before the enterprise one is built.',
+        '<strong>Enterprise is a beast</strong> — The product has to be ready before you go there. If it\'s not, they\'ll turn you into a custom dev shop. Every enterprise deal you close without product readiness is a roadmap hostage situation. Protect the roadmap.',
+        '<strong>Watch for ICP drift across segments</strong> — The customer who closes in SMB and the one who buys enterprise are not the same person. If you\'re not deliberate, you end up optimizing for a customer that doesn\'t exist and wondering why everything feels stuck.',
+        '<strong>Single-channel dependence inside a segment is a trap</strong> — All outbound mid-market means one variable kills your quarter. Build multiple entry points within each segment. Diversify by channel, not just by segment.',
+        '<strong>NDR by segment is your real signal</strong> — Blended NDR hides the problem. Healthy aggregate with churning SMB means you have a product fit issue you\'re papering over with enterprise expansion. Track it separately. The flywheel only works if it\'s spinning everywhere.',
+        '<strong>Be intentional about when you open the next segment</strong> — Most teams move upmarket too early or too late. Too early and you break the motion you haven\'t finished building. Too late and the competition owns the beach head. Set the criteria before you make the call.'
+      ]}
     ]
   },
   {
