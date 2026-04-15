@@ -452,14 +452,20 @@ const PHILOSOPHY = [
     purpose: 'Segment intentionally or you\'ll optimize for the wrong customer at the wrong time.',
     preview: 'SMB validates. Mid-market builds the motion. Enterprise tests whether the product was actually ready.',
     tabs: [
-      { key: 'principles', label: 'Principles', type: 'principles', content: [
-        '<strong>SMB is where you find product love</strong> — Fast cycles, cheap deals, brutal feedback. If customers aren\'t excited here, they\'re not excited. Skip SMB and you\'re just selling churn with bigger ACVs upstream.',
-        '<strong>Mid-market is where you build the motion</strong> — ICP refinement, champion-building, time-to-close tracking. This is where the playbook gets written. It\'s also where most teams stall: the SMB muscle breaks before the enterprise one is built.',
-        '<strong>Enterprise is a beast</strong> — The product has to be ready before you go there. If it\'s not, they\'ll turn you into a custom dev shop. Every enterprise deal you close without product readiness is a roadmap hostage situation. Protect the roadmap.',
-        '<strong>Watch for ICP drift across segments</strong> — The customer who closes in SMB and the one who buys enterprise are not the same person. If you\'re not deliberate, you end up optimizing for a customer that doesn\'t exist and wondering why everything feels stuck.',
-        '<strong>Single-channel dependence inside a segment is a trap</strong> — All outbound mid-market means one variable kills your quarter. Build multiple entry points within each segment. Diversify by channel, not just by segment.',
-        '<strong>NDR by segment is your real signal</strong> — Blended NDR hides the problem. Healthy aggregate with churning SMB means you have a product fit issue you\'re papering over with enterprise expansion. Track it separately. The flywheel only works if it\'s spinning everywhere.',
-        '<strong>Be intentional about when you open the next segment</strong> — Most teams move upmarket too early or too late. Too early and you break the motion you haven\'t finished building. Too late and the competition owns the beach head. Set the criteria before you make the call.'
+      { key: 'smb', label: 'SMB', type: 'principles', content: [
+        '<strong>This is where you find out if people love the product</strong> — Fast cycles, cheap deals, brutal feedback. If they\'re not excited here, they\'re not excited anywhere. SMB tells the truth before enterprise money buries it.',
+        '<strong>Skip it and you\'re selling churn upstream</strong> — Teams that jump straight to mid-market or enterprise without SMB validation are just deferring the reckoning. Big ACVs don\'t fix a product people don\'t love — they delay the churn and make it more expensive.',
+        '<strong>Treat it as signal, not strategy</strong> — SMB isn\'t where you build the company. It\'s where you earn the right to go upmarket. Use it as your product feedback loop before the deals get large enough to hide the truth.'
+      ]},
+      { key: 'mid-market', label: 'Mid-Market', type: 'principles', content: [
+        '<strong>This is where the motion gets built</strong> — ICP refinement, champion-building, time-to-close tracking. The playbook doesn\'t exist yet — this is where you write it. If you can\'t win consistently here, you\'re not ready for enterprise.',
+        '<strong>It\'s also where most teams stall</strong> — The SMB muscle breaks before the enterprise one is built. Too big for scrappy, too small for structured. Most teams get stuck here longer than they plan and mistake activity for momentum.',
+        '<strong>Lock down ICP before you move upmarket</strong> — If you don\'t know exactly who you\'re winning and why in mid-market, you won\'t know in enterprise either. The stakes just get higher and the feedback slower.'
+      ]},
+      { key: 'enterprise', label: 'Enterprise', type: 'principles', content: [
+        '<strong>The product has to be ready</strong> — Enterprise buyers will find every gap. If it\'s not there, they\'ll turn you into a custom dev shop one "small ask" at a time. Protect the roadmap. Saying no to the wrong enterprise deal is a win.',
+        '<strong>Go in with a champion or don\'t go in</strong> — Enterprise deals die in committee. You need someone internal who owns the outcome, can navigate procurement, and will fight for you when you\'re not in the room. No champion means no deal — just a long, slow no.',
+        '<strong>Most teams move upmarket too early</strong> — The deals take longer, the feedback is slower, and the misses are expensive. Set hard criteria for when you open this segment — product readiness, repeatable mid-market motion, reference customers. Then hold the line.'
       ]}
     ]
   },
