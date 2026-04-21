@@ -265,7 +265,7 @@
         <div class="cd">Rescue dog · Part wolf, part golden · All good boy</div>
       </div>
       <div class="crew-card" style="border-color:rgba(125,211,252,0.3); grid-column: 1 / -1">
-        <div class="cn" style="color:#E0F2FE">🎩 &nbsp;KEVIN</div>
+        <div class="cn" style="color:#E0F2FE">🏔️ &nbsp;KEVIN</div>
         <div class="cd">Colorado stereotype · skier, runner, hiker, camper, biker — but the most important job is raising two humans. It puts everything else into perspective.</div>
       </div>
     </div>
@@ -289,7 +289,7 @@ const PEOPLE = [
   { id:'finn',    name:'FINN',    role:'Good Boy',       desc:'Part wolf · all heart',                                                color:'#FCD34D', glow:'#FEF3C7', xp:0.18, yp:0.70 },
   { id:'kevin',   name:'KEVIN',   role:'The Human',      desc:'Skier, runner, hiker, camper, biker',                                  color:'#7DD3FC', glow:'#E0F2FE', xp:0.50, yp:0.47, isCenter:true },
 ];
-const EMOJIS = { jax:'🧱', quin:'🔴', lindsey:'⭐', finn:'🐺', kevin:'🎩' };
+const EMOJIS = { jax:'🧱', quin:'🔴', lindsey:'⭐', finn:'🐺', kevin:'🏔️' };
 
 // ── SVG CHARACTERS ────────────────────────────────────────────────────────────
 
@@ -491,41 +491,11 @@ function makeFinnSVG() {
 function makeKevinSVG() {
   const m = innerWidth < 600;
   return `<svg viewBox="0 0 80 132" xmlns="http://www.w3.org/2000/svg" style="width:${m?56:76}px;height:${m?92:124}px;overflow:visible;filter:drop-shadow(0 0 12px #7DD3FC88)">
-  <!-- TRUCKER HAT — forest green front panel, mesh back -->
-  <!-- Mesh side panels (visible from front) -->
-  <rect x="7"  y="6" width="13" height="18" rx="2" fill="#4A7A44" opacity="0.55"/>
-  <rect x="60" y="6" width="13" height="18" rx="2" fill="#4A7A44" opacity="0.55"/>
-  <!-- Mesh grid lines -->
-  <line x1="10" y1="8"  x2="10" y2="22" stroke="rgba(0,30,0,0.3)" stroke-width="1"/>
-  <line x1="13" y1="8"  x2="13" y2="22" stroke="rgba(0,30,0,0.3)" stroke-width="1"/>
-  <line x1="16" y1="8"  x2="16" y2="22" stroke="rgba(0,30,0,0.3)" stroke-width="1"/>
-  <line x1="7"  y1="11" x2="20" y2="11" stroke="rgba(0,30,0,0.2)" stroke-width="1"/>
-  <line x1="7"  y1="15" x2="20" y2="15" stroke="rgba(0,30,0,0.2)" stroke-width="1"/>
-  <line x1="7"  y1="19" x2="20" y2="19" stroke="rgba(0,30,0,0.2)" stroke-width="1"/>
-  <line x1="63" y1="8"  x2="63" y2="22" stroke="rgba(0,30,0,0.3)" stroke-width="1"/>
-  <line x1="66" y1="8"  x2="66" y2="22" stroke="rgba(0,30,0,0.3)" stroke-width="1"/>
-  <line x1="60" y1="11" x2="73" y2="11" stroke="rgba(0,30,0,0.2)" stroke-width="1"/>
-  <line x1="60" y1="15" x2="73" y2="15" stroke="rgba(0,30,0,0.2)" stroke-width="1"/>
-  <line x1="60" y1="19" x2="73" y2="19" stroke="rgba(0,30,0,0.2)" stroke-width="1"/>
-  <!-- Front foam panel (solid) -->
-  <rect x="18" y="3" width="44" height="22" rx="3" fill="#2D5A27"/>
-  <!-- Slight arch at top -->
-  <ellipse cx="40" cy="4" rx="21" ry="3.5" fill="#3A7030"/>
-  <!-- Seam line down center -->
-  <line x1="40" y1="4" x2="40" y2="25" stroke="rgba(255,255,255,0.1)" stroke-width="0.8"/>
-  <!-- Mountain logo (white silhouette) -->
-  <polygon points="40,9 33,21 47,21"  fill="rgba(255,255,255,0.72)"/>
-  <polygon points="35,21 31,21 37,13" fill="rgba(255,255,255,0.48)"/>
-  <!-- Hat snap button on top -->
-  <circle cx="40" cy="4" r="2" fill="#1E3D1A"/>
-  <!-- Brim (forward-jutting, flat) -->
-  <rect x="16" y="23" width="48" height="5" rx="1" fill="#1E3D1A"/>
-  <ellipse cx="40" cy="28" rx="26" ry="3.5" fill="#162E12"/>
-  <!-- Hat sweatband / seam at base -->
-  <rect x="18" y="23" width="44" height="3" rx="1" fill="#1A3818" opacity="0.7"/>
-  <!-- Brown hair peeking out at sides -->
-  <rect x="12" y="26" width="8" height="6" rx="3" fill="#6B3A2A"/>
-  <rect x="60" y="26" width="8" height="6" rx="3" fill="#6B3A2A"/>
+  <!-- Brown hair -->
+  <ellipse cx="40" cy="27" rx="21" ry="17" fill="#6B3A2A"/>
+  <ellipse cx="40" cy="19" rx="15" ry="9"  fill="#7B4A32"/>
+  <rect x="18" y="27" width="8" height="9" rx="3" fill="#6B3A2A"/>
+  <rect x="54" y="27" width="8" height="9" rx="3" fill="#6B3A2A"/>
   <!-- Head -->
   <ellipse cx="40" cy="41" rx="19" ry="20" fill="#F5C2A8"/>
   <!-- Warm squinting eyes -->
