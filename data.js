@@ -4,7 +4,7 @@ const CATEGORIES = [
     name: 'Sales Philosophy',
     accent: '#E8503A',
     description: 'How I think about selling, building pipeline, and running GTM teams. Opinionated, experience-backed, and mostly learned the hard way.',
-    preview: ['How I Operate', 'On Pipeline', 'On Customer Success', 'On Hiring for Stage', 'The Pitch', 'On Legal & Contracts', 'Hierarchy of Needs', 'Pipeline Diversity']
+    preview: ['How I Operate', 'On Pipeline', 'On Customer Success', 'On Hiring for Stage', 'The Pitch', 'On Legal & Contracts', 'Hierarchy of Needs', 'Pipeline Diversity', 'Building Champions']
   },
   {
     id: 'playbooks',
@@ -466,6 +466,37 @@ const PHILOSOPHY = [
         '<strong>The product has to be ready</strong> — Enterprise buyers will find every gap. If it\'s not there, they\'ll turn you into a custom dev shop one "small ask" at a time. Protect the roadmap. Saying no to the wrong enterprise deal is a win.',
         '<strong>Go in with a champion or don\'t go in</strong> — Enterprise deals die in committee. You need someone internal who owns the outcome, can navigate procurement, and will fight for you when you\'re not in the room. No champion means no deal — just a long, slow no.',
         '<strong>Most teams move upmarket too early</strong> — The deals take longer, the feedback is slower, and the misses are expensive. Set hard criteria for when you open this segment — product readiness, repeatable mid-market motion, reference customers. Then hold the line.'
+      ]}
+    ]
+  },
+  {
+    id: 'building-champions',
+    type: 'philosophy',
+    name: 'Building Champions',
+    accent: '#F59E0B',
+    purpose: 'Your champion is a person with a problem and a career. Understand both or you\'re just managing a contact.',
+    preview: 'Every persona in the eval has a different job to do and a different thing to protect. Find it. Align to it. Win with it.',
+    tabs: [
+      { key: 'ic', label: 'IC Developer', type: 'principles', content: [
+        '<strong>Find the shitty part of their day</strong> — There\'s a task they\'re doing right now that they hate. Repetitive, manual, soul-crushing, or just boring. If your product can kill that task, you have a champion. If you haven\'t found it, you haven\'t asked hard enough.',
+        '<strong>Make them look good</strong> — The best ICs are builders who want to ship things worth talking about. Give them something they can demo to their team, bring up in their 1:1, or include in their performance review. This is the lever nobody says out loud — everybody thinks about it.',
+        '<strong>The perf review angle is always there</strong> — Always. "I evaluated and deployed this tooling, cut X hours of work per week, and the team shipped Y faster." That sentence is your champion\'s narrative at their next review. Help them write it.',
+        '<strong>ICs influence up more than you think</strong> — A developer who\'s genuinely excited will tell their manager, their skip, and their Slack channel. Build an IC champion before you try to run an exec play. The ground-up signal matters.',
+        '<strong>Don\'t pitch them the ROI slide</strong> — They don\'t care about business outcomes language. Show them the product working. Let them break it. Give them a sandbox. The pitch is a demo, not a deck.'
+      ]},
+      { key: 'mid-manager', label: 'Mid Manager', type: 'principles', content: [
+        '<strong>They want a productive, unblocked team</strong> — Everything else is downstream of this. If your product removes friction and helps the team hit deadlines, you\'re speaking their language. If it adds complexity, you\'re the problem.',
+        '<strong>Happy engineers don\'t complain about tooling</strong> — The worst part of a mid-manager\'s week is when their team bitches about the stack. If you can make the tooling conversation go away, you\'re a hero. Position for that explicitly.',
+        '<strong>Start thinking about eng metrics</strong> — Cycle time, deployment frequency, incident rate, time-to-resolve. These are the numbers a mid-manager reports up. If you can tie your product to improvement in any of them, you\'re not just solving a tool problem — you\'re giving them a story to tell their exec.',
+        '<strong>They need good news to deliver upward</strong> — Help them get it. "We piloted this, here\'s the before/after on delivery velocity, here\'s what the team said." Give them the shape of that conversation, because they\'re going to have it whether you help or not.',
+        '<strong>Don\'t confuse the mid-manager for a blocker</strong> — They\'re often the most rational person in the room. They\'ve seen tools fail. They\'re cautious because they\'ve been burned. Earn it. Run a scoped pilot. Show the result. Let them sell it up themselves.'
+      ]},
+      { key: 'executive', label: 'Executive', type: 'principles', content: [
+        '<strong>They want to drive AI adoption — full stop</strong> — This is a board mandate, a CEO ask, or both. Every exec right now is under pressure to show AI progress. You\'re not just selling a tool — you\'re handing them a checkmark on a slide they have to present.',
+        '<strong>They don\'t know the tech, and that\'s fine</strong> — Don\'t explain embeddings. Don\'t get into chunking strategy. Speak in outcomes: time saved, risk reduced, capability unlocked, competitive advantage gained. If you drift technical, you lose them and they stop trusting you.',
+        '<strong>Help them sound like an expert</strong> — Give them the talking points. Feed them the framing they\'ll use in their next all-hands or board update. The exec who can speak fluently about AI implementation — even at a high level — is ahead of most of their peers. You want them to feel that.',
+        '<strong>There\'s smoke to blow here, and that\'s part of the job</strong> — Validate their vision. Affirm that they\'re thinking about this the right way. Make them feel ahead of the curve. This isn\'t dishonest — most execs who\'ve prioritized AI investment are ahead. Tell them that.',
+        '<strong>Address the adoption risk directly</strong> — They\'re not just thinking about the upside. They\'re thinking about what happens if the team doesn\'t use it, if the project gets buried, if they championed something that didn\'t deliver. Get those concerns on the table early and have an answer.'
       ]}
     ]
   },
