@@ -83,7 +83,9 @@
     text-transform: uppercase;
     color: var(--muted);
     font-weight: 500;
+    transition: opacity 0.35s;
   }
+  .header-tagline.fading { opacity: 0; }
 
   /* ── Stage Toggle ── */
   .stage-toggle {
@@ -1304,6 +1306,73 @@
   }
   .nyan-rainbow.show { opacity: .75; }
 
+  /* ── Stage button subtitles ── */
+  .stage-btn[data-subtitle] { position: relative; }
+  .stage-btn[data-subtitle]::after {
+    content: attr(data-subtitle);
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%) scale(0.85);
+    background: var(--surface2);
+    border: 1px solid var(--border2);
+    color: var(--muted);
+    font-size: 0.58rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: none;
+    white-space: nowrap;
+    padding: 0.25rem 0.55rem;
+    border-radius: 6px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s, transform 0.15s;
+    z-index: 20;
+  }
+  .stage-btn[data-subtitle]:hover::after { opacity: 1; transform: translateX(-50%) scale(1); }
+
+  /* ── Home row aside ── */
+  .home-row-aside {
+    font-size: 0.67rem;
+    color: var(--muted);
+    font-style: italic;
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transform: translateY(-3px);
+    transition: opacity 0.2s 0.08s, max-height 0.2s, transform 0.2s 0.08s;
+    margin-top: 0;
+  }
+  .home-row:hover .home-row-aside {
+    opacity: 0.65;
+    max-height: 2rem;
+    transform: translateY(0);
+    margin-top: 0.25rem;
+  }
+
+  /* ── Still here toast ── */
+  @keyframes stillIn  { from { opacity:0; transform:translateX(-50%) translateY(16px); } to { opacity:1; transform:translateX(-50%) translateY(0); } }
+  @keyframes stillOut { to   { opacity:0; transform:translateX(-50%) translateY(16px); } }
+  .still-here-toast {
+    position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%);
+    z-index: 10003; pointer-events: none;
+    background: var(--surface2); border: 1px solid var(--border2);
+    padding: .6rem 1.3rem; border-radius: 999px;
+    font-size: .78rem; font-weight: 600; color: var(--muted);
+    box-shadow: 0 8px 32px rgba(0,0,0,.55);
+    animation: stillIn .3s ease both, stillOut .35s ease 3.8s both;
+    white-space: nowrap;
+  }
+
+  /* ── Finn runner ── */
+  @keyframes finnRun { from { left: -90px; } to { left: calc(100vw + 90px); } }
+  .finn-runner {
+    position: fixed; z-index: 10004; pointer-events: none;
+    bottom: 1.5rem; left: -90px;
+    font-size: 2.8rem; line-height: 1;
+    animation: finnRun 1.5s cubic-bezier(.2,.85,.4,1) forwards;
+  }
+
   /* ── DEAL CLOSED overlay ── */
   @keyframes dealPop { from { transform: scale(.35) rotate(-8deg); opacity: 0; } to { transform: scale(1) rotate(0); opacity: 1; } }
   .deal-overlay {
@@ -1359,9 +1428,9 @@
   </div>
   <img src="nyan.png" alt="Nyan Cat" class="nyan-header">
   <div class="stage-toggle" id="stage-toggle" style="display:none">
-    <button class="stage-btn active" data-stage="early">Early</button>
-    <button class="stage-btn" data-stage="growth">Growth</button>
-    <button class="stage-btn" data-stage="scale">Scale</button>
+    <button class="stage-btn active" data-stage="early" data-subtitle="survival mode">Early</button>
+    <button class="stage-btn" data-stage="growth" data-subtitle="controlled chaos">Growth</button>
+    <button class="stage-btn" data-stage="scale" data-subtitle="processes for everything, still late">Scale</button>
   </div>
 </header>
 
@@ -1575,6 +1644,13 @@ function renderCareerList() {
 
 // ── Home ────────────────────────────────────────────────────────────────────
 
+const _ASIDES = {
+  philosophy: 'opinionated. held strongly. updated rarely.',
+  playbooks:  'actually works in the field, not just on slides.',
+  stories:    'real names. real deals. no settlements pending.',
+  background: 'brace yourself.'
+};
+
 function renderHome() {
   currentCategory = null;
   document.getElementById('stage-toggle').style.display = 'none';
@@ -1596,6 +1672,7 @@ function renderHome() {
             <div class="home-row-content">
               <div class="home-row-name">${cat.name}</div>
               <div class="home-row-desc">${cat.description}</div>
+              ${_ASIDES[cat.id] ? `<div class="home-row-aside">${_ASIDES[cat.id]}</div>` : ''}
             </div>
             <div class="home-row-chips">${chips}</div>
             <div class="home-row-arrow">→</div>
@@ -2304,6 +2381,79 @@ document.getElementById('card-area').addEventListener('dblclick', e => {
   el.textContent = msgs[Math.random() * msgs.length | 0];
   document.body.appendChild(el);
   setTimeout(() => el.remove(), 2700);
+});
+
+// ── Rotating header tagline ───────────────────────────────────────────────────
+const _TAGLINES = [
+  'GTM · Enterprise Sales',
+  'Professional Opinion Haver',
+  'Dad · 3D Printer Enthusiast',
+  'Chronic Builder of Things',
+  'Colorado Stereotype',
+  'Qualified to Disqualify',
+  '10 years in, still figuring it out',
+  'Recovering Startup AE'
+];
+let _tli = 0;
+setInterval(() => {
+  const el = document.querySelector('.header-tagline');
+  if (!el) return;
+  el.classList.add('fading');
+  setTimeout(() => {
+    _tli = (_tli + 1) % _TAGLINES.length;
+    el.textContent = _TAGLINES[_tli];
+    el.classList.remove('fading');
+  }, 370);
+}, 4200);
+
+// ── Console easter egg ────────────────────────────────────────────────────────
+console.log('%c👋 Hey developer', 'font-size:1.4rem;font-weight:700;color:#7DD3FC');
+console.log('%cYou found the console. Respect.', 'color:#6a6a88;font-size:.9rem');
+console.log('%cI didn\'t build this because I know how to code.\nI built it because I couldn\'t stop myself.', 'color:#a0a0c0;font-size:.82rem;line-height:1.6');
+console.log('%c(the easter eggs are more fun if you find them yourself)', 'color:#3a3a5a;font-size:.75rem;font-style:italic');
+
+// ── Tab title rotation when hidden ───────────────────────────────────────────
+const _titleOrig = document.title;
+const _titleAway = ["don't go 😭", "come back...", "still here?", "📊 pipeline empty", "☎️ follow up sent", "👀 kevin noticed"];
+let _tai = 0;
+document.addEventListener('visibilitychange', () => {
+  document.title = document.hidden ? _titleAway[_tai++ % _titleAway.length] : _titleOrig;
+});
+
+// ── "Still here?" idle toast ──────────────────────────────────────────────────
+const _IDLE_MSGS = [
+  '👀 still reading?',
+  '📖 taking notes, or just vibing?',
+  '🤔 probably should\'ve hired me by now',
+  '☕ you\'ve been here a while. good sign.',
+  '🚀 pipeline full. just saying.',
+];
+let _idleT = null, _idleI = 0;
+function _resetIdle() {
+  clearTimeout(_idleT);
+  _idleT = setTimeout(() => {
+    const el = document.createElement('div'); el.className = 'still-here-toast';
+    el.textContent = _IDLE_MSGS[_idleI++ % _IDLE_MSGS.length];
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 4300);
+    _resetIdle();
+  }, 45000);
+}
+['mousemove','keydown','click','scroll'].forEach(ev => document.addEventListener(ev, _resetIdle, { passive: true }));
+_resetIdle();
+
+// ── Easter egg 🐕 type "finn" anywhere ───────────────────────────────────────
+let _fb = '';
+document.addEventListener('keypress', e => {
+  if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') return;
+  _fb = (_fb + e.key.toLowerCase()).slice(-4);
+  if (_fb === 'finn') {
+    _fb = '';
+    const el = document.createElement('div'); el.className = 'finn-runner';
+    el.textContent = '🐕';
+    document.body.appendChild(el);
+    el.addEventListener('animationend', () => el.remove());
+  }
 });
 
 // ── Boot ──────────────────────────────────────────────────────────────────────
