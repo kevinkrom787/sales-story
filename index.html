@@ -287,13 +287,14 @@
     border-bottom: 1px solid var(--border);
     padding: 1.75rem;
     cursor: pointer;
-    transition: background 0.2s;
+    transition: background 0.22s, transform 0.32s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.28s ease;
     display: flex;
     flex-direction: column;
     gap: 0.7rem;
     position: relative;
     overflow: hidden;
     animation: fadeUp 0.4s ease both;
+    will-change: transform;
   }
   .card::before {
     content: '';
@@ -302,10 +303,15 @@
     width: 2px;
     height: 0;
     background: var(--card-accent, var(--muted));
-    transition: height 0.3s ease;
+    transition: height 0.3s ease, width 0.2s ease;
   }
-  .card:hover { background: var(--surface); }
-  .card:hover::before { height: 100%; }
+  .card:hover {
+    background: var(--surface);
+    transform: translateY(-7px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.45), 0 0 28px -6px var(--card-accent, #888);
+    z-index: 2;
+  }
+  .card:hover::before { height: 100%; width: 3px; }
 
   .card:nth-child(1) { animation-delay: 0.04s; }
   .card:nth-child(2) { animation-delay: 0.08s; }
@@ -315,11 +321,12 @@
   .card:nth-child(6) { animation-delay: 0.23s; }
   .card:nth-child(7) { animation-delay: 0.26s; }
 
-  .card-name    { font-size: 1.05rem; font-weight: 700; letter-spacing: -0.015em; }
+  .card-name    { font-size: 1.05rem; font-weight: 700; letter-spacing: -0.015em; transition: color 0.2s; }
+  .card:hover .card-name { color: var(--card-accent, var(--text)); }
   .card-purpose { color: var(--muted); font-size: 0.8rem; line-height: 1.55; }
   .card-cta     { display: flex; justify-content: flex-end; margin-top: auto; padding-top: 0.5rem; }
-  .card-cta span { font-size: 0.72rem; color: var(--muted); transition: color 0.2s; }
-  .card:hover .card-cta span { color: var(--text); }
+  .card-cta span { font-size: 0.72rem; color: var(--muted); transition: color 0.2s, transform 0.2s; display: inline-block; }
+  .card:hover .card-cta span { color: var(--card-accent, var(--text)); transform: translateX(4px); }
 
   /* ── Philosophy card ── */
   .phil-preview {
@@ -327,7 +334,9 @@
     color: var(--muted);
     line-height: 1.65;
     font-style: italic;
+    transition: color 0.2s;
   }
+  .card:hover .phil-preview { color: rgba(255,255,255,0.52); }
 
   /* ── Story carousel ── */
   .carousel-wrap {
