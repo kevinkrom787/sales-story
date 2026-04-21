@@ -1013,6 +1013,13 @@ const GTM = [
         '<strong style="color:var(--text)">If yes:</strong> Book the meeting. Don\'t pitch on the cold call.',
         '<strong style="color:var(--text)">If no:</strong> "Who on your team would that be most relevant for?" or "What would need to change for it to be a priority?"'
       ]},
+      { key: 'offer', label: 'The Right Offer', type: 'principles', content: [
+        '<strong>You\'re asking for 15–30 minutes, nothing more</strong> — That\'s the deal. Don\'t ask for an hour. Don\'t say "quick call." Be specific about the time and make the number feel small. 15 minutes to show you X is easy to say yes to. "Some time to connect" is easy to ignore.',
+        '<strong>The offer is what fills the meeting</strong> — You\'re not asking them to take a meeting with you. You\'re offering them something worth having a meeting for. A demo, a teardown, a benchmark, a specific insight about their stack. If you can\'t answer "what do they get out of showing up?" you don\'t have an offer.',
+        '<strong>Good offers are specific and credible</strong> — "A 20-minute walk through of how [peer company] cut their pipeline processing time by 40%" is an offer. "A chance to learn more about our platform" is not. Specificity is what makes it believable.',
+        '<strong>Match the offer to the persona</strong> — An IC wants to see something that changes their day. A manager wants a data point. An exec wants a peer story. The same meeting pitch does not work for all three. Segment the offer before you segment the list.',
+        '<strong>If you can\'t deliver in the first 5 minutes, you\'ve already lost</strong> — The offer gets them in the room. What happens in the first 5 minutes decides whether the rest of the call happens. Open by delivering exactly what you promised. No preamble, no company overview, no "tell me about yourself." Lead with the value you sold.'
+      ]},
       { key: 'metrics', label: 'Metrics' },
       { key: 'risks', label: 'Risks' }
     ],
