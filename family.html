@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Human | Kevin Krom</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #05050d;
+    --jax:     #D97706; --jax-g:     #FDE68A;
+    --quin:    #F87171; --quin-g:    #FECACA;
+    --lindsey: #A78BFA; --lindsey-g: #DDD6FE;
+    --finn:    #FCD34D; --finn-g:    #FEF3C7;
+    --kevin:   #7DD3FC; --kevin-g:   #E0F2FE;
+  }
+
+  html, body {
+    width: 100%; height: 100%;
+    overflow: hidden;
+    font-family: 'Space Grotesk', sans-serif;
+    background: var(--bg);
+    color: #e8e8f0;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
+    background-size: 64px 64px;
+  }
+
+  body::after {
+    content: '';
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background: radial-gradient(ellipse 80% 80% at 50% 50%, transparent 20%, #05050d 100%);
+  }
+
+  #stage { position: fixed; inset: 0; z-index: 2; }
+
+  canvas, #lines {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    display: block;
+  }
+
+  #header {
+    position: absolute; top: 22px; left: 50%;
+    transform: translateX(-50%);
+    text-align: center; z-index: 20; pointer-events: none;
+  }
+  #header .eyebrow {
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 0.35em; text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+  }
+  #header .main-title {
+    font-size: clamp(20px, 3.5vw, 40px); font-weight: 700;
+    letter-spacing: 0.06em; color: #e8e8f0; margin-top: 4px;
+  }
+
+  .person {
+    position: absolute;
+    display: flex; flex-direction: column; align-items: center;
+    gap: 10px; z-index: 10;
+    will-change: transform, opacity;
+    cursor: default; opacity: 0;
+  }
+
+  .person-label {
+    background: rgba(6,6,18,0.82);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-top-width: 2px;
+    border-radius: 6px; padding: 7px 14px;
+    text-align: center; min-width: 148px;
+    backdrop-filter: blur(10px);
+    transition: box-shadow 0.25s;
+  }
+  .person:hover .person-label { box-shadow: 0 6px 24px rgba(0,0,0,0.6); }
+  .person-label .lname { font-size: 11px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; }
+  .person-label .ldesc { font-size: 10px; color: rgba(255,255,255,0.38); margin-top: 3px; line-height: 1.35; }
+
+  @keyframes bob {
+    0%, 100% { transform: translate(-50%, calc(-50% - 7px)); }
+    50%       { transform: translate(-50%, calc(-50% + 7px)); }
+  }
+  .person.bobbing { animation: bob 3.2s ease-in-out infinite; }
+
+  @keyframes cp { 0%,100%{opacity:.9} 50%{opacity:.2} }
+  @keyframes cp2 { 0%,100%{opacity:.9} 50%{opacity:.2} }
+  @keyframes cp3 { 0%,100%{opacity:.9} 50%{opacity:.2} }
+  .cp  { animation: cp  2s ease-in-out infinite; }
+  .cp2 { animation: cp2 2s ease-in-out infinite 0.45s; }
+  .cp3 { animation: cp3 2s ease-in-out infinite 0.9s; }
+
+  #gather-btn {
+    position: absolute; bottom: 36px; left: 50%;
+    transform: translateX(-50%);
+    z-index: 20; padding: 13px 40px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 12px; font-weight: 700;
+    letter-spacing: 0.3em; text-transform: uppercase;
+    color: #f9a8d4; background: transparent;
+    border: 2px solid #f9a8d4; border-radius: 4px;
+    cursor: pointer;
+    animation: btn-glow 2.2s ease-in-out infinite;
+    transition: background 0.2s, transform 0.15s;
+  }
+  @keyframes btn-glow {
+    0%,100% { box-shadow: 0 0 14px rgba(249,168,212,0.3); }
+    50%     { box-shadow: 0 0 42px rgba(249,168,212,0.65); }
+  }
+  #gather-btn:hover { background: rgba(249,168,212,0.08); transform: translateX(-50%) scale(1.04); }
+  #gather-btn:active { transform: translateX(-50%) scale(0.97); }
+
+  #status {
+    position: absolute; bottom: 100px; left: 50%;
+    transform: translateX(-50%);
+    z-index: 20; font-size: 10px; font-weight: 700;
+    letter-spacing: 0.3em; text-transform: uppercase;
+    color: rgba(255,255,255,0.5); opacity: 0;
+    pointer-events: none; transition: opacity 0.4s;
+    white-space: nowrap;
+  }
+
+  #flash { position: fixed; inset: 0; z-index: 200; background: white; opacity: 0; pointer-events: none; }
+
+  #final-form {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex; flex-direction: column; align-items: center;
+    gap: 12px; z-index: 15;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.9s;
+    max-height: 92vh; overflow: hidden;
+  }
+  #final-form.visible { opacity: 1; pointer-events: auto; }
+
+  #family-title { text-align: center; }
+  #family-title .tag { font-size: 9px; font-weight: 700; letter-spacing: 0.35em; text-transform: uppercase; color: rgba(255,255,255,0.28); }
+  #family-title .name {
+    font-size: clamp(16px, 2.8vw, 28px); font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    background: linear-gradient(90deg, #F87171, #A78BFA, #FCD34D, #7DD3FC);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  @keyframes heart-beat {
+    0%,100% { transform: scale(1);    filter: drop-shadow(0 0 18px rgba(248,113,113,0.55)) drop-shadow(0 0 40px rgba(167,139,250,0.3)); }
+    50%     { transform: scale(1.07); filter: drop-shadow(0 0 28px rgba(248,113,113,0.75)) drop-shadow(0 0 60px rgba(167,139,250,0.5)); }
+  }
+  #heart-svg { animation: heart-beat 2s ease-in-out infinite; }
+
+  #crew-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 8px; width: min(380px, 90vw);
+  }
+  .crew-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); border-radius: 6px; padding: 9px 12px; }
+  .crew-card .cn { font-size: 10px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 3px; }
+  .crew-card .cd { font-size: 10px; color: rgba(255,255,255,0.38); line-height: 1.35; }
+
+  #reason-bar {
+    width: min(380px, 90vw);
+    border: 1px solid rgba(249,168,212,0.28);
+    border-radius: 6px; padding: 10px 18px;
+    text-align: center; background: rgba(249,168,212,0.05);
+  }
+  #reason-bar .fl { font-size: 9px; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; color: rgba(255,255,255,0.28); }
+  #reason-bar .fv { font-size: 12px; font-weight: 600; letter-spacing: 0.04em; color: #f9a8d4; margin-top: 3px; }
+
+  #reset-btn {
+    font-family: 'Space Grotesk', sans-serif; font-size: 9px; font-weight: 600;
+    letter-spacing: 0.22em; text-transform: uppercase;
+    color: rgba(255,255,255,0.2); background: transparent;
+    border: 1px solid rgba(255,255,255,0.1); border-radius: 4px;
+    padding: 6px 16px; cursor: pointer; transition: all 0.2s;
+  }
+  #reset-btn:hover { color: rgba(255,255,255,0.5); border-color: rgba(255,255,255,0.28); }
+
+  @media (max-width: 600px) {
+    .person-label { min-width: 90px; max-width: 130px; padding: 5px 8px; }
+    .person-label .lname { font-size: 9px; letter-spacing: 0.12em; }
+    .person-label .ldesc { font-size: 9px; }
+    #gather-btn { font-size: 11px; padding: 10px 22px; letter-spacing: 0.22em; }
+    #status { font-size: 9px; bottom: 90px; }
+    #crew-grid { grid-template-columns: 1fr; width: min(260px, 88vw); }
+    #reason-bar { width: min(260px, 88vw); }
+    #heart-svg { width: 90px !important; height: 79px !important; }
+    #final-form { gap: 8px; }
+    #family-title .name { font-size: 16px; }
+  }
+</style>
+</head>
+<body>
+<div id="stage">
+  <canvas id="canvas"></canvas>
+  <svg id="lines" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <filter id="lglow" x="-50%" y="-50%" width="200%" height="200%">
+        <feGaussianBlur stdDeviation="2" result="b"/>
+        <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+    </defs>
+  </svg>
+
+  <div id="header">
+    <div class="eyebrow">The man behind the GTM —</div>
+    <div class="main-title">THE HUMAN</div>
+  </div>
+
+  <div id="status"></div>
+  <button id="gather-btn">❤️ &nbsp;BRING IT HOME&nbsp; ❤️</button>
+
+  <div id="final-form">
+    <div id="family-title">
+      <div class="tag">THE WHOLE REASON &nbsp;·&nbsp; ALL OF IT</div>
+      <div class="name">THE CREW</div>
+    </div>
+
+    <svg id="heart-svg" viewBox="0 0 160 140" xmlns="http://www.w3.org/2000/svg"
+         style="width:130px;height:114px;overflow:visible;">
+      <defs>
+        <linearGradient id="hg" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%"   stop-color="#F87171"/>
+          <stop offset="33%"  stop-color="#A78BFA"/>
+          <stop offset="66%"  stop-color="#FCD34D"/>
+          <stop offset="100%" stop-color="#7DD3FC"/>
+        </linearGradient>
+        <radialGradient id="h-aura" cx="50%" cy="50%" r="50%">
+          <stop offset="0%"   stop-color="#A78BFA" stop-opacity="0.25"/>
+          <stop offset="100%" stop-color="#A78BFA" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <ellipse cx="80" cy="70" rx="75" ry="65" fill="url(#h-aura)"/>
+      <path d="M80 120 C60 105 15 80 15 48 C15 28 30 16 48 16 C58 16 68 22 80 38 C92 22 102 16 112 16 C130 16 145 28 145 48 C145 80 100 105 80 120 Z"
+            fill="url(#hg)" opacity="0.95"/>
+      <path d="M80 108 C65 95 32 74 32 52 C32 37 42 30 54 30 C62 30 70 36 80 50 C90 36 98 30 106 30 C118 30 128 37 128 52 C128 74 95 95 80 108 Z"
+            fill="rgba(255,255,255,0.1)"/>
+    </svg>
+
+    <div id="crew-grid">
+      <div class="crew-card" style="border-color:rgba(217,119,6,0.3)">
+        <div class="cn" style="color:#FDE68A">🧱 &nbsp;JAX</div>
+        <div class="cd">Age 5 · Chief Lego Officer · Brown hair, big ideas, never stops talking</div>
+      </div>
+      <div class="crew-card" style="border-color:rgba(248,113,113,0.3)">
+        <div class="cn" style="color:#FECACA">🔴 &nbsp;QUIN</div>
+        <div class="cd">Age 3 · The Red Menace · Maximum chaos, maximum heart</div>
+      </div>
+      <div class="crew-card" style="border-color:rgba(167,139,250,0.3)">
+        <div class="cn" style="color:#DDD6FE">⭐ &nbsp;LINDSEY</div>
+        <div class="cd">The real MVP · Holds everything together · Makes it all possible</div>
+      </div>
+      <div class="crew-card" style="border-color:rgba(252,211,77,0.3)">
+        <div class="cn" style="color:#FEF3C7">🐺 &nbsp;FINN</div>
+        <div class="cd">Rescue dog · Part wolf, part golden · All good boy</div>
+      </div>
+    </div>
+
+    <div id="reason-bar">
+      <div class="fl">Why any of it matters</div>
+      <div class="fv">Behind every deal closed is a crew worth coming home to.</div>
+    </div>
+
+    <button id="reset-btn">↺ &nbsp;RESET</button>
+  </div>
+
+  <div id="flash"></div>
+</div>
+
+<script>
+const PEOPLE = [
+  { id:'jax',     name:'JAX',     role:'Age 5',    desc:'Chief Lego Officer · talks non-stop', color:'#D97706', glow:'#FDE68A', xp:0.18, yp:0.28 },
+  { id:'quin',    name:'QUIN',    role:'Age 3',    desc:'The Red Menace · maximum chaos',      color:'#F87171', glow:'#FECACA', xp:0.82, yp:0.28 },
+  { id:'lindsey', name:'LINDSEY', role:'The MVP',  desc:'Holds everything together',           color:'#A78BFA', glow:'#DDD6FE', xp:0.82, yp:0.70 },
+  { id:'finn',    name:'FINN',    role:'Good Boy', desc:'Part wolf · all heart',               color:'#FCD34D', glow:'#FEF3C7', xp:0.18, yp:0.70 },
+  { id:'kevin',   name:'KEVIN',   role:'The Human',desc:'Dad · Husband · Hat guy',             color:'#7DD3FC', glow:'#E0F2FE', xp:0.50, yp:0.47, isCenter:true },
+];
+const EMOJIS = { jax:'🧱', quin:'🔴', lindsey:'⭐', finn:'🐺', kevin:'🎩' };
+
+// ── SVG CHARACTERS ────────────────────────────────────────────────────────────
+
+function makeJaxSVG() {
+  const m = innerWidth < 600;
+  return `<svg viewBox="0 0 80 122" xmlns="http://www.w3.org/2000/svg" style="width:${m?52:72}px;height:${m?79:110}px;overflow:visible;filter:drop-shadow(0 0 10px #D9770688)">
+  <!-- Brown wavy hair -->
+  <ellipse cx="40" cy="27" rx="22" ry="20" fill="#6B3A2A"/>
+  <circle cx="22" cy="24" r="9" fill="#6B3A2A"/>
+  <circle cx="58" cy="24" r="9" fill="#6B3A2A"/>
+  <circle cx="40" cy="15" r="10" fill="#7B4A32"/>
+  <!-- Face -->
+  <ellipse cx="40" cy="36" rx="18" ry="20" fill="#F5C2A8"/>
+  <!-- Hair fringe -->
+  <ellipse cx="40" cy="19" rx="15" ry="7" fill="#7B4A32"/>
+  <!-- Eyes -->
+  <circle cx="32" cy="32" r="3.5" fill="#2D1810"/>
+  <circle cx="48" cy="32" r="3.5" fill="#2D1810"/>
+  <circle cx="33" cy="31" r="1.3" fill="white"/>
+  <circle cx="49" cy="31" r="1.3" fill="white"/>
+  <!-- Eyebrows -->
+  <path d="M28 27 Q32 25 36 27" fill="none" stroke="#6B3A2A" stroke-width="1.8" stroke-linecap="round"/>
+  <path d="M44 27 Q48 25 52 27" fill="none" stroke="#6B3A2A" stroke-width="1.8" stroke-linecap="round"/>
+  <!-- Big smile -->
+  <path d="M31 42 Q40 51 49 42" fill="none" stroke="#C47A6A" stroke-width="2.5" stroke-linecap="round"/>
+  <rect x="35" y="42" width="10" height="4" rx="1" fill="white" opacity="0.7"/>
+  <!-- Neck -->
+  <rect x="33" y="55" width="14" height="8" rx="3" fill="#F5C2A8"/>
+  <!-- T-shirt -->
+  <rect x="15" y="61" width="50" height="36" rx="8" fill="#4A90D9"/>
+  <!-- Arms out wide (kid energy) -->
+  <rect x="-1" y="62" width="18" height="9" rx="4.5" fill="#4A90D9" transform="rotate(-25 8 66)"/>
+  <rect x="63" y="62" width="18" height="9" rx="4.5" fill="#4A90D9" transform="rotate(25 72 66)"/>
+  <circle cx="1"  cy="72" r="5.5" fill="#F5C2A8"/>
+  <circle cx="79" cy="72" r="5.5" fill="#F5C2A8"/>
+  <!-- Pants -->
+  <rect x="17" y="95" width="46" height="20" rx="5" fill="#2D5FA8"/>
+  <!-- Legs -->
+  <rect x="19" y="110" width="15" height="8" rx="4" fill="#2D5FA8"/>
+  <rect x="46" y="110" width="15" height="8" rx="4" fill="#2D5FA8"/>
+  <!-- Shoes -->
+  <ellipse cx="27" cy="119" rx="12" ry="5" fill="#1E293B"/>
+  <ellipse cx="54" cy="119" rx="12" ry="5" fill="#1E293B"/>
+</svg>`;
+}
+
+function makeQuinSVG() {
+  const m = innerWidth < 600;
+  return `<svg viewBox="0 0 80 122" xmlns="http://www.w3.org/2000/svg" style="width:${m?44:60}px;height:${m?67:92}px;overflow:visible;filter:drop-shadow(0 0 12px #F8717188)">
+  <!-- Wild bright red hair — very prominent -->
+  <circle cx="40" cy="20" r="17" fill="#DC2626"/>
+  <circle cx="18" cy="27" r="13" fill="#DC2626"/>
+  <circle cx="62" cy="27" r="13" fill="#DC2626"/>
+  <circle cx="12" cy="38" r="11" fill="#EF4444"/>
+  <circle cx="68" cy="38" r="11" fill="#EF4444"/>
+  <circle cx="26" cy="11" r="11" fill="#EF4444"/>
+  <circle cx="54" cy="11" r="11" fill="#EF4444"/>
+  <circle cx="40" cy="8"  r="10" fill="#DC2626"/>
+  <!-- Face: chubby toddler -->
+  <ellipse cx="40" cy="45" rx="21" ry="22" fill="#F5C2A8"/>
+  <!-- Rosy cheeks -->
+  <ellipse cx="20" cy="50" rx="8" ry="6" fill="#FBBFB0" opacity="0.65"/>
+  <ellipse cx="60" cy="50" rx="8" ry="6" fill="#FBBFB0" opacity="0.65"/>
+  <!-- Big round eyes -->
+  <circle cx="32" cy="40" r="5" fill="#2D1810"/>
+  <circle cx="48" cy="40" r="5" fill="#2D1810"/>
+  <circle cx="33" cy="39" r="2" fill="white"/>
+  <circle cx="49" cy="39" r="2" fill="white"/>
+  <!-- Little eyebrows -->
+  <path d="M27 34 Q32 32 37 34" fill="none" stroke="#DC2626" stroke-width="2" stroke-linecap="round"/>
+  <path d="M43 34 Q48 32 53 34" fill="none" stroke="#DC2626" stroke-width="2" stroke-linecap="round"/>
+  <!-- Huge grin -->
+  <path d="M26 52 Q40 63 54 52" fill="none" stroke="#C47A6A" stroke-width="3" stroke-linecap="round"/>
+  <rect x="33" y="52" width="14" height="5" rx="1.5" fill="white" opacity="0.8"/>
+  <!-- Chubby body -->
+  <ellipse cx="40" cy="83" rx="24" ry="22" fill="#F97316"/>
+  <!-- Arms UP — toddler chaos -->
+  <rect x="3"  y="63" width="16" height="10" rx="5" fill="#F97316" transform="rotate(-50 11 68)"/>
+  <rect x="61" y="63" width="16" height="10" rx="5" fill="#F97316" transform="rotate(50 69 68)"/>
+  <circle cx="5"  cy="51" r="6" fill="#F5C2A8"/>
+  <circle cx="75" cy="51" r="6" fill="#F5C2A8"/>
+  <!-- Little legs -->
+  <rect x="26" y="100" width="12" height="17" rx="6" fill="#F97316"/>
+  <rect x="42" y="100" width="12" height="17" rx="6" fill="#F97316"/>
+  <!-- Shoes (bright) -->
+  <ellipse cx="32" cy="118" rx="10" ry="5" fill="#7C3AED"/>
+  <ellipse cx="48" cy="118" rx="10" ry="5" fill="#7C3AED"/>
+</svg>`;
+}
+
+function makeLindseysSVG() {
+  const m = innerWidth < 600;
+  return `<svg viewBox="0 0 80 122" xmlns="http://www.w3.org/2000/svg" style="width:${m?52:72}px;height:${m?79:110}px;overflow:visible;filter:drop-shadow(0 0 10px #A78BFA88)">
+  <!-- Hair: longer flowing brown -->
+  <ellipse cx="40" cy="22" rx="22" ry="22" fill="#A0704A"/>
+  <rect x="16" y="24" width="10" height="40" rx="5" fill="#A0704A"/>
+  <rect x="54" y="24" width="10" height="40" rx="5" fill="#A0704A"/>
+  <ellipse cx="40" cy="13" rx="14" ry="10" fill="#B8845E" opacity="0.7"/>
+  <!-- Face -->
+  <ellipse cx="40" cy="33" rx="17" ry="19" fill="#F5C2A8"/>
+  <!-- Elegant eyes -->
+  <ellipse cx="31" cy="29" rx="4" ry="3.5" fill="#2D1810"/>
+  <ellipse cx="49" cy="29" rx="4" ry="3.5" fill="#2D1810"/>
+  <!-- Lashes -->
+  <line x1="27" y1="25" x2="25" y2="22" stroke="#2D1810" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="30" y1="24" x2="30" y2="21" stroke="#2D1810" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="34" y1="25" x2="35" y2="22" stroke="#2D1810" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="45" y1="25" x2="44" y2="22" stroke="#2D1810" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="48" y1="24" x2="48" y2="21" stroke="#2D1810" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="52" y1="25" x2="54" y2="22" stroke="#2D1810" stroke-width="1.5" stroke-linecap="round"/>
+  <circle cx="32" cy="28" r="1.5" fill="white"/>
+  <circle cx="50" cy="28" r="1.5" fill="white"/>
+  <!-- Warm smile -->
+  <path d="M31 40 Q40 48 49 40" fill="none" stroke="#C47A6A" stroke-width="2" stroke-linecap="round"/>
+  <!-- Neck -->
+  <rect x="33" y="51" width="14" height="8" rx="3" fill="#F5C2A8"/>
+  <!-- Top (purple) -->
+  <rect x="13" y="57" width="54" height="38" rx="8" fill="#7C3AED"/>
+  <rect x="15" y="59" width="50" height="34" rx="6" fill="rgba(255,255,255,0.06)"/>
+  <!-- V-neck -->
+  <polygon points="40,57 32,65 40,63 48,65" fill="#6D28D9"/>
+  <!-- Arms -->
+  <rect x="2"  y="58" width="13" height="32" rx="5" fill="#7C3AED"/>
+  <rect x="65" y="58" width="13" height="32" rx="5" fill="#7C3AED"/>
+  <ellipse cx="8.5" cy="92" rx="7" ry="5" fill="#F5C2A8"/>
+  <ellipse cx="71.5" cy="92" rx="7" ry="5" fill="#F5C2A8"/>
+  <!-- Pants -->
+  <rect x="15" y="93" width="50" height="22" rx="6" fill="#5B21B6"/>
+  <!-- Legs -->
+  <rect x="18" y="110" width="15" height="7" rx="4" fill="#4C1D95"/>
+  <rect x="47" y="110" width="15" height="7" rx="4" fill="#4C1D95"/>
+  <!-- Shoes -->
+  <ellipse cx="25.5" cy="119" rx="11" ry="5" fill="#C77DFF"/>
+  <ellipse cx="54.5" cy="119" rx="11" ry="5" fill="#C77DFF"/>
+  <rect x="29" y="114" width="4" height="7" rx="1" fill="#C77DFF"/>
+  <rect x="57" y="114" width="4" height="7" rx="1" fill="#C77DFF"/>
+</svg>`;
+}
+
+function makeFinnSVG() {
+  const m = innerWidth < 600;
+  return `<svg viewBox="0 0 125 108" xmlns="http://www.w3.org/2000/svg" style="width:${m?70:96}px;height:${m?60:83}px;overflow:visible;filter:drop-shadow(0 0 10px #FCD34D88)">
+  <!-- Tail (curled up, wagging) -->
+  <path d="M96 64 Q114 46 108 28 Q102 14 88 20" fill="none" stroke="#C17529" stroke-width="9" stroke-linecap="round"/>
+  <path d="M96 64 Q114 46 108 28 Q102 14 88 20" fill="none" stroke="#E09A45" stroke-width="5" stroke-linecap="round" opacity="0.7"/>
+  <!-- Shaggy body -->
+  <ellipse cx="54" cy="67" rx="38" ry="26" fill="#B86820"/>
+  <circle cx="20" cy="60" r="13" fill="#B86820"/>
+  <circle cx="86" cy="60" r="11" fill="#B86820"/>
+  <ellipse cx="44" cy="60" rx="30" ry="22" fill="#C17529"/>
+  <ellipse cx="64" cy="60" rx="28" ry="22" fill="#C17529"/>
+  <!-- Chest floof (lighter) -->
+  <ellipse cx="37" cy="57" rx="19" ry="15" fill="#D4862A"/>
+  <ellipse cx="54" cy="73" rx="22" ry="16" fill="#E09A45"/>
+  <!-- Sitting haunches -->
+  <ellipse cx="21" cy="83" rx="14" ry="11" fill="#B86820"/>
+  <ellipse cx="87" cy="83" rx="14" ry="11" fill="#B86820"/>
+  <!-- Front paws -->
+  <ellipse cx="36" cy="91" rx="11" ry="8" fill="#C17529"/>
+  <ellipse cx="72" cy="91" rx="11" ry="8" fill="#C17529"/>
+  <ellipse cx="30" cy="97" rx="6" ry="4" fill="#A05A20"/>
+  <ellipse cx="40" cy="98" rx="6" ry="4" fill="#A05A20"/>
+  <ellipse cx="66" cy="98" rx="6" ry="4" fill="#A05A20"/>
+  <ellipse cx="77" cy="97" rx="6" ry="4" fill="#A05A20"/>
+  <!-- Head (wolf-like) -->
+  <ellipse cx="40" cy="34" rx="23" ry="23" fill="#C17529"/>
+  <!-- Pointed wolf ears -->
+  <polygon points="20,28 9,1 33,17"  fill="#B86820"/>
+  <polygon points="22,26 12,3 34,16" fill="#D4862A" opacity="0.75"/>
+  <polygon points="24,24 17,7 33,17" fill="#E8A87C" opacity="0.45"/>
+  <polygon points="60,28 71,1 47,17"  fill="#B86820"/>
+  <polygon points="58,26 68,3 46,16" fill="#D4862A" opacity="0.75"/>
+  <polygon points="56,24 63,7 47,17" fill="#E8A87C" opacity="0.45"/>
+  <!-- Forehead floof -->
+  <circle cx="29" cy="19" r="10" fill="#D4862A"/>
+  <circle cx="40" cy="14" r="10" fill="#C17529"/>
+  <circle cx="51" cy="19" r="10" fill="#D4862A"/>
+  <!-- Face -->
+  <ellipse cx="40" cy="38" rx="18" ry="17" fill="#D4862A"/>
+  <!-- Muzzle -->
+  <ellipse cx="40" cy="49" rx="13" ry="10" fill="#B86820"/>
+  <ellipse cx="40" cy="52" rx="10" ry="8"  fill="#C17529"/>
+  <!-- Nose (wolf) -->
+  <ellipse cx="40" cy="43" rx="6.5" ry="4.5" fill="#1E1E1E"/>
+  <ellipse cx="40" cy="42" rx="3"   ry="1.5" fill="#3D3D3D" opacity="0.5"/>
+  <!-- Amber wolf eyes -->
+  <circle cx="28" cy="31" r="5.5" fill="#1E1E1E"/>
+  <circle cx="52" cy="31" r="5.5" fill="#1E1E1E"/>
+  <circle cx="27" cy="30" r="2.5" fill="#B45309" opacity="0.9"/>
+  <circle cx="51" cy="30" r="2.5" fill="#B45309" opacity="0.9"/>
+  <circle cx="28" cy="30" r="1.3" fill="white"/>
+  <circle cx="52" cy="30" r="1.3" fill="white"/>
+  <!-- Happy tongue -->
+  <ellipse cx="40" cy="59" rx="6" ry="8" fill="#F87171"/>
+  <path d="M38 62 Q40 67 42 62" fill="none" stroke="#E05252" stroke-width="1.5"/>
+</svg>`;
+}
+
+function makeKevinSVG() {
+  const m = innerWidth < 600;
+  return `<svg viewBox="0 0 80 132" xmlns="http://www.w3.org/2000/svg" style="width:${m?56:76}px;height:${m?92:124}px;overflow:visible;filter:drop-shadow(0 0 12px #7DD3FC88)">
+  <!-- LOUD HAT — big bucket hat with polka dots -->
+  <ellipse cx="40" cy="25" rx="31" ry="8" fill="#F59E0B"/>
+  <ellipse cx="40" cy="23" rx="28" ry="6.5" fill="#D97706"/>
+  <rect x="15" y="2" width="50" height="24" rx="11" fill="#F59E0B"/>
+  <!-- Polka dots (loud!) -->
+  <circle cx="23" cy="9"  r="3.5" fill="#DC2626" opacity="0.95"/>
+  <circle cx="33" cy="5"  r="3"   fill="#7C3AED" opacity="0.95"/>
+  <circle cx="43" cy="9"  r="3.5" fill="#10B981" opacity="0.95"/>
+  <circle cx="53" cy="5"  r="3"   fill="#0284C7" opacity="0.95"/>
+  <circle cx="28" cy="17" r="3"   fill="#10B981" opacity="0.95"/>
+  <circle cx="40" cy="20" r="3.5" fill="#DC2626" opacity="0.95"/>
+  <circle cx="52" cy="17" r="3"   fill="#F97316" opacity="0.95"/>
+  <!-- Hat band -->
+  <rect x="15" y="22" width="50" height="5" rx="2" fill="#B45309"/>
+  <!-- Brown hair peeking out -->
+  <rect x="13" y="26" width="10" height="6" rx="3" fill="#6B3A2A"/>
+  <rect x="57" y="26" width="10" height="6" rx="3" fill="#6B3A2A"/>
+  <!-- Head -->
+  <ellipse cx="40" cy="41" rx="19" ry="20" fill="#F5C2A8"/>
+  <!-- Warm squinting eyes -->
+  <ellipse cx="31" cy="37" rx="4" ry="3.5" fill="#2D1810"/>
+  <ellipse cx="49" cy="37" rx="4" ry="3.5" fill="#2D1810"/>
+  <path d="M27 33 Q31 31 35 33" fill="none" stroke="#6B3A2A" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M45 33 Q49 31 53 33" fill="none" stroke="#6B3A2A" stroke-width="1.5" stroke-linecap="round"/>
+  <circle cx="32" cy="36" r="1.5" fill="white"/>
+  <circle cx="50" cy="36" r="1.5" fill="white"/>
+  <!-- Big warm smile -->
+  <path d="M28 48 Q40 59 52 48" fill="none" stroke="#C47A6A" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- Stubble -->
+  <circle cx="33" cy="52" r="1.2" fill="#B47A6A" opacity="0.4"/>
+  <circle cx="38" cy="53" r="1.2" fill="#B47A6A" opacity="0.4"/>
+  <circle cx="43" cy="53" r="1.2" fill="#B47A6A" opacity="0.4"/>
+  <circle cx="48" cy="52" r="1.2" fill="#B47A6A" opacity="0.4"/>
+  <!-- Neck -->
+  <rect x="33" y="60" width="14" height="8" rx="3" fill="#F5C2A8"/>
+  <!-- Button-down collar (peeking above sweater) -->
+  <rect x="29" y="64" width="22" height="7" rx="3" fill="#E8EDF4"/>
+  <polygon points="37,64 28,72 36,69" fill="#E8EDF4"/>
+  <polygon points="43,64 52,72 44,69" fill="#E8EDF4"/>
+  <!-- Sweater (main layer) -->
+  <rect x="12" y="69" width="56" height="42" rx="9" fill="#0284C7"/>
+  <rect x="14" y="71" width="52" height="38" rx="7" fill="rgba(255,255,255,0.05)"/>
+  <!-- Knit texture -->
+  <line x1="20" y1="73" x2="20" y2="107" stroke="rgba(255,255,255,0.07)" stroke-width="1.5"/>
+  <line x1="28" y1="73" x2="28" y2="107" stroke="rgba(255,255,255,0.07)" stroke-width="1.5"/>
+  <line x1="36" y1="73" x2="36" y2="107" stroke="rgba(255,255,255,0.07)" stroke-width="1.5"/>
+  <line x1="44" y1="73" x2="44" y2="107" stroke="rgba(255,255,255,0.07)" stroke-width="1.5"/>
+  <line x1="52" y1="73" x2="52" y2="107" stroke="rgba(255,255,255,0.07)" stroke-width="1.5"/>
+  <line x1="60" y1="73" x2="60" y2="107" stroke="rgba(255,255,255,0.07)" stroke-width="1.5"/>
+  <!-- Waist ribbing -->
+  <rect x="12" y="106" width="56" height="5" rx="2.5" fill="#0369A1"/>
+  <!-- Arms -->
+  <rect x="0"  y="69" width="14" height="36" rx="6" fill="#0284C7"/>
+  <rect x="66" y="69" width="14" height="36" rx="6" fill="#0284C7"/>
+  <rect x="0"  y="100" width="14" height="5" rx="2.5" fill="#0369A1"/>
+  <rect x="66" y="100" width="14" height="5" rx="2.5" fill="#0369A1"/>
+  <ellipse cx="7"  cy="108" rx="7" ry="5" fill="#F5C2A8"/>
+  <ellipse cx="73" cy="108" rx="7" ry="5" fill="#F5C2A8"/>
+  <!-- Pants -->
+  <rect x="14" y="109" width="52" height="16" rx="5" fill="#1E3A5F"/>
+  <!-- Belt -->
+  <rect x="12" y="108" width="56" height="5" rx="2" fill="#92400E"/>
+  <rect x="35" y="107" width="10" height="7" rx="1.5" fill="#D97706"/>
+  <rect x="37" y="108.5" width="6" height="4" rx="0.5" fill="rgba(0,0,0,0.3)"/>
+  <!-- Legs -->
+  <rect x="16" y="121" width="16" height="8" rx="4" fill="#1A3352"/>
+  <rect x="48" y="121" width="16" height="8" rx="4" fill="#1A3352"/>
+  <!-- Shoes -->
+  <ellipse cx="24" cy="130" rx="13" ry="5.5" fill="#111827"/>
+  <ellipse cx="56" cy="130" rx="13" ry="5.5" fill="#111827"/>
+</svg>`;
+}
+
+const SVG_FNS = { jax: makeJaxSVG, quin: makeQuinSVG, lindsey: makeLindseysSVG, finn: makeFinnSVG, kevin: makeKevinSVG };
+
+// ── BUILD ELEMENTS ────────────────────────────────────────────────────────────
+const stage     = document.getElementById('stage');
+const personEls = {};
+
+PEOPLE.forEach((p, i) => {
+  const el = document.createElement('div');
+  el.className = 'person';
+  el.id = `person-${p.id}`;
+  el.style.left = `${p.xp * 100}%`;
+  el.style.top  = `${p.yp * 100}%`;
+  el.style.transform = 'translate(-50%,-50%)';
+  el.innerHTML = `
+    ${SVG_FNS[p.id]()}
+    <div class="person-label" style="border-top-color:${p.color}55">
+      <div class="lname" style="color:${p.color}">${EMOJIS[p.id]} &nbsp;${p.name}</div>
+      <div class="ldesc">${p.role} · ${p.desc}</div>
+    </div>`;
+  stage.insertBefore(el, document.getElementById('status'));
+  personEls[p.id] = el;
+
+  setTimeout(() => {
+    el.style.transition = 'opacity 0.6s';
+    el.style.opacity = '1';
+    setTimeout(() => {
+      el.style.transition = '';
+      el.style.animationDelay = `${i * 0.5}s`;
+      el.classList.add('bobbing');
+    }, 650);
+  }, 200 + i * 140);
+});
+
+// ── ENERGY LINES ──────────────────────────────────────────────────────────────
+const linesSVG  = document.getElementById('lines');
+const lineMap   = {};
+let dashOffset  = 0;
+let linesActive = true;
+
+PEOPLE.forEach(p => {
+  if (p.isCenter) return;
+  const ln = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+  ln.setAttribute('stroke', p.color);
+  ln.setAttribute('stroke-width', '1.5');
+  ln.setAttribute('stroke-dasharray', '6 6');
+  ln.setAttribute('opacity', '0.18');
+  ln.setAttribute('filter', 'url(#lglow)');
+  linesSVG.appendChild(ln);
+  lineMap[p.id] = ln;
+});
+
+function updateLines() {
+  if (!linesActive) return;
+  const kr = personEls.kevin.getBoundingClientRect();
+  const cx = kr.left + kr.width / 2;
+  const cy = kr.top  + kr.height / 2;
+  dashOffset -= 0.35;
+  PEOPLE.forEach(p => {
+    if (p.isCenter) return;
+    const r  = personEls[p.id].getBoundingClientRect();
+    const bx = r.left + r.width  / 2;
+    const by = r.top  + r.height / 2;
+    const ln = lineMap[p.id];
+    ln.setAttribute('x1', bx); ln.setAttribute('y1', by);
+    ln.setAttribute('x2', cx); ln.setAttribute('y2', cy);
+    ln.setAttribute('stroke-dashoffset', dashOffset);
+  });
+}
+
+// ── CANVAS ────────────────────────────────────────────────────────────────────
+const canvas = document.getElementById('canvas');
+const ctx    = canvas.getContext('2d');
+let W, H;
+function resize() { W = canvas.width = innerWidth; H = canvas.height = innerHeight; }
+resize();
+
+addEventListener('resize', () => {
+  resize();
+  PEOPLE.forEach(p => {
+    const el = personEls[p.id];
+    if (el.style.display !== 'none' && parseFloat(el.style.opacity) > 0.5) {
+      el.style.left = `${p.xp * 100}%`;
+      el.style.top  = `${p.yp * 100}%`;
+    }
+  });
+});
+
+const STARS = Array.from({length: 60}, () => ({
+  x: Math.random(), y: Math.random(),
+  r: Math.random() * 1.3 + 0.2,
+  base: Math.random() * 0.42 + 0.08,
+  spd: Math.random() * 0.007 + 0.003,
+  ph: Math.random() * Math.PI * 2,
+}));
+
+let parts = [];
+let t = 0;
+
+function hexToRGBA(hex, a) {
+  const n = parseInt(hex.slice(1), 16);
+  return `rgba(${(n>>16)&255},${(n>>8)&255},${n&255},${a.toFixed(3)})`;
+}
+
+function spawnBurst(x, y, n, colors) {
+  for (let i = 0; i < n; i++) {
+    const angle = (Math.PI * 2 * i / n) + Math.random() * 0.9;
+    const spd   = 2 + Math.random() * 9;
+    parts.push({ x, y, vx: Math.cos(angle)*spd, vy: Math.sin(angle)*spd,
+      life: 1, decay: 0.012 + Math.random() * 0.022,
+      r: 1.5 + Math.random() * 5,
+      color: colors[Math.floor(Math.random() * colors.length)] });
+  }
+}
+
+function tick() {
+  ctx.clearRect(0, 0, W, H);
+  t += 0.016;
+  STARS.forEach(s => {
+    const o = s.base * (0.55 + 0.45 * Math.sin(t * s.spd * 40 + s.ph));
+    ctx.beginPath(); ctx.arc(s.x*W, s.y*H, s.r, 0, Math.PI*2);
+    ctx.fillStyle = `rgba(255,255,255,${o})`; ctx.fill();
+  });
+  updateLines();
+  parts = parts.filter(p => p.life > 0.01);
+  parts.forEach(p => {
+    p.x += p.vx; p.y += p.vy; p.vx *= 0.94; p.vy *= 0.94; p.life -= p.decay;
+    ctx.beginPath(); ctx.arc(p.x, p.y, Math.max(0.1, p.r * p.life), 0, Math.PI*2);
+    ctx.fillStyle = hexToRGBA(p.color, p.life * 0.85); ctx.fill();
+  });
+  requestAnimationFrame(tick);
+}
+tick();
+
+// ── GATHER SEQUENCE ───────────────────────────────────────────────────────────
+const ALL_COLORS = PEOPLE.flatMap(p => [p.color, p.glow]).concat(['#ffffff','#fff0f3','#fef3c7']);
+const gatherBtn = document.getElementById('gather-btn');
+const statusEl  = document.getElementById('status');
+const finalForm = document.getElementById('final-form');
+const flash     = document.getElementById('flash');
+
+gatherBtn.addEventListener('click', () => {
+  gatherBtn.style.display = 'none';
+  statusEl.style.opacity = '1';
+  statusEl.textContent = '❤️  BRINGING THE CREW TOGETHER  ❤️';
+
+  setTimeout(() => {
+    linesActive = false;
+    Object.values(lineMap).forEach(l => { l.style.transition = 'opacity 0.5s'; l.setAttribute('opacity','0'); });
+  }, 80);
+
+  setTimeout(() => {
+    statusEl.textContent = 'FAMILY ASSEMBLING...';
+    const cx = W / 2, cy = H / 2;
+    PEOPLE.forEach(p => {
+      const el = personEls[p.id];
+      el.classList.remove('bobbing'); el.style.animationDelay = '0s';
+      const r  = el.getBoundingClientRect();
+      const bx = r.left + r.width/2, by = r.top + r.height/2;
+      const dx = cx - bx, dy = cy - by;
+      el.style.transition = 'transform 0.75s cubic-bezier(0.55,0,0.8,0.6), opacity 0.75s';
+      el.style.transform  = `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px)) scale(0.04)`;
+      el.style.opacity    = '0';
+      let step = 0;
+      const iv = setInterval(() => {
+        const pct = step / 20;
+        spawnBurst(bx + (cx-bx)*pct, by + (cy-by)*pct, 4, [p.color, p.glow]);
+        if (++step >= 20) clearInterval(iv);
+      }, 38);
+    });
+  }, 550);
+
+  setTimeout(() => {
+    statusEl.textContent = 'LOVE LEVEL: MAXIMUM';
+    flash.style.opacity = '1';
+    spawnBurst(W/2, H/2, 160, ALL_COLORS);
+  }, 1500);
+
+  setTimeout(() => {
+    flash.style.transition = 'opacity 0.75s';
+    flash.style.opacity = '0';
+    PEOPLE.forEach(p => { personEls[p.id].style.display = 'none'; });
+    statusEl.style.opacity = '0';
+    finalForm.classList.add('visible');
+    [0, 180, 360, 540, 720].forEach(d => setTimeout(() => spawnBurst(W/2, H/2, 30, ALL_COLORS), d));
+    document.querySelector('#header .eyebrow').textContent = 'The whole reason any of it matters —';
+    const t2 = document.querySelector('#header .main-title');
+    t2.textContent = 'THE WHOLE REASON';
+    t2.style.background = 'linear-gradient(90deg,#F87171,#A78BFA,#FCD34D,#7DD3FC)';
+    t2.style.webkitBackgroundClip = 'text';
+    t2.style.backgroundClip = 'text';
+    t2.style.webkitTextFillColor = 'transparent';
+  }, 1780);
+});
+
+document.getElementById('reset-btn').addEventListener('click', () => location.reload());
+</script>
+</body>
+</html>

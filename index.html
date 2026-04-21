@@ -1494,7 +1494,7 @@ function renderBackgroundMenu() {
             <span>Mountains</span>
             <span>3D Printers</span>
           </div>
-          <div class="bg-split-cta">Read →</div>
+          <div class="bg-split-cta">Explore ↗</div>
         </div>
       </div>
       <div class="bg-split-card" id="bg-career" style="--sc:#E8503A">
@@ -1514,7 +1514,7 @@ function renderBackgroundMenu() {
       </div>
     </div>`;
 
-  document.getElementById('bg-human').addEventListener('click', renderHuman);
+  document.getElementById('bg-human').addEventListener('click', () => window.open('family.html', '_blank'));
   document.getElementById('bg-career').addEventListener('click', renderCareerList);
 }
 
