@@ -837,24 +837,65 @@ const GTM = [
     purpose: 'Convert pipeline into revenue. Every deal is a signal — on process, pricing, ICP, and competitive position.',
     stageImportance: { early: 'critical', growth: 'very-high', scale: 'high' },
     stageNotes: {
-      early: 'Founders close everything, pattern-matching on ICP and deal mechanics before any rep is hired.',
-      growth: 'Building repeatable motion, hiring and ramping reps, creating playbooks from what founders proved out.',
-      scale: 'Systematized and forecast-driven. Comp plans, territories, and pipeline coverage ratios matter.'
+      early: 'Founders close everything. The goal is 5–10 documented wins with a clear pattern before the first rep is hired. No rep survives without a playbook to follow.',
+      growth: 'Transitioning from founder-led to rep-led. SQL→Won and cycle length are your north stars — they tell you if reps can execute the motion that got you here.',
+      scale: 'Systematized and forecast-driven. Qualification strength and deal slippage become the key dials. Running <75% strong-fit pipeline at scale means you\'re accepting avoidable losses.'
     },
     metrics: [
       {
-        name: 'SQL → Closed Won Rate',
+        name: 'SQL → Closed Won',
         shortLabel: 'SQL→Won',
         shortValue: '20–30%',
-        description: 'Tells you if your pipeline quality and sales execution are aligned. A dropping rate usually means either bad pipeline or execution gaps.',
-        benchmark: 'Healthy: 20–30% for most B2B'
+        stageData: {
+          early:  { value: '10–20%', benchmark: 'Expected — ICP and qualification are still forming. Track direction over time. Sub-10% means something fundamental is broken.' },
+          growth: { value: '20–30%', benchmark: 'The standard benchmark for a working B2B motion. Below 15% signals ICP drift or execution gaps. Above 30% — check whether you\'re disqualifying enough.' },
+          scale:  { value: '25–40%', benchmark: 'Strong qualification at scale should push this up. Watch for managers gaming it by cutting borderline opps to inflate the rate.' }
+        },
+        description: 'End-to-end execution quality. A dropping rate is the earliest signal of ICP drift or rep-level breakdown — it moves before close rates do.'
       },
       {
-        name: 'Avg Sales Cycle Length',
+        name: 'Opp → Close Rate',
+        shortLabel: 'Opp→Close',
+        shortValue: '20–30%',
+        stageData: {
+          early:  { value: '15–25%', benchmark: 'Lower end expected — multi-stakeholder deals and late-stage competition are new. Prioritize learning the loss patterns.' },
+          growth: { value: '20–30%', benchmark: 'Close rate should stabilize as the motion matures. High variance between reps is a coaching signal. Below 15% across the board is a late-stage execution problem.' },
+          scale:  { value: '25–40%', benchmark: 'Well-qualified opps should close at 25–40%. Below that, review stage entry criteria — low close rates often mean opps are being created too early.' }
+        },
+        description: 'Tracks separately from SQL→Won to isolate whether losses are happening early (qualification) or late (execution). The split is where coaching decisions live.'
+      },
+      {
+        name: 'Qualification Strength',
+        shortLabel: 'Qual Strength',
+        shortValue: '60–75% strong',
+        stageData: {
+          early:  { value: 'Evolving', benchmark: 'No fixed target yet — document what a good deal looks like as you close them. Your first 10 wins are your qualification rubric.' },
+          growth: { value: '60–75% strong fit', benchmark: '60–75% of open pipeline should meet your ICP criteria. Below 50% means reps are filling the funnel with wishful thinking.' },
+          scale:  { value: '75–90% strong fit', benchmark: 'Below 70% at scale means sales and marketing are still misaligned on ICP. The fix is upstream — not in rep coaching.' }
+        },
+        description: 'What percentage of open pipeline genuinely fits your ICP. The leading indicator for close rate and cycle predictability — bad pipeline upstream always becomes bad results downstream.'
+      },
+      {
+        name: 'Deal Slippage',
+        shortLabel: 'Deal Slippage',
+        shortValue: '25–40%',
+        stageData: {
+          early:  { value: 'High / chaotic', benchmark: 'Expected. Document what forces deals out of the quarter — it\'s your future qualification playbook.' },
+          growth: { value: '25–40%', benchmark: 'Above 40% consistently means close dates are fictional or deals are being forced into the quarter without real conviction.' },
+          scale:  { value: '<25%', benchmark: 'If slippage stays above 30% at scale, your stage criteria and close-date methodology need a rebuild — this is a process problem, not a rep problem.' }
+        },
+        description: 'Committed deals that don\'t close the quarter. High slippage inflates pipeline, destroys forecast accuracy, and erodes trust in the number across the org.'
+      },
+      {
+        name: 'Sales Cycle Length',
         shortLabel: 'Sales Cycle',
-        shortValue: 'Watch Trend',
-        description: 'Proxy for deal complexity and process efficiency. Watch for lengthening cycles — they signal friction, poor qualification, or stakeholder expansion you didn\'t plan for.',
-        benchmark: 'Watch the trend, not just the number. Lengthening = warning sign.'
+        shortValue: 'Watch trend',
+        stageData: {
+          early:  { value: 'Variable', benchmark: 'No benchmark yet. Track every deal — what shortened or lengthened each cycle is your qualification playbook in the making.' },
+          growth: { value: 'Becoming predictable', benchmark: 'Cycles should cluster around a median. High rep-to-rep variance = execution inconsistency. High segment variance = ICP segmentation work needed.' },
+          scale:  { value: 'Predictably bounded', benchmark: 'By stage and segment, cycles should be tight enough to forecast reliably. Lengthening cycles are a leading indicator — they move weeks before win rate drops.' }
+        },
+        description: 'Proxy for deal complexity and process friction. Lengthening cycle is an earlier warning than win rate — watch it weekly, not quarterly.'
       }
     ],
     meetingTags: ['Weekly Pipeline', 'Deal Strategy', 'Monthly Forecast', 'QBR'],
@@ -908,27 +949,66 @@ const GTM = [
     purpose: 'Build a demand engine rooted in ICP clarity, split-lane messaging, and experiments that actually reach a decision.',
     stageImportance: { early: 'critical', growth: 'very-high', scale: 'high' },
     stageNotes: {
-      early: 'Figuring out which channels produce real pipeline — not just leads. Everything is an experiment.',
-      growth: 'Doubling down on what works, cutting what doesn\'t, building repeatable channel playbooks.',
-      scale: 'Channel diversification, efficiency metrics, and CAC payback discipline. Marketing becomes a revenue center.'
+      early: 'Everything is an experiment. The only metric that matters is whether a channel produces qualified pipeline — not leads. Run fewer bets, deeper. Kill channels that don\'t produce opps within 90 days.',
+      growth: 'Double down on the 1–2 channels that proved out. Build pipeline coverage to 3–5x. Lead→Opp conversion rate becomes a weekly metric — it tells you if targeting and messaging are improving.',
+      scale: 'Diversify the channel mix intentionally. CAC payback, pipeline coverage ratio, and source-level Opp→Close rate drive budget allocation. Marketing owns a revenue number, not just a pipeline number.'
     },
     metrics: [
       {
-        name: 'Pipeline Created by Channel',
-        shortLabel: 'Pipeline / Channel',
-        shortValue: 'Track All',
-        description: 'Not leads. Not MQLs. Actual pipeline created. This is the only demand gen metric that maps directly to revenue.',
-        benchmark: 'No universal target — optimize for channel efficiency relative to CAC payback.'
+        name: 'Pipeline Coverage Ratio',
+        shortLabel: 'Pipeline Cover',
+        shortValue: '3–5x',
+        stageData: {
+          early:  { value: '2–3x', benchmark: '2–3x is workable when deals are smaller and cycles shorter. Below 2x is danger — one bad month breaks the quarter.' },
+          growth: { value: '3–5x', benchmark: '3–5x gives you room to absorb slippage and qualification outs. Below 3x means demand gen isn\'t keeping up with the close rate you need.' },
+          scale:  { value: '4–6x', benchmark: '4–6x accounts for segment mix, longer enterprise cycles, and slippage. Far above 6x with low conversion suggests pipeline quality problems, not volume wins.' }
+        },
+        description: 'Total open pipeline divided by quota target. The buffer needed to make the number given your close rate and expected slippage. Coverage only means something if pipeline quality is held to a standard.'
       },
       {
-        name: 'Disco → Opp Rate by Source',
-        shortLabel: 'Disco → Opp',
-        shortValue: 'By Source',
-        description: 'Not all booked meetings are equal. Know which sources convert to qualified opps and fund those — defund the ones that fill calendars but not pipeline.',
-        benchmark: 'If a source has run 90 days with no qualified opps, it\'s not a runway problem. It\'s a channel or ICP problem.'
+        name: 'Lead / Disco → SQL / Opp',
+        shortLabel: 'Lead→Opp',
+        shortValue: '10–20%',
+        stageData: {
+          early:  { value: '5–10%', benchmark: 'Realistic when ICP is still forming. Track by channel — one source at 15%+ tells you where to focus investment.' },
+          growth: { value: '10–20%', benchmark: '10–20% means ICP is tightening and messaging is working. Below 10% across all channels after 6 months is an ICP or qualification problem, not a volume problem.' },
+          scale:  { value: '15–25%', benchmark: '15–25% reflects tight ICP, strong scoring, and channels sending the right people. Chasing volume to hit coverage at the expense of this rate is a trap.' }
+        },
+        description: 'Conversion rate from first interaction to qualified opportunity. The sharpest signal for whether demand gen is producing real pipeline or just filling calendars with the wrong people.'
+      },
+      {
+        name: 'Pipeline by Source Mix',
+        shortLabel: 'Source Mix',
+        shortValue: 'Diversifying',
+        stageData: {
+          early:  { value: 'Outbound / founder-led', benchmark: 'Expected. Track source on every deal now — you\'ll need the data when you\'re defending channel budget in 12 months.' },
+          growth: { value: 'Mixed — inbound emerging', benchmark: 'If outbound is still >80% of pipeline at growth stage, your content and inbound motion need investment before you can scale efficiently.' },
+          scale:  { value: 'Inbound + expansion heavier', benchmark: 'At scale, inbound and expansion should represent 40–60%+ of pipeline. Over-indexing on outbound at scale means the brand motion isn\'t working.' }
+        },
+        description: 'Pipeline breakdown by source: outbound, inbound, partner, expansion, events. Tells you where you\'re dependent, where you\'re diversified, and where the next budget dollar should go.'
       }
     ],
     meetingTags: ['Weekly Review', 'Monthly Readout', 'Quarterly Budget'],
+    meetings: [
+      {
+        name: 'Weekly Pipeline + Channel Review',
+        cadence: 'Weekly',
+        attendees: 'Demand Gen + Sales',
+        decisions: 'Pipeline created by source, Lead→Opp by channel. What\'s converting, what\'s stalling, what gets adjusted this week.'
+      },
+      {
+        name: 'Monthly Channel Readout',
+        cadence: 'Monthly',
+        attendees: 'Demand Gen + Marketing + Sales Leadership',
+        decisions: 'Source-level Opp→Close performance. Budget reallocation decisions. Kill or scale channel experiments.'
+      },
+      {
+        name: 'Quarterly Budget + ICP Review',
+        cadence: 'Quarterly',
+        attendees: 'Demand Gen + Sales + RevOps',
+        decisions: 'ICP validation against closed-won data. Channel mix vs. CAC targets. What gets funded next quarter.'
+      }
+    ],
     tabs: [
       { key: 'principles', label: 'Principles', type: 'principles', content: [
         '<strong>Start with the ICP, not the channel</strong> — Before you write a single email or run a single ad, know exactly who you\'re targeting: role, company stage, tech stack, trigger event, and pain. Fuzzy ICP means wasted spend across every channel.',
@@ -937,8 +1017,8 @@ const GTM = [
         '<strong>Plan → Test → Decide</strong> — Every channel bet needs a written plan before it starts, a clear test window, and a binary outcome at the end. Scale it or kill it. No zombie experiments.',
         '<strong>Split lane your messaging</strong> — ICs and DMs are not the same buyer. They have different pain, different outcomes, different CTAs. Build sequences for each and don\'t blend them.',
         '<strong>Score every discovery call</strong> — Define what a good call looks like before you run the first one. Score them weekly. Track which sources produce calls that actually score well.',
-        '<strong>Measure what converts to Opp, not what generates noise</strong> — Clicks, opens, and attendees don\'t pay the bills. What moves to a qualified opportunity? Find those patterns and repeat them relentlessly.',
-        '<strong>Build feedback loops, not reports</strong> — Weekly reviews with Sales aren\'t about accountability. They\'re about signal. What\'s converting? What\'s stalling? Feed it back into channel and messaging strategy fast.'
+        '<strong>Measure what converts to Opp, not what generates noise</strong> — Clicks, opens, and attendees don\'t pay the bills. What moves to a qualified opportunity? Find those patterns and repeat them.',
+        '<strong>Build feedback loops, not reports</strong> — Weekly reviews with Sales aren\'t about accountability. They\'re about signal. What\'s converting? What\'s stalling? Feed it back into channel and messaging fast.'
       ]},
       { key: 'split-lane', label: 'IC vs DM', type: 'pitch-section', content: {
         section: '↕',
@@ -956,25 +1036,41 @@ const GTM = [
       { key: 'experiments', label: 'Experiments', type: 'pitch-section', content: {
         section: '⚗',
         headline: 'Commit fewer bets. Win more of them.',
-        coaching: 'Most demand gen teams run too many experiments at once — none reach the sample size needed to make a real decision. The result is a graveyard of inconclusive tests and no durable channel playbook. Pick fewer things. Go deeper. Build the feedback loop that compounds.',
+        coaching: 'Most demand gen teams run too many experiments at once — none reach the sample size needed to make a real decision. The result is a graveyard of inconclusive tests and no durable channel playbook. Pick fewer things. Go deeper.',
         points: [
           '<strong>Write a one-pager before every test.</strong> Hypothesis, audience, sample size, timeline, success metric, and kill criteria. If you can\'t fill it out, you\'re not ready to run.',
           '<strong>Give tests real runway.</strong> Most channels need 4–6 weeks minimum to produce signal. Two-week tests with 40 contacts tell you nothing useful.',
           '<strong>Set a binary decision point.</strong> When the window closes: scale, kill, or run a new hypothesis. "Let\'s run it a bit longer" is a choice to avoid making a decision.',
-          '<strong>Cap concurrent experiments at 2–3.</strong> More than that and none of them get the attention they need. Focus beats breadth.',
-          '<strong>Nail one thing before you stack the next.</strong> Get inbound working before you layer paid. Nail outbound in one segment before you replicate it. Compounding only works if the foundation holds.'
+          '<strong>Cap concurrent experiments at 2–3.</strong> More than that and none get the attention they need.',
+          '<strong>Nail one thing before you stack the next.</strong> Get inbound working before you layer paid. Compounding only works if the foundation holds.'
         ],
-        avoid: 'Avoid running experiments with no pre-defined success criteria. You\'ll always find a way to read ambiguous results as promising — and keep spending against something that\'s not working.',
+        avoid: 'Avoid running experiments with no pre-defined success criteria. You\'ll always find a way to read ambiguous results as promising — and keep spending against something that isn\'t working.',
         callout: '"If we can\'t make a go/no-go decision from this test, we\'re not running it."'
       }},
       { key: 'measure', label: 'Measure', type: 'principles', content: [
         '<strong>Score every discovery call</strong> — Build a scorecard before the first call happens. 5–7 criteria: ICP fit, pain clarity, timeline, DM access, next step quality. Score 1–3. Review weekly with the team.',
-        '<strong>Measure disco → Opp rate by source</strong> — Not all meetings are equal. An inbound trial-request meeting converts differently than a cold SDR-sourced call. Know the rate for each source and fund accordingly.',
-        '<strong>Track what converts, not what fills</strong> — Volume metrics are inputs. Opp creation and Opp-to-Close rates are outputs. Build your reporting stack around outputs and use inputs to explain them.',
-        '<strong>Make every closed-won traceable</strong> — Every closed deal should trace back to its demand gen source. Review monthly: which sources actually produced revenue — not just pipeline.',
-        '<strong>Weekly call scoring is also weekly coaching</strong> — What made a high-scoring call this week? What patterns are emerging across reps? The scoring process surfaces what to repeat.',
-        '<strong>Kill non-converting channels in 90 days</strong> — If a channel has run a full quarter with no qualified opps, don\'t extend the runway. Diagnose: wrong channel, wrong ICP, or wrong message — then decide.'
-      ]}
+        '<strong>Measure Lead→Opp rate by source</strong> — An inbound trial-request meeting converts differently than a cold SDR-sourced call. Know the rate for each source and fund accordingly.',
+        '<strong>Track what converts, not what fills</strong> — Volume metrics are inputs. Opp creation and Opp-to-Close rates are outputs. Build your reporting stack around outputs.',
+        '<strong>Make every closed-won traceable</strong> — Every closed deal traces back to its demand gen source. Review monthly: which sources produced revenue — not just pipeline.',
+        '<strong>Weekly call scoring is also weekly coaching</strong> — What made a high-scoring call this week? The scoring process surfaces what to repeat.',
+        '<strong>Kill non-converting channels in 90 days</strong> — If a channel has run a full quarter with no qualified opps, diagnose and decide: wrong channel, wrong ICP, or wrong message.'
+      ]},
+      { key: 'metrics', label: 'Metrics' },
+      { key: 'risks', label: 'Risks' }
+    ],
+    risks: [
+      {
+        title: 'Optimizing for Lead Volume Instead of Opp Quality',
+        body: 'A high lead→meeting rate with a low meeting→opp rate means you\'re filling calendars, not pipeline. Define qualified opportunity before you define lead, then measure backward from there.'
+      },
+      {
+        title: 'Outbound-Only at Growth Stage',
+        body: 'If you hit growth stage and inbound hasn\'t started contributing, your content and brand motion are behind. Outbound can sustain you early — it can\'t scale you efficiently. CAC payback doesn\'t work on pure outbound at growth.'
+      },
+      {
+        title: 'No Source Attribution on Closed-Won',
+        body: 'Without clean source tracking on every closed deal, channel budget decisions are gut instinct. Every deal should trace to its first touch before you make a single budget allocation.'
+      }
     ]
   },
   {
@@ -985,9 +1081,9 @@ const GTM = [
     purpose: 'Create demand through targeted, personalized outreach. Build sequences that earn replies, not just send emails.',
     stageImportance: { early: 'high', growth: 'very-high', scale: 'high' },
     stageNotes: {
-      early: 'Outbound is often the fastest path to early revenue. Founders should run sequences personally before delegating.',
-      growth: 'Systematize what worked in early stage. Build templates, hire SDRs, measure sequence performance ruthlessly.',
-      scale: 'Specialization matters. Different sequences for different ICPs, verticals, and personas.'
+      early: 'Founder-run sequences are your fastest path to signal and first revenue. Don\'t hire SDRs until you\'ve personally figured out what message gets a reply. Below 2% reply rate means the list or message is broken — fix it before scaling.',
+      growth: 'Systematize what the founder proved. Hire SDRs against a documented playbook, not a blank slate. Meetings booked per 1,000 contacts is your hiring and capacity planning metric.',
+      scale: 'Persona and vertical segmentation matters at scale. A single sequence for all ICPs is an early-stage motion running in a scale-stage org. Positive reply rate above 5% means you have something worth investing in.'
     },
     tabs: [
       { key: 'principles', label: 'Principles', type: 'principles', content: [
@@ -1025,18 +1121,26 @@ const GTM = [
     ],
     metrics: [
       {
-        name: 'Reply Rate',
+        name: 'Positive Reply Rate',
         shortLabel: 'Reply Rate',
-        shortValue: '3–5% healthy',
-        description: 'The primary health metric for outbound sequences. Below 2% means the message or the list is wrong. Diagnose before scaling.',
-        benchmark: 'Healthy: 3–5%. Below 2% = diagnose immediately.'
+        shortValue: '3–6%',
+        stageData: {
+          early:  { value: '2–4%', benchmark: '2–4% is the floor for a working sequence. Below 2%: the message, the list, or both are wrong. Fix before adding contacts. Above 4%: document the sequence and ICP match before scaling.' },
+          growth: { value: '3–6%', benchmark: '3–6% means targeting and messaging are dialed in. If you\'re hiring SDRs and reply rate is below 3%, you\'re scaling a broken message.' },
+          scale:  { value: '4–8%', benchmark: '4–8% at scale reflects tight persona segmentation. Running one sequence to 5 different personas and hitting 4%? Segmenting further will push it higher.' }
+        },
+        description: 'Positive replies only — not OOOs, bounces, or unsubscribes. Primary health signal for message and list quality. Low reply rate is a message problem or an ICP problem — determine which before changing anything.'
       },
       {
-        name: 'Meeting Booked Rate',
-        shortLabel: 'Meetings Booked',
-        shortValue: 'Track',
-        description: 'Replies are vanity if they don\'t convert to meetings. Track reply-to-meeting rate to understand if your CTA is working.',
-        benchmark: 'Target 30–40% of positive replies converting to booked meetings.'
+        name: 'Meetings Booked / 1,000 Contacts',
+        shortLabel: 'Meetings / 1K',
+        shortValue: '10–20 / 1K',
+        stageData: {
+          early:  { value: '5–10 / 1,000', benchmark: 'Track at the sequence level, not the rep level — it tells you whether the playbook works, not whether a specific rep works.' },
+          growth: { value: '10–20 / 1,000', benchmark: 'Use as SDR hiring math: at 1,000 contacts/month/SDR, how many meetings do you get? That drives your headcount model.' },
+          scale:  { value: '15–30 / 1,000', benchmark: 'Above 25 is exceptional — protect what\'s working and don\'t let "improvements" erode a performing playbook.' }
+        },
+        description: 'The capacity planning metric for outbound. Tells you how many contacts a rep needs to work to generate one meeting, which drives hiring math and sequence investment decisions.'
       }
     ],
     meetingTags: ['Sequence Review', 'Template Audit', 'Rep Training'],
@@ -1077,9 +1181,9 @@ const GTM = [
     purpose: 'Turn revenue into retention and expansion. NRR is the growth engine.',
     stageImportance: { early: 'medium', growth: 'very-high', scale: 'critical' },
     stageNotes: {
-      early: 'Founders own CS. Stay close to every customer — churn is existential at small scale.',
-      growth: 'Churn kills growth-stage companies. One bad cohort can wipe a quarter of ARR.',
-      scale: 'Net revenue retention above 120% means you grow even without new logo sales. CS IS the growth engine.'
+      early: 'Founders own CS. Time to value is the only thing that matters — get customers using the product for real before you talk about renewal. One churned account at this stage is a signal, not a statistic.',
+      growth: 'Churn is existential at growth stage. A single bad cohort can wipe a quarter of ARR. NRR below 100% means you\'re growing on a leaky foundation — you\'ll never outrun it with new logo sales.',
+      scale: 'Above 110% NRR and CS is a genuine growth engine. The gap between 100% and 120% NRR is the difference between a business that needs constant new pipeline and one that compounds on its own.'
     },
     tabs: [
       { key: 'overview', label: 'Overview' },
@@ -1098,16 +1202,35 @@ const GTM = [
       {
         name: 'Net Revenue Retention (NRR)',
         shortLabel: 'NRR',
-        shortValue: '>120% world-class',
-        description: 'The single most important CS metric. Above 100% means expansion outpaces churn.',
-        benchmark: '>100% = healthy, >110% = strong, >120% = world-class'
+        shortValue: '100–120%',
+        stageData: {
+          early:  { value: '90–110%', benchmark: '90–110% is expected early when onboarding is rough and CS is founder-run. Below 90% is a product-market fit or onboarding problem that no CS headcount will fix.' },
+          growth: { value: '100–120%', benchmark: '100%+ is the floor at growth stage. Below that means churn outpaces expansion and you\'re growing on a leaky base. 110%+ means expansion is working. 120%+ is exceptional.' },
+          scale:  { value: '110–130%+', benchmark: '110–130% at scale means CS is a genuine growth engine. Above 120% with real ARR means you can slow new logo acquisition and still grow.' }
+        },
+        description: 'Expansion plus contraction plus churn as a percentage of starting ARR. Above 100% means you\'re growing your existing customer base. Lagging indicator — watch the leading signals (usage, TTV, stakeholder breadth) before this number moves.'
       },
       {
-        name: 'Time to First Value',
+        name: 'Gross Revenue Retention (GRR)',
+        shortLabel: 'Gross Retention',
+        shortValue: '85–92%',
+        stageData: {
+          early:  { value: '80–90%', benchmark: 'Below 80% means accounts are churning faster than new logo sales can compensate. Dig into the cohort — is churn concentrated in a segment or use case?' },
+          growth: { value: '85–92%', benchmark: 'GRR isolates actual churn from expansion noise. Use it to measure whether CS is retaining accounts, not just growing ARR via upsells that mask a churn problem.' },
+          scale:  { value: '90–95%+', benchmark: 'GRR below 90% at scale means expansion is papering over a churn problem. That only works until expansion slows — and it always does.' }
+        },
+        description: 'Renewal revenue as a percentage of starting ARR, excluding expansion. Isolates pure retention from upsell performance. High NRR with low GRR is a warning sign — they will diverge eventually.'
+      },
+      {
+        name: 'Time to First Value (TTV)',
         shortLabel: 'Time to Value',
-        shortValue: 'Minimize',
-        description: 'How fast does a new customer hit their first meaningful outcome? Predicts long-term retention better than almost any other early signal.',
-        benchmark: 'Define your "first value moment" specifically, then track median days to reach it.'
+        shortValue: '<60 days',
+        stageData: {
+          early:  { value: 'Inconsistent', benchmark: 'Define your "first value moment" specifically before trying to optimize it. The definition matters as much as the timeline.' },
+          growth: { value: '<60–90 days', benchmark: 'Longer than 90 days predicts churn better than almost any other early signal. Track median, not average — outliers mask the pattern.' },
+          scale:  { value: '<30–60 days', benchmark: 'Above 60 days consistently at scale means onboarding is a bottleneck — not a CS execution problem. Fix the system, not the people.' }
+        },
+        description: 'Days from contract close to first confirmed customer value moment. Strongest early predictor of long-term retention. Define the value moment specifically — if the whole team can\'t agree on what it means, you can\'t optimize it.'
       }
     ],
     meetingTags: ['Weekly At-Risk', 'Monthly Expansion', 'QBR w/ Accounts'],
@@ -1154,24 +1277,32 @@ const GTM = [
     purpose: 'Remove friction from every seller touchpoint. Automate the admin. Let reps open their console, work their day, and go hunt.',
     stageImportance: { early: 'low', growth: 'high', scale: 'critical' },
     stageNotes: {
-      early: 'Keep it simple. Founder does this with a spreadsheet and a basic CRM. Don\'t over-build.',
-      growth: 'Without this function, chaos sets in. You can\'t forecast, can\'t diagnose, can\'t scale headcount safely.',
-      scale: 'Forecasting, territory design, comp plans, ICP definition, and competitive intel all live here.'
+      early: 'Spreadsheet + basic CRM. Don\'t over-build. The only RevOps question that matters: can you trace every deal back to its source and know what took it from open to closed?',
+      growth: 'Without RevOps, you can\'t forecast, can\'t diagnose rep performance, and can\'t scale headcount safely. Forecast accuracy and CRM completeness become operational metrics, not aspirational ones.',
+      scale: 'RevOps is a strategic function. Forecast model, territory design, comp plan, quota methodology — all live here. ±10–15% forecast accuracy is the target. Anything worse is a data quality or stage-entry problem.'
     },
     metrics: [
       {
         name: 'Forecast Accuracy',
         shortLabel: 'Forecast Accuracy',
-        shortValue: '±10%',
-        description: 'How close is your commit to actual close? Consistently off = process problem.',
-        benchmark: 'Healthy: commit within 10% of actual closed. Worse than ±20% = something is broken.'
+        shortValue: '±20–30%',
+        stageData: {
+          early:  { value: '±30–40%', benchmark: 'Expected when the forecast is mostly gut check. Focus on documenting stage criteria and close-date methodology before trying to tighten accuracy.' },
+          growth: { value: '±20–30%', benchmark: 'You have a process but it\'s still rep-dependent. Heavy variance between reps means stage criteria or close-date discipline is inconsistent. Standardize before investing in tooling.' },
+          scale:  { value: '±10–15%', benchmark: 'Achievable only when stage progression is data-driven, not rep-driven. Worse than ±20% at scale is a CRM data quality problem or a cultural one — both are fixable.' }
+        },
+        description: 'Commit vs. actual close, measured quarterly. Consistently missing by more than the benchmark means stage criteria are wrong, close dates are fabricated, or commit culture is broken. Diagnose which one before fixing anything.'
       },
       {
         name: 'CRM Data Completeness',
         shortLabel: 'CRM Completeness',
-        shortValue: '90%+',
-        description: 'If reps aren\'t logging required fields, your data is fiction and your forecasts are guesses.',
-        benchmark: 'Target 90%+ on required opp fields. Below 75% = data is not usable for planning.'
+        shortValue: '85–95%',
+        stageData: {
+          early:  { value: '70–85%', benchmark: 'Every gap is a forecast you can\'t make. Focus on required fields for stage advancement — not optional enrichment.' },
+          growth: { value: '85–95%', benchmark: 'Below 80% and your pipeline reports are unreliable. This is a workflow design problem, not a rep discipline problem — automate the inputs you can.' },
+          scale:  { value: '95%+', benchmark: '95%+ is the floor for a trustworthy forecast. Below this, quota modeling and capacity planning are guesswork. Treat it as an operational metric, not a hygiene metric.' }
+        },
+        description: 'Percentage of required opportunity fields populated at current stage. The data foundation for every forecast and planning decision. Low completeness means the data entry experience is broken — not that reps are lazy.'
       }
     ],
     meetingTags: ['Weekly Standup', 'Monthly Systems', 'Quarterly Planning'],
@@ -1228,24 +1359,32 @@ const GTM = [
     purpose: 'Partnerships can unlock markets you can\'t reach alone — or become the most expensive distraction you\'ve ever funded. Know the difference before you sign.',
     stageImportance: { early: 'low', growth: 'medium', scale: 'high' },
     stageNotes: {
-      early: 'Usually a distraction unless a partner IS the primary channel from day one. Don\'t build a partner motion before you have a direct motion.',
-      growth: 'Channel and integration partnerships start to meaningfully contribute.',
-      scale: 'Resellers, SIs, and co-sell programs can drive 20–40% of revenue at the right margin.'
+      early: 'Usually a distraction unless a partner IS the primary channel from day one. Don\'t build a partner motion before you have a direct motion that works. Partners amplify — they don\'t create.',
+      growth: 'Channel and integration partnerships can start contributing. The bar: is a named partner generating sourced pipeline with a measurable close rate? If not, it\'s a relationship, not a channel.',
+      scale: 'Partners sourcing 20–40% of pipeline is achievable — but only with built enablement, pipeline accountability in contracts, and internal resourcing that matches the investment.'
     },
     metrics: [
       {
-        name: 'Partner-Sourced Pipeline %',
+        name: 'Partner-Sourced Pipeline',
         shortLabel: 'Partner Pipeline',
-        shortValue: '20–30% target',
-        description: 'What % of total pipeline came from or through a partner?',
-        benchmark: 'Directional target at scale: 20–30% of pipeline partner-sourced or partner-influenced.'
+        shortValue: '10–25%',
+        stageData: {
+          early:  { value: '0–10%', benchmark: 'Anything above 0% is a bonus. If a single relationship generates real pipeline, document what makes it work before trying to replicate it.' },
+          growth: { value: '10–25%', benchmark: 'Below 10% after 12+ months of investment means the economics haven\'t proven out — go deeper or reallocate.' },
+          scale:  { value: '20–40%', benchmark: 'Above 40% creates concentration risk. If a key partner relationship changes, your pipeline breaks.' }
+        },
+        description: 'Pipeline sourced or co-sold through a partner as a percentage of total pipeline. "Partner-influenced" is too loose — require source attribution on every tagged deal.'
       },
       {
-        name: 'Partner Gross Margin',
-        shortLabel: 'Partner GM',
-        shortValue: 'Know Your Floor',
-        description: 'What is your actual gross margin after the partner cut, implementation lift, and internal cost to support the deal? If you don\'t know this number, you\'re flying blind.',
-        benchmark: 'Set a walk-away GM floor before signing any agreement. No exceptions.'
+        name: 'Partner Efficiency',
+        shortLabel: 'Partner Efficiency',
+        shortValue: 'By partner',
+        stageData: {
+          early:  { value: 'Noisy', benchmark: 'Too early for benchmarks. Track every deal by partner name and close outcome. The pattern in 6–12 months is your partner tiering model.' },
+          growth: { value: 'Top partners emerging', benchmark: '1–2 partners should account for 60–70% of partner pipeline. Identify them and invest disproportionately. Make a decision on the others.' },
+          scale:  { value: 'Concentrated in top performers', benchmark: 'Top 20% of partners should drive 80%+ of partner-sourced revenue. Build enablement and account planning resources around them, not distributed evenly.' }
+        },
+        description: 'Pipeline-to-close performance broken down by individual partner. Tells you which partnerships are worth the investment. Review quarterly by partner — aggregate numbers hide which relationships are actually working.'
       }
     ],
     meetingTags: ['Monthly Pipeline', 'Quarterly PBR'],
@@ -1312,9 +1451,9 @@ const GTM = [
     purpose: 'Generate pipeline and relationships through in-person presence. Treat every event as a pipeline exercise.',
     stageImportance: { early: 'low', growth: 'medium', scale: 'high' },
     stageNotes: {
-      early: 'Attend selectively. Don\'t sponsor — attend, network, host a small dinner.',
-      growth: 'Strategic events worth sponsoring start to make sense.',
-      scale: 'Events become a meaningful pipeline source. Flagship presence and hosted experiences compound.'
+      early: 'Don\'t sponsor — attend, host a dinner, run a side event. The ROI on a well-run dinner with 8 target accounts beats a $25K booth. Your goal is conversations, not badge scans.',
+      growth: 'Events need to justify budget against the same CAC standard as every other channel. Pick 2–3 events where your buyers actually go, build a pre-event outreach plan, and set a pipeline target before you write the check.',
+      scale: 'Flagship events become a meaningful pipeline source when pre-event outreach, on-site qualification, and 48-hour follow-up are all systematized. Cost per qualified meeting is your efficiency benchmark — track it event by event.'
     },
     tabs: [
       { key: 'strategy', label: 'Strategy', type: 'principles', content: [
@@ -1340,18 +1479,26 @@ const GTM = [
     ],
     metrics: [
       {
-        name: 'Pipeline Generated (90-day)',
+        name: 'Pipeline per Event (90-day)',
         shortLabel: 'Event Pipeline',
-        shortValue: 'Track',
-        description: 'Pipeline sourced and influenced within 90 days of the event. The only metric that tells you if the event was worth the cost.',
-        benchmark: 'Target 3–5x event cost in pipeline created within 90 days.'
+        shortValue: '3–5x cost',
+        stageData: {
+          early:  { value: 'Experimental', benchmark: 'Track pipeline created within 90 days of every event. After 3–4 events you\'ll have enough data to set a minimum ROI threshold.' },
+          growth: { value: 'ROI threshold required', benchmark: 'Set a minimum pipeline target before committing to any event. A reasonable floor is 3–5x total event cost (including staff time) in 90-day pipeline.' },
+          scale:  { value: 'Repeatable, benchmarked', benchmark: 'Your top events should generate predictable pipeline you can model into the quarterly plan. If you can\'t forecast it, your tracking or follow-up process needs work.' }
+        },
+        description: 'Pipeline created within 90 days as a multiple of total event cost. Track at the event level, not in aggregate — averages hide which events are working and which are burning budget.'
       },
       {
         name: 'Cost per Qualified Meeting',
-        shortLabel: 'Cost/Meeting',
-        shortValue: 'Benchmark',
-        description: 'Total event cost divided by qualified meetings booked — including pre-event outreach.',
-        benchmark: 'Pre-event outreach meetings should outnumber on-site meetings.'
+        shortLabel: 'Cost / Meeting',
+        shortValue: 'Trending down',
+        stageData: {
+          early:  { value: 'High / inconsistent', benchmark: 'No benchmark yet. Track it on every event so you have a baseline. Pre-event outreach meetings are almost always cheaper than on-site ones — start measuring the difference.' },
+          growth: { value: 'Trending down', benchmark: 'Should decrease event-over-event as pre-event outreach improves. If it\'s not trending down after 3–4 events, the target account list or follow-up process is the problem.' },
+          scale:  { value: 'Benchmarked and optimized', benchmark: 'You should have a firm benchmark by event type. If cost per meeting is rising, you\'re either sponsoring events your buyers don\'t attend or the pre-event motion has degraded.' }
+        },
+        description: 'Total event cost divided by qualified meetings booked — including pre-event outreach. Pre-event meetings should outnumber on-site meetings at a well-run event.'
       }
     ],
     meetingTags: ['Event Strategy', 'Pre-Event Prep', 'Post-Event Debrief'],

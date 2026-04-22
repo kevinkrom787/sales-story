@@ -606,6 +606,7 @@
   .metric-card { padding: 1rem 1.1rem; background: var(--surface2); border-radius: 8px; border: 1px solid var(--border); margin-bottom: 0.6rem; }
   .metric-card-header { display: flex; align-items: baseline; justify-content: space-between; gap: 0.75rem; margin-bottom: 0.4rem; flex-wrap: wrap; }
   .metric-card-name { font-size: 0.88rem; font-weight: 700; }
+  .metric-card-stageval { font-size: 1.2rem; font-weight: 700; letter-spacing: -0.025em; line-height: 1; }
   .metric-card-desc { font-size: 0.77rem; color: var(--muted); line-height: 1.5; margin-bottom: 0.45rem; }
   .metric-benchmark { font-size: 0.7rem; padding: 0.2rem 0.52rem; border-radius: 5px; display: inline-block; font-weight: 600; }
 
@@ -1789,11 +1790,14 @@ function renderPlaybooks() {
     const tier = fn.stageImportance[currentStage];
     const tc   = tierClass(tier);
     const bc   = tier === 'critical' ? fn.accent : tier === 'very-high' ? fn.accent + 'bb' : 'var(--muted)';
-    const pills = (fn.metrics || []).map(m => `
+    const pills = (fn.metrics || []).map(m => {
+      const pillVal = m.stageData?.[currentStage]?.value || m.shortValue;
+      return `
       <div class="metric-pill" style="background:${fn.accent}14">
         <span class="metric-pill-label">${m.shortLabel}</span>
-        <span class="metric-pill-value" style="color:${fn.accent}">${m.shortValue}</span>
-      </div>`).join('');
+        <span class="metric-pill-value" style="color:${fn.accent}">${pillVal}</span>
+      </div>`;
+    }).join('');
     const tags = (fn.meetingTags || []).map(t => `<span class="tag">${t}</span>`).join('');
     return `
       <div class="card ${tc}" data-id="${fn.id}" role="button" tabindex="0" style="--card-accent:${fn.accent}">
@@ -1867,12 +1871,20 @@ function renderOverview(fn) {
 }
 
 function renderMetrics(fn) {
-  let html = (fn.metrics || []).map(m => `
+  let html = (fn.metrics || []).map(m => {
+    const sd    = m.stageData?.[currentStage];
+    const val   = sd?.value   || m.shortValue  || '';
+    const bench = sd?.benchmark || m.benchmark || '';
+    return `
     <div class="metric-card">
-      <div class="metric-card-header"><div class="metric-card-name" style="color:${fn.accent}">${m.name}</div></div>
+      <div class="metric-card-header">
+        <div class="metric-card-name" style="color:${fn.accent}">${m.name}</div>
+        ${val ? `<div class="metric-card-stageval" style="color:${fn.accent}">${val}</div>` : ''}
+      </div>
       <div class="metric-card-desc">${m.description}</div>
-      <div class="metric-benchmark" style="background:${fn.accent}18;color:${fn.accent}">${m.benchmark}</div>
-    </div>`).join('');
+      ${bench ? `<div class="metric-benchmark" style="background:${fn.accent}18;color:${fn.accent}">${bench}</div>` : ''}
+    </div>`;
+  }).join('');
   if (fn.metricsComparison) {
     const c = fn.metricsComparison;
     html += `<div class="comparison-table"><h3>Inbound vs Outbound Metrics</h3><div class="comparison-cols">
