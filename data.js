@@ -4,7 +4,7 @@ const CATEGORIES = [
     name: 'Sales Philosophy',
     accent: '#E8503A',
     description: 'How I think about selling, building pipeline, and running GTM teams. Opinionated, experience-backed, and mostly learned the hard way.',
-    preview: ['How I Operate', 'On Pipeline', 'On Customer Success', 'On Hiring for Stage', 'The Pitch', 'On Legal & Contracts', 'Hierarchy of Needs', 'Pipeline Diversity', 'Building Champions']
+    preview: ['How I Operate', 'On Pipeline', 'On Customer Success', 'On Hiring for Stage', 'The Pitch', 'On Legal & Contracts', 'Hierarchy of Needs', 'Pipeline Diversity', 'Building Champions', 'On Pricing']
   },
   {
     id: 'playbooks',
@@ -498,6 +498,74 @@ const PHILOSOPHY = [
         '<strong>There\'s smoke to blow here, and that\'s part of the job</strong> — Validate their vision. Affirm that they\'re thinking about this the right way. Make them feel ahead of the curve. This isn\'t dishonest — most execs who\'ve prioritized AI investment are ahead. Tell them that.',
         '<strong>Address the adoption risk directly</strong> — They\'re not just thinking about the upside. They\'re thinking about what happens if the team doesn\'t use it, if the project gets buried, if they championed something that didn\'t deliver. Get those concerns on the table early and have an answer.'
       ]}
+    ]
+  },
+  {
+    id: 'on-pricing',
+    type: 'philosophy',
+    name: 'On Pricing',
+    accent: '#10b981',
+    purpose: 'Grow accounts. Know your value. Defend the number. Deployment is the input.',
+    preview: 'Grow accounts. Know your value. Defend the number. Deployment is the input.',
+    tabs: [
+      {
+        key: 'pricing',
+        label: 'On Pricing',
+        type: 'sections',
+        content: [
+          {
+            headline: 'Grow, don\'t oversell.',
+            bullets: [
+              '$50K → $250K beats $500K → $250K every time',
+              'Big lands hide bad fit',
+              'Usage is the only honest expansion signal'
+            ],
+            image: 'chart-land-expand.png',
+            imageCaption: 'Two paths to $250K — both get there at M12, one with a lot more pain'
+          },
+          {
+            headline: 'Know your value. Own it.',
+            bullets: [
+              'Why can\'t they just use Databricks, Snowflake, or their CSP?',
+              'Are you more accurate? More scalable? Faster to outcome?',
+              'How does this map to a named exec priority — not a feature list',
+              'Nobody wants to buy a startup. You have to make the alternative look worse.',
+              'If you\'re not confident here, the buyer won\'t be either',
+              'This is how you keep pricing integrity. Platforms eat your lunch if you don\'t have something you\'re 100x better at and 10x cheaper',
+              'This needs to be understood by everyone — product, eng, sales, marketing, support'
+            ]
+          },
+          {
+            headline: 'Defend the number or get slaughtered.',
+            bullets: [
+              'Tie price to outcome, comparable cost, or verified usage',
+              'You have to justify the cost relative to the value you provide. You can\'t pull numbers out of your ass — anchor to COGS or value-based pricing',
+              'If I can\'t say it with a straight face, it won\'t survive procurement',
+              'Sketchy math at signature = bleeding at renewal'
+            ]
+          },
+          {
+            headline: 'Deployment time is an ACV input.',
+            bullets: [
+              'Do you know what it costs you to deploy? How many hours, at what hourly rate?',
+              'Are customers actually happy with your deployment process?',
+              '4-week deploys ≠ 4-month deploys',
+              'Measure time-to-value and eng hours per deploy',
+              'If you don\'t know the cost to deliver, you don\'t know the margin'
+            ],
+            image: 'chart-deploy-nrr.png',
+            imageCaption: 'Deployment time directly correlates to NRR — 4 wks ~180% vs 20+ wks ~55%'
+          },
+          {
+            headline: 'Score every deployment. Run a clean handover.',
+            bullets: [
+              'On time, on scope, on budget, champion still engaged',
+              'Documented handover to CS — artifact, not a Slack message',
+              'Expansion starts the day implementation ends'
+            ]
+          }
+        ]
+      }
     ]
   },
   {

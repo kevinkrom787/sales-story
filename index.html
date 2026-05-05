@@ -1415,6 +1415,32 @@
     box-shadow: 0 8px 32px rgba(0,0,0,.5);
     animation: toastIn .25s ease both, toastOut .3s ease 2.2s both;
   }
+
+  /* ── Pricing Sections ── */
+  .pricing-sections { display: flex; flex-direction: column; gap: 2.5rem; }
+  .pricing-section-head {
+    font-size: clamp(1.05rem, 2vw, 1.3rem);
+    font-weight: 700; letter-spacing: -0.02em; margin: 0 0 0.85rem;
+  }
+  .pricing-bullets {
+    list-style: none; padding: 0; margin: 0;
+    display: flex; flex-direction: column; gap: 0.55rem;
+  }
+  .pricing-bullets li {
+    font-size: 0.875rem; line-height: 1.65; color: var(--muted);
+    padding-left: 1.1rem; position: relative;
+  }
+  .pricing-bullets li::before {
+    content: '—'; position: absolute; left: 0; opacity: 0.45;
+  }
+  .pricing-chart {
+    max-width: 100%; margin: 1.35rem 0 0; border-radius: 8px;
+    border: 1px solid var(--border); display: block;
+  }
+  .pricing-chart-caption {
+    font-size: 0.74rem; color: var(--muted); opacity: 0.55;
+    margin-top: 0.4rem; font-style: italic;
+  }
 </style>
 </head>
 <body>
@@ -1832,6 +1858,7 @@ function renderTab(fn, tab) {
     case 'pitch-section': return renderPitchSection(tab.content || {}, fn.accent);
     case 'pyramid':       return renderPyramid(tab.content || [], fn.accent, tab.philosophy);
     case 'team-overlap':  return renderTeamOverlap(tab.content || {}, fn.accent);
+    case 'sections':      return renderSections(tab.content || [], fn.accent);
     default:           return '';
   }
 }
@@ -1962,6 +1989,20 @@ function renderPitchSection(c, accent) {
       ${avoidBlock}
       ${c.callout ? `<div class="pitch-callout" style="background:${accent}11;border-left:3px solid ${accent}">${c.callout}</div>` : ''}
     </div>`;
+}
+
+function renderSections(content, accent) {
+  return `<div class="pricing-sections">${(content || []).map(s => {
+    const bullets = (s.bullets || []).map(b => `<li>${b}</li>`).join('');
+    const img = s.image ? `
+      <img src="${s.image}" class="pricing-chart" alt="${s.imageCaption || ''}" />
+      ${s.imageCaption ? `<div class="pricing-chart-caption">${s.imageCaption}</div>` : ''}` : '';
+    return `
+    <div class="pricing-section">
+      <h3 class="pricing-section-head" style="color:${accent}">${s.headline}</h3>
+      <ul class="pricing-bullets">${bullets}</ul>${img}
+    </div>`;
+  }).join('')}</div>`;
 }
 
 function renderPyramid(content, accent, philosophy) {
