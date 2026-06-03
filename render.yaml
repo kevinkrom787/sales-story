@@ -11,7 +11,7 @@ services:
         value: SAMEORIGIN
     routes:
       - type: rewrite
-        source: /salesphilosophy
+        source: /sales-philosophy
         destination: /index.html
       - type: rewrite
         source: /playbooks
