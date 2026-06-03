@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: sales-story
+    runtime: static
+    buildCommand: "echo 'no build needed'"
+    staticPublishPath: .
+    pullRequestPreviewsEnabled: true
+    headers:
+      - path: /*
+        name: X-Frame-Options
+        value: SAMEORIGIN
