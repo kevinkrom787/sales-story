@@ -9,3 +9,16 @@ services:
       - path: /*
         name: X-Frame-Options
         value: SAMEORIGIN
+    routes:
+      - type: rewrite
+        source: /salesphilosophy
+        destination: /index.html
+      - type: rewrite
+        source: /playbooks
+        destination: /index.html
+      - type: rewrite
+        source: /customer-stories
+        destination: /index.html
+      - type: rewrite
+        source: /background
+        destination: /index.html

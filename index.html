@@ -2509,9 +2509,40 @@ document.addEventListener('keypress', e => {
   }
 });
 
+// ── URL routing ───────────────────────────────────────────────────────────────
+const _PATH_TO_CAT = {
+  '/salesphilosophy':  'philosophy',
+  '/playbooks':        'playbooks',
+  '/customer-stories': 'stories',
+  '/background':       'background'
+};
+const _CAT_TO_PATH = Object.fromEntries(
+  Object.entries(_PATH_TO_CAT).map(([p, c]) => [c, p])
+);
+const _normPath = () => (location.pathname.replace(/\/+$/, '') || '/');
+
+const _rhRoute = renderHome;
+renderHome = function() {
+  _rhRoute();
+  if (_normPath() !== '/') history.pushState({}, '', '/');
+};
+
+const _ecRouteWrap = enterCategory;
+enterCategory = function(id) {
+  _ecRouteWrap(id);
+  const path = _CAT_TO_PATH[id];
+  if (path && _normPath() !== path) history.pushState({}, '', path);
+};
+
+window.addEventListener('popstate', () => {
+  const cat = _PATH_TO_CAT[_normPath()];
+  if (cat) _ecRouteWrap(cat); else _rhRoute();
+});
+
 // ── Boot ──────────────────────────────────────────────────────────────────────
 
-renderHome();
+const _initCat = _PATH_TO_CAT[_normPath()];
+if (_initCat) _ecRouteWrap(_initCat); else _rhRoute();
 
 </script>
 
