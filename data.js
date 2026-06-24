@@ -576,6 +576,15 @@ const PHILOSOPHY = [
     purpose: 'How AI tools transform a generalist seller into a precision machine.',
     preview: 'When legal, security, demos, and lead routing run on autopilot — you only touch deals you can win.',
     externalLink: 'transformer.html',
+  },
+  {
+    id: 'layer-cake',
+    type: 'philosophy',
+    name: 'The Enterprise Layer Cake',
+    accent: '#ec4899',
+    purpose: 'Why enterprise sales is a layer cake — and how to weave one story that wins every altitude.',
+    preview: 'IC, manager, VP, C-suite. One coherent story, retold at each altitude, anchored to revenue, cost, and risk — then proven in the POC.',
+    externalLink: 'layer-cake.html',
   }
 ];
 

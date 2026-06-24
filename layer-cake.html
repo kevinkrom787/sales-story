@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Layer Cake | Selling Every Altitude</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #05050d;
+    --anchor: #10b981;       /* through-line color, per org priority */
+    --anchor-g: #6ee7b7;
+    --cream: #f7edd8;
+    --cream-d: #e7d2a8;
+  }
+
+  html, body {
+    width: 100%; min-height: 100%;
+    font-family: 'Space Grotesk', sans-serif;
+    background: var(--bg);
+    color: #e8e8f0;
+    -webkit-font-smoothing: antialiased;
+  }
+  body { overflow-x: hidden; }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.022) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.022) 1px, transparent 1px);
+    background-size: 64px 64px;
+  }
+  body::after {
+    content: '';
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background: radial-gradient(ellipse 85% 75% at 50% 34%, transparent 4%, #05050d 92%);
+  }
+  #stars { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+
+  .wrap {
+    position: relative; z-index: 2;
+    max-width: 780px; margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  /* ── Header ───────────────────────────────────────────── */
+  header { text-align: center; margin-bottom: 24px; }
+  .eyebrow {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.35em;
+    text-transform: uppercase; color: rgba(255,255,255,0.32);
+  }
+  h1 {
+    font-size: clamp(26px, 5vw, 46px); font-weight: 700;
+    letter-spacing: 0.02em; margin-top: 8px; line-height: 1.05;
+  }
+  h1 .grad {
+    background: linear-gradient(90deg, #a855f7, #d946ef, #f43f5e, #f97316, #eab308);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .sub {
+    font-size: 14px; color: rgba(255,255,255,0.5);
+    max-width: 600px; margin: 14px auto 0; line-height: 1.6;
+  }
+
+  /* ── Backdrop: org priorities (the sky the cake ladders up to) ── */
+  .sky {
+    position: relative;
+    width: min(700px, 96vw); margin: 0 auto;
+    padding: 18px 20px 34px;
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 18px;
+    background:
+      radial-gradient(ellipse 120% 80% at 50% 0%, rgba(120,120,200,0.06), transparent 60%),
+      linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.008));
+  }
+  .sky-label {
+    text-align: center; font-size: 10px; font-weight: 700;
+    letter-spacing: 0.28em; text-transform: uppercase;
+    color: rgba(255,255,255,0.34); margin-bottom: 14px;
+  }
+  .priority-row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+  .priority {
+    flex: 1 1 0; min-width: 124px; max-width: 168px;
+    padding: 11px 12px; border-radius: 11px;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.02);
+    cursor: pointer; text-align: center;
+    transition: all 0.25s; position: relative;
+  }
+  .priority:hover { border-color: rgba(255,255,255,0.28); }
+  .priority .pname { font-size: 13px; font-weight: 700; letter-spacing: 0.04em; color: rgba(255,255,255,0.6); transition: color .25s; }
+  .priority .psub { font-size: 8.5px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-top: 4px; transition: color .25s; }
+  .priority.active {
+    border-color: var(--pc);
+    background: color-mix(in srgb, var(--pc) 13%, transparent);
+    box-shadow: 0 0 28px -6px var(--pc), inset 0 0 22px -12px var(--pc);
+  }
+  .priority.active .pname { color: #fff; }
+  .priority.active .psub { color: var(--pc); }
+  .priority.active::after {
+    content: '▾'; position: absolute; left: 50%; bottom: -16px;
+    transform: translateX(-50%); color: var(--pc); font-size: 14px;
+    text-shadow: 0 0 10px var(--pc);
+  }
+
+  /* ── The scene (cake sits inside the sky) ─────────────── */
+  .scene { display: flex; flex-direction: column; align-items: center; margin-top: 30px; }
+
+  .topper { display: flex; flex-direction: column; align-items: center; z-index: 8; position: relative; }
+  .topper .flag {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.16em;
+    text-transform: uppercase; color: #05050d;
+    padding: 7px 16px; border-radius: 7px;
+    background: linear-gradient(180deg, var(--anchor-g), var(--anchor));
+    box-shadow: 0 0 26px -4px var(--anchor), 0 6px 14px -6px rgba(0,0,0,0.7);
+    white-space: nowrap;
+  }
+  .topper .flag small { display: block; font-size: 8px; font-weight: 600; letter-spacing: 0.26em; opacity: 0.65; margin-bottom: 1px; }
+  .topper .stick {
+    width: 3px; height: 22px;
+    background: linear-gradient(180deg, var(--anchor), color-mix(in srgb, var(--anchor) 10%, transparent));
+    box-shadow: 0 0 10px var(--anchor);
+  }
+
+  .cake {
+    position: relative;
+    width: min(540px, 92vw);
+    filter: drop-shadow(0 26px 40px rgba(0,0,0,0.6));
+    z-index: 4;
+  }
+
+  /* candles standing on the frosting */
+  .candles {
+    position: absolute; top: -20px; left: 50%; transform: translateX(-50%);
+    display: flex; gap: 26px; z-index: 7; pointer-events: none;
+  }
+  .candle {
+    width: 7px; height: 26px; border-radius: 3px; position: relative;
+    background: repeating-linear-gradient(48deg, var(--cc), var(--cc) 4px, rgba(255,255,255,0.55) 4px, rgba(255,255,255,0.55) 8px);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.45);
+  }
+  .flame {
+    position: absolute; top: -14px; left: 50%;
+    width: 9px; height: 15px;
+    border-radius: 50% 50% 50% 50% / 62% 62% 40% 40%;
+    background: radial-gradient(circle at 50% 72%, #fff 8%, #ffe08a 38%, #ff8a1e 82%);
+    box-shadow: 0 0 9px #ffb347, 0 0 18px #ff7a1e;
+    transform-origin: bottom center;
+    animation: flick 0.85s ease-in-out infinite alternate;
+  }
+  .candle:nth-child(2) .flame { animation-delay: 0.3s; }
+  .candle:nth-child(3) .flame { animation-delay: 0.15s; }
+  .candle:nth-child(4) .flame { animation-delay: 0.42s; }
+  @keyframes flick {
+    from { transform: translateX(-50%) scale(1) rotate(-3deg); opacity: 0.92; }
+    to   { transform: translateX(-50%) scale(1.14, 1.2) rotate(3deg); opacity: 1; }
+  }
+
+  .frosting {
+    position: relative; display: block; width: 100%; height: 62px;
+    margin-bottom: -34px; z-index: 5;
+    filter: drop-shadow(0 4px 4px rgba(0,0,0,0.35));
+  }
+
+  .filling {
+    position: relative; height: 22px; margin-top: -1px; margin-bottom: -8px;
+    background: linear-gradient(180deg, #fffaf0, var(--cream) 50%, var(--cream-d));
+    box-shadow: inset 0 2px 3px rgba(255,255,255,0.6);
+    z-index: 3;
+    -webkit-mask:
+      linear-gradient(#000 0 0) top / 100% calc(100% - 11px) no-repeat,
+      radial-gradient(circle 8px at 9px 0, #000 96%, transparent 98%) bottom left / 22px 11px repeat-x;
+    mask:
+      linear-gradient(#000 0 0) top / 100% calc(100% - 11px) no-repeat,
+      radial-gradient(circle 8px at 9px 0, #000 96%, transparent 98%) bottom left / 22px 11px repeat-x;
+  }
+
+  .layer {
+    position: relative;
+    padding: 15px 22px 15px 46px;
+    background:
+      linear-gradient(180deg,
+        color-mix(in srgb, var(--flavor) 40%, #160f1c),
+        color-mix(in srgb, var(--flavor) 22%, #0c0910));
+    border-left: 1px solid color-mix(in srgb, var(--flavor) 45%, transparent);
+    border-right: 1px solid color-mix(in srgb, var(--flavor) 45%, transparent);
+    opacity: 0.32;
+    cursor: pointer;
+    transition: opacity .5s ease, box-shadow .5s, filter .4s;
+    overflow: hidden;
+  }
+  .layer[data-tier="c"]  { padding-top: 42px; }
+  .layer[data-tier="ic"] { border-radius: 0 0 16px 16px; border-bottom: 1px solid color-mix(in srgb, var(--flavor) 45%, transparent); }
+  .layer::after {
+    content: ''; position: absolute; inset: 0; pointer-events: none; opacity: 0.5;
+    background-image:
+      radial-gradient(circle 1.5px at 20% 30%, color-mix(in srgb, var(--flavor) 60%, #fff) 50%, transparent 52%),
+      radial-gradient(circle 1px at 65% 60%, color-mix(in srgb, var(--flavor) 50%, #fff) 50%, transparent 52%),
+      radial-gradient(circle 1.5px at 84% 35%, color-mix(in srgb, var(--flavor) 55%, #fff) 50%, transparent 52%),
+      radial-gradient(circle 1px at 42% 78%, color-mix(in srgb, var(--flavor) 50%, #fff) 50%, transparent 52%),
+      radial-gradient(circle 1px at 90% 80%, color-mix(in srgb, var(--flavor) 55%, #fff) 50%, transparent 52%);
+  }
+  .layer:hover { opacity: 1; }
+  .layer.active { opacity: 1; }
+  .layer.active, .layer:hover {
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--anchor) 35%, transparent),
+                inset 0 0 30px -6px color-mix(in srgb, var(--anchor) 50%, transparent);
+  }
+
+  .node {
+    position: absolute; left: 17px; top: 50%; transform: translateY(-50%);
+    width: 15px; height: 15px; border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #fff6, var(--flavor) 55%);
+    box-shadow: 0 0 0 2px rgba(0,0,0,0.25);
+    z-index: 4; transition: box-shadow .35s;
+  }
+  .layer.active .node {
+    box-shadow: 0 0 0 2px var(--anchor), 0 0 14px var(--anchor), 0 0 26px -4px var(--anchor);
+  }
+
+  .layer-content { position: relative; z-index: 2; }
+  .layer-top { display: flex; align-items: baseline; gap: 11px; flex-wrap: wrap; }
+  .tier-name {
+    font-size: 15px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+    color: #fff; text-shadow: 0 1px 6px rgba(0,0,0,0.5);
+  }
+  .tier-role { font-size: 11px; color: rgba(255,255,255,0.55); letter-spacing: 0.04em; }
+  .tier-cares { font-size: 11.5px; color: rgba(255,255,255,0.62); margin-top: 3px; font-style: italic; }
+  .tier-cares b { color: #fff; font-style: normal; font-weight: 600; }
+
+  .altitude { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 8px; }
+  .altitude span {
+    font-size: 9px; font-weight: 600; letter-spacing: 0.06em;
+    padding: 3px 8px; border-radius: 999px;
+    background: rgba(0,0,0,0.28);
+    border: 1px solid color-mix(in srgb, var(--flavor) 40%, transparent);
+    color: rgba(255,255,255,0.55); text-transform: uppercase;
+  }
+  .altitude span b { color: var(--flavor-g); font-weight: 700; }
+  .altitude .kpi-chip {
+    border-color: color-mix(in srgb, var(--anchor) 55%, transparent);
+    background: color-mix(in srgb, var(--anchor) 9%, rgba(0,0,0,0.28));
+  }
+  .altitude .kpi-chip b { color: var(--anchor-g); }
+
+  .layer-body { margin-top: 10px; }
+  .msg-label {
+    font-size: 9px; font-weight: 700; letter-spacing: 0.24em;
+    text-transform: uppercase; color: var(--anchor-g);
+    display: flex; align-items: center; gap: 7px; margin-bottom: 5px;
+  }
+  .msg-label::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, color-mix(in srgb, var(--anchor) 50%, transparent), transparent); }
+  .layer-msg { font-size: 13.5px; line-height: 1.5; color: #f4f0ff; }
+
+  /* the "dark arts" — what they secretly want (hover / tap to reveal) */
+  .secret-hint {
+    margin-top: 10px;
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 9px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;
+    color: rgba(255,255,255,0.34); transition: color .2s;
+  }
+  .layer:hover .secret-hint, .layer.show-secret .secret-hint { color: #fb7185; }
+  .layer.show-secret .secret-hint .chev { transform: rotate(90deg); }
+  .secret-hint .chev { transition: transform .3s; display: inline-block; }
+  .secret {
+    max-height: 0; opacity: 0; overflow: hidden; margin-top: 0;
+    transition: max-height .45s ease, opacity .35s ease, margin-top .45s ease;
+  }
+  .layer:hover .secret, .layer.show-secret .secret {
+    max-height: 180px; opacity: 1; margin-top: 9px;
+  }
+  .secret-inner {
+    border-left: 2px solid #fb7185;
+    background: linear-gradient(90deg, rgba(225,29,72,0.18), rgba(0,0,0,0.28));
+    border-radius: 0 9px 9px 0; padding: 10px 14px;
+  }
+  .secret-label { font-size: 8px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: #fda4af; }
+  .secret-want { font-size: 13.5px; font-weight: 700; color: #ffe4e6; margin-top: 4px; }
+  .secret-line { font-size: 11.5px; color: rgba(255,255,255,0.66); line-height: 1.5; margin-top: 4px; font-style: italic; }
+
+  /* ── Cake stand / pedestal ────────────────────────────── */
+  .cake-stand { display: flex; flex-direction: column; align-items: center; margin-top: -2px; z-index: 1; position: relative; }
+  .stand-plate {
+    width: min(600px, 108%); height: 22px; border-radius: 50%;
+    background: linear-gradient(180deg, #3a3a4e 0%, #20202e 55%, #101019 100%);
+    box-shadow: 0 16px 32px -14px rgba(0,0,0,0.95), inset 0 2px 3px rgba(255,255,255,0.14);
+  }
+  .stand-stem {
+    width: 36px; height: 34px; margin-top: -3px;
+    background: linear-gradient(90deg, #14141d, #34344b 50%, #14141d);
+    border-radius: 0 0 7px 7px;
+  }
+  .stand-foot {
+    width: 128px; height: 16px; border-radius: 50%; margin-top: -2px;
+    background: linear-gradient(180deg, #2c2c3c, #111119);
+    box-shadow: 0 12px 26px -10px rgba(0,0,0,0.85);
+  }
+
+  /* ── Footer insight ───────────────────────────────────── */
+  .insight {
+    margin-top: 40px; padding: 22px 26px;
+    border: 1px solid rgba(255,255,255,0.09);
+    border-left: 3px solid var(--anchor);
+    border-radius: 10px;
+    background: rgba(255,255,255,0.025);
+  }
+  .insight .it { font-size: 10px; font-weight: 700; letter-spacing: 0.28em; text-transform: uppercase; color: var(--anchor-g); margin-bottom: 8px; }
+  .insight p { font-size: 14px; line-height: 1.65; color: rgba(255,255,255,0.72); }
+  .insight p + p { margin-top: 10px; }
+  .insight b { color: #fff; font-weight: 600; }
+  .insight .darkarts { color: #fb7185; }
+
+  .back {
+    display: inline-flex; align-items: center; gap: 7px;
+    margin-top: 30px; font-size: 11px; font-weight: 600;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: rgba(255,255,255,0.35); text-decoration: none;
+    transition: color .2s;
+  }
+  .back:hover { color: rgba(255,255,255,0.7); }
+
+  @media (max-width: 600px) {
+    .wrap { padding: 30px 12px 60px; }
+    .sky { padding: 14px 12px 30px; }
+    .priority { min-width: 44%; }
+    .layer { padding: 13px 16px 13px 40px; }
+    .layer[data-tier="c"] { padding-top: 40px; }
+    .node { left: 14px; }
+    .tier-name { font-size: 13px; }
+    .candles { gap: 18px; }
+  }
+</style>
+</head>
+<body>
+<canvas id="stars"></canvas>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Enterprise Sales · Selling Every Altitude</div>
+    <h1>The <span class="grad">Layer Cake</span></h1>
+    <p class="sub">Technical deals are won layer by layer — engineer, manager, director, VP, C-suite — each a different altitude with a different appetite. The win is <b style="color:#fff">one coherent story</b>, retold in each layer's language and laddered up to the organization's priorities. Pick a priority, weave the thread — then hover a layer for the <b style="color:#fb7185">real reason</b> they'll champion it.</p>
+  </header>
+
+  <div class="sky">
+    <div class="sky-label">Organizational priorities — the backdrop every layer ladders up to</div>
+    <div class="priority-row" id="priority-row"></div>
+
+    <div class="scene">
+      <div class="topper" id="topper">
+        <div class="flag"><small>Anchored to</small><span id="topper-label">Drive Revenue</span></div>
+        <div class="stick"></div>
+      </div>
+      <div class="cake" id="cake">
+        <div class="candles" id="candles"></div>
+        <!-- frosting + layers + fillings injected -->
+      </div>
+      <div class="cake-stand">
+        <div class="stand-plate"></div>
+        <div class="stand-stem"></div>
+        <div class="stand-foot"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="insight">
+    <div class="it">The trick</div>
+    <p><b>Five altitudes, one cake.</b> The engineer won't sign the contract and the CTO won't run the install — but every layer has to taste a version of the same story, told in their language and tied to the metric they own at their altitude.</p>
+    <p>The thread is what holds the cake together: the engineer's reclaimed hours roll up into the manager's throughput, into the director's roadmap, into the VP's budget, into the line on the C-suite's board deck. <b>Break the thread at any layer and the deal slides apart there.</b></p>
+    <p><span class="darkarts">And here's the part nobody says out loud:</span> under every business case is a personal one — looking smart, getting promoted, climbing the ladder. The champion who bets on you is really betting on <em>their own next title.</em> Align the win with what they secretly want and they'll sell <em>up</em> for you. <b>Hover any layer for the real reason.</b></p>
+  </div>
+
+  <a class="back" href="index.html#/sales-philosophy">← Back to Sales Philosophy</a>
+</div>
+
+<script>
+// ── ORG PRIORITIES (the backdrop / through-line — cool colors) ────────
+const ANCHORS = [
+  { id:'revenue', label:'Drive Revenue', sub:'Grow the top line', color:'#10b981', glow:'#6ee7b7' },
+  { id:'cost',    label:'Reduce Cost',   sub:'Do more with less', color:'#06b6d4', glow:'#67e8f9' },
+  { id:'risk',    label:'Reduce Risk',   sub:'Keep it safe & up', color:'#3b82f6', glow:'#93c5fd' },
+  { id:'speed',   label:'Ship Faster',   sub:'Cut time-to-market', color:'#6366f1', glow:'#a5b4fc' },
+];
+
+// ── LAYERS — flavor + scope/horizon + the secret (selfish) driver ─────
+const LAYERS = [
+  {
+    tier:'c', name:'C-Suite', role:'CTO · CIO · CISO · CFO',
+    flavor:'#a855f7', flavorG:'#d8b4fe',
+    scope:'The company & board', horizon:'Multi-year strategy',
+    caresHTML:'Thinks in <b>strategic bets &amp; build-vs-buy</b> — never features.',
+    secret:{ want:'Look visionary. Cement the legacy.', line:'Be the exec who positioned the company to win — the bet that made the board, the market, and the next employer take notice. Mastra becomes their "I saw it early" story.' },
+    content:{
+      revenue:{ msg:'"Technology becomes a growth lever, not a ceiling — faster products and new markets we can actually support."', metric:'+ Growth enabled', desc:'New capabilities shipped and modeled revenue impact, drawn from POC results.' },
+      cost:{    msg:'"Better unit economics and gross margin — the cost line the board and the Street actually watch."', metric:'↓ Total cost of ownership', desc:'TCO and payback period projected from the POC across the footprint.' },
+      risk:{    msg:'"The strategic bet is de-risked — security posture, business continuity, and a defensible audit trail."', metric:'↓ Risk exposure', desc:'Exposure and compliance gaps quantified before a company-wide commitment.' },
+      speed:{   msg:'"We out-execute competitors — shipping speed becomes a durable strategic advantage."', metric:'↑ Time-to-market', desc:'Time-to-market delta modeled from the POC vs. the status quo.' },
+    }
+  },
+  {
+    tier:'vp', name:'VP', role:'VP Engineering · Infrastructure',
+    flavor:'#d946ef', flavorG:'#f0abfc',
+    scope:'The whole function & its budget', horizon:'The annual plan',
+    caresHTML:'Owns <b>a budget and a vendor strategy</b>; lives on predictability.',
+    secret:{ want:'Get on the CTO track.', line:'Be the leader who made the bet that paid off — the board-visible win that earns the next title and the conference stage. Championing Mastra is their proof they can pick winners.' },
+    content:{
+      revenue:{ msg:'"We support more product bets without adding headcount linearly — capacity I can redeploy to what matters."', metric:'+ Capacity unlocked', desc:'Output per engineer and reclaimed capacity, measured on the POC workload.' },
+      cost:{    msg:'"Lower infra and headcount spend for the same or better output — straight to the budget I own."', metric:'↓ Spend per unit', desc:'Infra + headcount spend per unit of work, before vs. after.' },
+      risk:{    msg:'"Reliability and compliance I can stand behind — no surprises in front of the board or in an audit."', metric:'+ SLO attainment', desc:'Uptime / SLO attainment and compliance gaps closed across the POC.' },
+      speed:{   msg:'"Predictable, faster time-to-market for the whole org\'s roadmap — fewer slips I have to explain."', metric:'↑ Roadmap velocity', desc:'Delivery velocity across the function, measured against plan.' },
+    }
+  },
+  {
+    tier:'dir', name:'Director', role:'Director of Eng · Platform',
+    flavor:'#f43f5e', flavorG:'#fda4af',
+    scope:'Several teams & a domain', horizon:"This year's roadmap",
+    caresHTML:'Sets <b>standards across teams</b>; bridges strategy and execution.',
+    secret:{ want:'Land the VP title.', line:'Own the modernization win that gets your name in the VP conversation — the operator who made the org move, not the one who stood still. Rolling out Mastra is the flagship on their promo packet.' },
+    content:{
+      revenue:{ msg:'"I can standardize this across my teams and actually hit the roadmap we committed to."', metric:'+ Roadmap unblocked', desc:'Roadmap items unblocked across teams during the POC.' },
+      cost:{    msg:'"I consolidate overlapping tools and cut the maintenance sprawl my teams keep tripping over."', metric:'↓ Tool sprawl', desc:'Redundant tools retired and maintenance load reduced across teams.' },
+      risk:{    msg:'"Consistent, auditable practices across every team I own — not one-off heroics."', metric:'+ Standards adherence', desc:'Adherence to standards and audit coverage, measured across teams.' },
+      speed:{   msg:'"Faster delivery across teams without each one reinventing the wheel."', metric:'↓ Cross-team lead time', desc:'Lead time and reuse across teams, tracked through the POC.' },
+    }
+  },
+  {
+    tier:'mgr', name:'Mid-Level Manager', role:'Engineering Manager · Team Lead',
+    flavor:'#f97316', flavorG:'#fdba74',
+    scope:'One team', horizon:"This quarter's delivery",
+    caresHTML:'Cares about <b>team throughput &amp; on-call load</b> — shipping what they committed.',
+    secret:{ want:'Be the leader who ships.', line:'Run the team leadership points to as the model — a high-performing crew that delivers is the case for the director seat. Mastra is how their team suddenly outpaces the others.' },
+    content:{
+      revenue:{ msg:'"My team ships the roadmap instead of fighting the platform — we finally move the needle."', metric:'+ Team throughput', desc:'Throughput and items shipped on the POC workload vs. baseline.' },
+      cost:{    msg:'"Fewer people pulled onto undifferentiated heavy lifting — I get my team back."', metric:'↓ Maintenance load', desc:'Team hours reclaimed from toil and maintenance, measured.' },
+      risk:{    msg:'"Fewer fires and less on-call burn — my team stops getting paged at 2am."', metric:'↓ On-call burden', desc:'On-call load and MTTR improvement across the POC.' },
+      speed:{   msg:'"Our delivery cadence speeds up without cutting corners or burning the team out."', metric:'↑ Deploy frequency', desc:'Deploy frequency and ramp time, measured on the team.' },
+    }
+  },
+  {
+    tier:'ic', name:'Individual Contributor', role:'Engineer · SRE · Practitioner',
+    flavor:'#eab308', flavorG:'#fde68a',
+    scope:'Their own stack', horizon:'This sprint',
+    caresHTML:'Cares about <b>does it work, does it fit my stack, does it make my day easier</b>.',
+    secret:{ want:'Look smart. Get promoted.', line:'Be the engineer who brought in Mastra — the one whose name is on the win the whole team now depends on. That reputation is the fast path to senior/staff.' },
+    content:{
+      revenue:{ msg:'"This unblocks me — I can finally ship the thing that\'s been stuck behind platform limits."', metric:'↓ Time to first value', desc:'Time to first working result and features unblocked, per user.' },
+      cost:{    msg:'"I stop hand-rolling and babysitting brittle tooling — way less toil in my day."', metric:'↓ Manual toil', desc:'Manual hours and toil reduced per engineer, captured live.' },
+      risk:{    msg:'"Sane defaults and guardrails catch problems before they page me — I look sharp, not slow."', metric:'+ Caught pre-prod', desc:'Issues and errors caught before production, measured per user.' },
+      speed:{   msg:'"I go from idea to running in minutes, not days — the friction is just gone."', metric:'↓ Cycle time', desc:'Lead time / cycle time per change, before vs. after.' },
+    }
+  },
+];
+
+// ── BUILD PRIORITY BACKDROP (also the selector) ───────────────────────
+const priorityRow = document.getElementById('priority-row');
+ANCHORS.forEach(a => {
+  const b = document.createElement('div');
+  b.className = 'priority';
+  b.dataset.id = a.id;
+  b.style.setProperty('--pc', a.color);
+  b.innerHTML = `<div class="pname">${a.label}</div><div class="psub">${a.sub}</div>`;
+  b.addEventListener('click', () => setAnchor(a.id, true));
+  priorityRow.appendChild(b);
+});
+
+// ── FROSTING CAP with organic drips (SVG) ─────────────────────────────
+const cake = document.getElementById('cake');
+function frostingSVG() {
+  const w = 540, R = 18, base = 28;
+  const depths = [13, 29, 17, 34, 11, 25, 19, 31, 15];
+  let d = `M0,${R} Q0,0 ${R},0 H${w - R} Q${w},0 ${w},${R} V${base}`;
+  const N = depths.length, seg = w / N;
+  for (let i = 0; i < N; i++) {
+    const xR = w - i * seg, xL = w - (i + 1) * seg, mid = (xL + xR) / 2, dep = base + depths[i];
+    d += ` C${(xR - seg * 0.12).toFixed(1)},${base} ${(mid + seg * 0.18).toFixed(1)},${dep} ${mid.toFixed(1)},${dep}`;
+    d += ` C${(mid - seg * 0.18).toFixed(1)},${dep} ${(xL + seg * 0.12).toFixed(1)},${base} ${xL.toFixed(1)},${base}`;
+  }
+  d += ' Z';
+  return `<svg class="frosting" viewBox="0 0 ${w} 62" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="fg" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#ffffff"/>
+        <stop offset="0.5" stop-color="#f7edd8"/>
+        <stop offset="1" stop-color="#e7d2a8"/>
+      </linearGradient>
+    </defs>
+    <path d="${d}" fill="url(#fg)"/>
+  </svg>`;
+}
+cake.insertAdjacentHTML('beforeend', frostingSVG());
+
+// ── CANDLES (one per flavor) ──────────────────────────────────────────
+const candleColors = ['#a855f7', '#d946ef', '#f97316', '#eab308'];
+const candlesEl = document.getElementById('candles');
+candleColors.forEach(c => {
+  const cd = document.createElement('div');
+  cd.className = 'candle';
+  cd.style.setProperty('--cc', c);
+  cd.innerHTML = '<div class="flame"></div>';
+  candlesEl.appendChild(cd);
+});
+
+// ── BUILD CAKE LAYERS (sponge + frosting filling between) ─────────────
+const layerEls = [];
+LAYERS.forEach((L, i) => {
+  const el = document.createElement('div');
+  el.className = 'layer';
+  el.dataset.tier = L.tier;
+  el.style.setProperty('--flavor', L.flavor);
+  el.style.setProperty('--flavor-g', L.flavorG);
+  el.innerHTML = `
+    <div class="node"></div>
+    <div class="layer-content">
+      <div class="layer-top">
+        <div class="tier-name">${L.name}</div>
+        <div class="tier-role">${L.role}</div>
+      </div>
+      <div class="tier-cares">${L.caresHTML}</div>
+      <div class="altitude">
+        <span>◢ Scope · <b>${L.scope}</b></span>
+        <span>◷ Horizon · <b>${L.horizon}</b></span>
+        <span class="kpi-chip">🎯 Win-metric · <b class="kpi-val"></b></span>
+      </div>
+      <div class="layer-body">
+        <div class="msg-label">Their version of the story</div>
+        <div class="layer-msg"></div>
+      </div>
+      <div class="secret-hint"><span class="chev">▸</span> The real reason they'll champion it</div>
+      <div class="secret">
+        <div class="secret-inner">
+          <div class="secret-label">🤫 Off the record · what they secretly want</div>
+          <div class="secret-want">${L.secret.want}</div>
+          <div class="secret-line">${L.secret.line}</div>
+        </div>
+      </div>
+    </div>`;
+  cake.appendChild(el);
+  layerEls.push(el);
+  // tap to pin the secret open (touch devices)
+  el.addEventListener('click', () => el.classList.toggle('show-secret'));
+  if (i < LAYERS.length - 1) {
+    const f = document.createElement('div');
+    f.className = 'filling';
+    cake.appendChild(f);
+  }
+});
+
+// ── STATE ─────────────────────────────────────────────────────────────
+let currentAnchor = 'revenue';
+
+function applyContent() {
+  const a = ANCHORS.find(x => x.id === currentAnchor);
+  document.documentElement.style.setProperty('--anchor', a.color);
+  document.documentElement.style.setProperty('--anchor-g', a.glow);
+  document.getElementById('topper-label').textContent = a.label;
+  layerEls.forEach((el, i) => {
+    const c = LAYERS[i].content[currentAnchor];
+    el.querySelector('.layer-msg').textContent = c.msg;
+    el.querySelector('.kpi-val').textContent = c.metric;
+  });
+}
+
+function setAnchor(id, reweave) {
+  currentAnchor = id;
+  document.querySelectorAll('.priority').forEach(b =>
+    b.classList.toggle('active', b.dataset.id === id));
+  applyContent();
+  if (reweave) weave();
+}
+
+// ── WEAVE: light each layer top→bottom, spark a cherry ────────────────
+let weaving = false;
+function weave() {
+  if (weaving) return;
+  weaving = true;
+  layerEls.forEach(el => el.classList.remove('active'));
+  const STAGGER = 300;
+  layerEls.forEach((el, i) => {
+    setTimeout(() => {
+      el.classList.add('active');
+      const r = el.querySelector('.node').getBoundingClientRect();
+      burst(r.left + r.width/2, r.top + r.height/2);
+      if (i === layerEls.length - 1) setTimeout(() => weaving = false, 200);
+    }, 140 + i * STAGGER);
+  });
+}
+
+// ── STARFIELD + SPARK CANVAS ──────────────────────────────────────────
+const canvas = document.getElementById('stars');
+const ctx = canvas.getContext('2d');
+let W, H;
+function resize() { W = canvas.width = innerWidth; H = canvas.height = innerHeight; }
+resize();
+addEventListener('resize', resize);
+
+const STARS = Array.from({length:55}, () => ({
+  x: Math.random(), y: Math.random(),
+  r: Math.random()*1.2 + 0.2,
+  base: Math.random()*0.4 + 0.06,
+  spd: Math.random()*0.006 + 0.002,
+  ph: Math.random()*Math.PI*2,
+}));
+let parts = [];
+let t = 0;
+
+function burst(x, y) {
+  const a = ANCHORS.find(z => z.id === currentAnchor);
+  const colors = [a.color, a.glow, '#ffffff'];
+  for (let i = 0; i < 16; i++) {
+    const ang = (Math.PI*2*i/16) + Math.random()*0.7;
+    const spd = 1.5 + Math.random()*4.5;
+    parts.push({
+      x, y, vx: Math.cos(ang)*spd, vy: Math.sin(ang)*spd,
+      life: 1, decay: 0.018 + Math.random()*0.02,
+      r: 1.2 + Math.random()*3,
+      color: colors[Math.floor(Math.random()*colors.length)],
+    });
+  }
+}
+function hexA(hex, a) {
+  const n = parseInt(hex.slice(1), 16);
+  return `rgba(${(n>>16)&255},${(n>>8)&255},${n&255},${a.toFixed(3)})`;
+}
+function tick() {
+  ctx.clearRect(0,0,W,H);
+  t += 0.016;
+  STARS.forEach(s => {
+    const o = s.base * (0.5 + 0.5*Math.sin(t*s.spd*40 + s.ph));
+    ctx.beginPath();
+    ctx.arc(s.x*W, s.y*H, s.r, 0, Math.PI*2);
+    ctx.fillStyle = `rgba(255,255,255,${o})`;
+    ctx.fill();
+  });
+  parts = parts.filter(p => p.life > 0.02);
+  parts.forEach(p => {
+    p.x += p.vx; p.y += p.vy;
+    p.vx *= 0.93; p.vy *= 0.93;
+    p.life -= p.decay;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, Math.max(0.1, p.r*p.life), 0, Math.PI*2);
+    ctx.fillStyle = hexA(p.color, p.life);
+    ctx.fill();
+  });
+  requestAnimationFrame(tick);
+}
+tick();
+
+// ── INIT ──────────────────────────────────────────────────────────────
+setAnchor('revenue', false);
+setTimeout(weave, 650);
+</script>
+</body>
+</html>
