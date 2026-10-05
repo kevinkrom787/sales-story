@@ -1179,6 +1179,28 @@ const GTM = [
         { day: 'Day 14', action: 'LinkedIn', note: 'Short, casual — different tone from email' },
         { day: 'Day 21', action: 'Email', note: 'The "breakup" — this consistently generates replies' }
       ]},
+      { key: 'copy', label: 'Outbound Copy', type: 'principles', content: [
+        '<strong>Make it short</strong> — 60 seconds or less to read.',
+        '<strong>Use three sentences</strong> — What you do, why it\'s exciting, what you want.',
+        '<strong>Say what you do first</strong> — Plain words, zero jargon.',
+        '<strong>Lead with your best proof</strong> — Launch, growth, market, technical team.',
+        '<strong>Make the ask explicit</strong> — Advice, investment, or an intro.',
+        '<strong>Don\'t ask for a meeting</strong> — Let them escalate.',
+        '<strong>Skip the backstory</strong> — No resume, awards, or origin story.',
+        '<strong>Don\'t flatter</strong> — Skip the compliments and get to the point.',
+        '<strong>Send from your company email</strong> — With your name in it.',
+        '<strong>Write like you talk to a friend</strong> — Read it out loud first.',
+        '<strong>Find an uncommon commonality</strong> — A real reason it\'s them.',
+        '<strong>Make it about them</strong> — Their problem, in their words.',
+        '<strong>Give every email one goal</strong> — Cut any word that doesn\'t serve it.',
+        '<strong>Borrow credibility</strong> — YC, past employers, customer names.',
+        '<strong>Keep the subject line casual</strong> — Short and relevant, like a friend wrote it.',
+        '<strong>Put the ask on its own line</strong> — Right before you sign off.',
+        '<strong>Target better, not wider</strong> — 100 good-fit emails beat 1,000 random.',
+        '<strong>Send them yourself</strong> — Founders write by hand, no automation at first.',
+        '<strong>Follow up 2–4 times</strong> — A few days apart.',
+        '<strong>Don\'t get mad if ignored</strong> — Check back in a few months.'
+      ]},
       { key: 'callscripts', label: 'Call Scripts', type: 'principles', content: [
         '<strong style="color:var(--text)">Opening (5 seconds):</strong> "Hey [name] — [your name] from [company]. Did I catch you at a bad time?" Wait. Don\'t apologize for calling.',
         '<strong style="color:var(--text)">The hook (10 seconds):</strong> "The reason I\'m calling — we work with [role] at companies like [peer] to [specific outcome]. Wanted to see if that\'s a problem you\'re dealing with."',
