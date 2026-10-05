@@ -1164,22 +1164,6 @@ const GTM = [
     },
     tabs: [
       { key: 'principles', label: 'Principles', type: 'principles', content: [
-        'Every sequence needs a hook: why this person, why this company, why now. If you can\'t answer all three, don\'t send it.',
-        'Personalization at scale means researching the trigger, not rewriting the whole email. One specific sentence about their world beats five generic sentences about yours.',
-        'The goal of the first email is not to sell the product. It is to earn a reply. Optimize for curiosity, not comprehension.',
-        'Sequences should have a perspective. The best outbound takes a position on something the prospect cares about.',
-        'Follow up. Most replies come after the 3rd–5th touch. One email is not a sequence.'
-      ]},
-      { key: 'sequence', label: 'Sequence Structure', type: 'steps', content: [
-        { day: 'Day 1', action: 'Email', note: 'Hook + one-line value prop + soft CTA' },
-        { day: 'Day 3', action: 'LinkedIn', note: 'Connection request — no pitch' },
-        { day: 'Day 5', action: 'Email', note: 'Different angle, lead with insight or case study' },
-        { day: 'Day 7', action: 'Call', note: 'Call + voicemail — reference the emails' },
-        { day: 'Day 10', action: 'Email', note: 'Direct ask or breakup' },
-        { day: 'Day 14', action: 'LinkedIn', note: 'Short, casual — different tone from email' },
-        { day: 'Day 21', action: 'Email', note: 'The "breakup" — this consistently generates replies' }
-      ]},
-      { key: 'copy', label: 'Outbound Copy', type: 'principles', content: [
         '<strong>Make it short</strong> — 60 seconds or less to read.',
         '<strong>Use three sentences</strong> — What you do, why it\'s exciting, what you want.',
         '<strong>Say what you do first</strong> — Plain words, zero jargon.',
@@ -1200,6 +1184,15 @@ const GTM = [
         '<strong>Send them yourself</strong> — Founders write by hand, no automation at first.',
         '<strong>Follow up 2–4 times</strong> — A few days apart.',
         '<strong>Don\'t get mad if ignored</strong> — Check back in a few months.'
+      ]},
+      { key: 'sequence', label: 'Sequence Structure', type: 'steps', content: [
+        { day: 'Day 1', action: 'Email', note: 'Hook + one-line value prop + soft CTA' },
+        { day: 'Day 3', action: 'LinkedIn', note: 'Connection request — no pitch' },
+        { day: 'Day 5', action: 'Email', note: 'Different angle, lead with insight or case study' },
+        { day: 'Day 7', action: 'Call', note: 'Call + voicemail — reference the emails' },
+        { day: 'Day 10', action: 'Email', note: 'Direct ask or breakup' },
+        { day: 'Day 14', action: 'LinkedIn', note: 'Short, casual — different tone from email' },
+        { day: 'Day 21', action: 'Email', note: 'The "breakup" — this consistently generates replies' }
       ]},
       { key: 'callscripts', label: 'Call Scripts', type: 'principles', content: [
         '<strong style="color:var(--text)">Opening (5 seconds):</strong> "Hey [name] — [your name] from [company]. Did I catch you at a bad time?" Wait. Don\'t apologize for calling.',
